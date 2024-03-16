@@ -12,7 +12,7 @@ load_dotenv ('.flaskenv')
 app= Flask(__name__)
 
 #configuration for SQLAlchemy
-app.config['SQLALCHEMY_DATABASE_URI']=os.get('SQLALCHEMY_DATABASE_URI')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('SQLALCHEMY_DATABASE_URI')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']= False
 
 #initialize SQLAlchemy 
