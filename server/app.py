@@ -4,6 +4,8 @@ from flask_cors import CORS
 from flask_migrate import Migrate
 from dotenv import load_dotenv
 import os
+from datetime import datetime
+
 
 load_dotenv ('.flaskenv')
 
@@ -88,21 +90,21 @@ class Apartment(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     apartment_name = db.Column(db.String, nullable=False, unique=True)
-    landlord_id = db.Column(db.Integer, db.ForeignKey('user.id'),nullable=False)
+    landlord_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=False)
     description = db.Column(db.String, nullable=False)
     location = db.Column(db.String, nullable=False)
     address = db.Column(db.String, nullable=False)
     amenities = db.Column(db.String, nullable=False)
-    lease_agreement= db.Column(db.String, nullable= False)
-    image_url= db.Column(db.String, nullable=False)
+    lease_agreement = db.Column(db.String, nullable=False)  
+    image_url = db.Column(db.String, nullable=False)  
     status = db.Column(db.String, nullable=False)
 
      # Define relationship to User (landlord)
     landlord = db.relationship('User', back_populates='apartments')
 
     # Define the relationship to Booking 
-    booking = db.relationship('Booking', backref= 'apartment',lazy=True)
+    bookings = db.relationship('Booking', backref='apartment', lazy=True)
 
      # Define one-to-many relationship with transactions
     transactions = db.relationship('Transaction', backref='apartment')
@@ -113,51 +115,49 @@ class Apartment(db.Model):
     # Define one-to-many relationship with Document
     documents = db.relationship('Document', backref='apartment', lazy=True)
 
-
 class Booking(db.Model):
     __tablename__ = 'booking'
 
-    id =db.Column(db.Integer, primary_key=True)
-    tenant_id = db.Column(db.Integer, db.ForeignKey('user.id'),nullable=False)
-    apartment_id = db.Column (db.String, db.ForeignKey('apartment.id'),nullable=False)
-    description = db.Column (db.String, nullable=False)
-    payment = db.Column (db.Integer, nullable=False)
-    timestamp=db.Column(db.datetime, nullable =False)
+    id = db.Column(db.Integer, primary_key=True)
+    tenant_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    apartment_id = db.Column(db.Integer, db.ForeignKey('apartment.id'), nullable=False)
+    description = db.Column(db.String, nullable=False)
+    payment = db.Column(db.Integer, nullable=False)
+    timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
-     # Define relationship to User (tenant)
+    # Define relationship to User (tenant)
     tenant = db.relationship('User', backref='bookings')
 
-class Transaction (db.Model): 
+class Transaction(db.Model): 
     __tablename__ = 'transaction'
 
-    id = db.Column(db.Integer,primary_key= True)
-    payee_id = db.Column(db.Integer,db.ForeignKey('user.id'), nullable=False)
-    payer_id= db.Column (db.Integer,db.ForeignKey('user.id'), nullable=False)
-    apartment_id =db.Column (db.Integer, db.ForeignKey('apartment.id'),nullable =False)
-    purpose= db.Column(db.String, nullable=False)
-    amount = db.Column (db.Integer, nullable= False)
-    timestamp= db.Column (db.datetime, nullable=False)
+    id = db.Column(db.Integer, primary_key=True)
+    payee_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    payer_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    apartment_id = db.Column(db.Integer, db.ForeignKey('apartment.id'), nullable=False)
+    purpose = db.Column(db.String, nullable=False)
+    amount = db.Column(db.Integer, nullable=False)
+    timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
-class Review (db.Model):
+class Review(db.Model):
     __tablename__ = 'review'
 
-    id =db.Column(db.Integer, primary_key= True)
-    user_id= db.Column(db.Integer,db.ForeignKey('user.id'),nullable=False)
-    rating= db.Column(db.Integer)
-    comment=db.Column(db.String, nullable=True)
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    rating = db.Column(db.Integer)
+    comment = db.Column(db.String, nullable=True)
 
-
-class Billing (db.Model): 
+class Billing(db.Model): 
     __tablename__ = 'billing'
 
     id = db.Column(db.Integer, primary_key=True)
-    apartment_id =db.Column(db.Integer,db.ForeignKey('apartmetn.id'),nullable=False)
-    apartment_owner_id= db.Column(db.Integer,db.ForeignKey('user.id'), nullable=False)
-    residee_id_id=db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    amenity= db.Column(db.String, nullable=False)
-    amount= db.Column(db.Integer, nullable= False)
-    status = db.Column (db.String, nullable=False)
-    timestamp= db.Column(db.datetime, nullable=False)
+    apartment_id = db.Column(db.Integer, db.ForeignKey('apartment.id'), nullable=False)
+    apartment_owner_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    resident_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    amenity = db.Column(db.String, nullable=False)
+    amount = db.Column(db.Integer, nullable=False)
+    status = db.Column(db.String, nullable=False)
+    timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
     # Define relationships to Apartment and User
     apartment = db.relationship('Apartment', backref='billings')
@@ -165,20 +165,19 @@ class Billing (db.Model):
 class Notification(db.Model):
     __tablename__ = 'notification'
 
-    id = db.Column(db.Integer,primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     sender_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     recipient_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     message = db.Column(db.String, nullable=False)
-    timestamp= db.Column(db.datetime, nullable=False)
+    timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
-class Document (db.Model):
+class Document(db.Model):
     __tablename__ = 'document'
 
     id = db.Column(db.Integer, primary_key=True)
-    user_id= db.Column( db.Integer, db.ForeignKey('user.id'),nullable=False)
-    apartment_id= db.Column(db.Integer, db.ForeignKey('apartment.id'),nullable= False)
-    document_url= db.Column(db.String,nullable=False)
-
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    apartment_id = db.Column(db.Integer, db.ForeignKey('apartment.id'), nullable=False)
+    document_url = db.Column(db.String, nullable=False)
 
 
 if __name__=='__main__':
