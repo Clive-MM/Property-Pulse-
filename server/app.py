@@ -177,5 +177,7 @@ class Document(db.Model):
     document_url = db.Column(db.String, nullable=False)
 
 
+import routes
+
 if __name__=='__main__':
     app.run(debug=True)
