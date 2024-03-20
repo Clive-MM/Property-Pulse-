@@ -11,6 +11,7 @@ python-dotenv = "*"
 flask-migrate = "*"
 flask-bcrypt = "*"
 faker = "*"
+flask-jwt = "*"
 
 [dev-packages]
 

@@ -2,6 +2,7 @@ from flask import jsonify,request
 from app import app, db,User
 from flask_bcrypt import Bcrypt
 import re
+from flask_jwt_extended import create_access_token
 
 #Initialize the bcrypt
 bcrypt = Bcrypt()
@@ -68,3 +69,18 @@ def user_registration():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+#Route for user login
+@app.route('/login', methods=(['POST']))
+def user_login():
+    data =request.get_json
+    email= data.get('email')
+    password= data.get('password')
+
+    user= User.query.filter_by(email=email).first()
+
+    if user and bcrypt.check_password_hash(user.password, password):
+        access_token = create_access_token(identity={'user_id': user.id})
+        return jsonify({'access_token': access_token, 'message': 'Login successful'}), 200
+    else:
+        return jsonify({'message': 'Invalid Credentials!'}), 401
