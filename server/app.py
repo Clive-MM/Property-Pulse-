@@ -100,8 +100,7 @@ class Apartment(db.Model):
     image_url = db.Column(db.String, nullable=False)  
     status = db.Column(db.String, nullable=False)
 
-     # Define relationship to User (landlord)
-    landlord = db.relationship('User', back_populates='apartments')
+    
 
     # Define the relationship to Booking 
     bookings = db.relationship('Booking', backref='apartment', lazy=True)
@@ -109,9 +108,7 @@ class Apartment(db.Model):
      # Define one-to-many relationship with transactions
     transactions = db.relationship('Transaction', backref='apartment')
 
-    # Define relationship to Billing
-    billings = db.relationship('Billing', backref='apartment')
-
+    
     # Define one-to-many relationship with Document
     documents = db.relationship('Document', backref='apartment', lazy=True)
 
