@@ -1,11 +1,17 @@
 from flask import jsonify,request
-from app import app, db,User
+from app import app, db,User,Profile
 from flask_bcrypt import Bcrypt
-import re
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import JWTManager, create_access_token,jwt_required, get_jwt_identity
+
 
 #Initialize the bcrypt
-bcrypt = Bcrypt()
+bcrypt = Bcrypt(app)
+
+# Initialize the JWT manager
+jwt = JWTManager(app)
+
+# Set the secret key for JWT
+app.config['JWT_SECRET_KEY'] = 'VMt9di-MO_mHm0vluuMzpiUaQIWC2Mi50lkuA3p4IUs'
 
 
 #registration of a new user 
@@ -67,13 +73,12 @@ def user_registration():
     # Return a success message
     return jsonify({'message': 'User created successfully!'}), 200 
 
-if __name__ == '__main__':
-    app.run(debug=True)
+
 
 #Route for user login
 @app.route('/login', methods=(['POST']))
 def user_login():
-    data =request.get_json
+    data =request.get_json()
     email= data.get('email')
     password= data.get('password')
 
@@ -84,3 +89,48 @@ def user_login():
         return jsonify({'access_token': access_token, 'message': 'Login successful'}), 200
     else:
         return jsonify({'message': 'Invalid Credentials!'}), 401
+    
+#Setting up user profile
+@app.route('/create_profile', methods=['POST'])
+@jwt_required()
+def create_profile():
+    current_user_id = get_jwt_identity()
+
+    # Check if the user is registered
+    existing_user = User.query.get(current_user_id)
+    if not existing_user:
+        return jsonify({'message': 'Only registered users can create their Profiles!'})
+
+    data = request.get_json()
+
+    # Extract the user profile attributes
+    
+    firstname = data.get('firstname')
+    middlename = data.get('middlename')
+    surname = data.get('surname')
+    contact = data.get('contact')
+    address = data.get('address')
+    passport_url = data.get('passport_url')
+    identification_number_url = data.get('identification_number_url')
+
+    # Create a new profile instance for the existing user
+    new_profile = Profile(
+        user_id=current_user_id,
+        firstname=firstname,
+        middlename=middlename,
+        surname=surname,
+        contact=contact,
+        address=address,
+        passport_url=passport_url,
+        identification_card_url=identification_number_url
+    )
+
+    db.session.add(new_profile)
+    db.session.commit()
+
+    return jsonify({'message': 'Profile created successfully'})
+
+
+    
+if __name__ == '__main__':
+    app.run(debug=True)
