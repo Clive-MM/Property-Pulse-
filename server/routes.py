@@ -128,7 +128,7 @@ def create_profile():
     db.session.add(new_profile)
     db.session.commit()
 
-    return jsonify({'message': 'Profile created successfully'})
+    return jsonify({'message': 'Profile created successfully!'})
 
 
     
