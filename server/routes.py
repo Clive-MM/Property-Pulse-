@@ -1,4 +1,4 @@
-from flask import jsonify,request
+from flask import jsonify,request,render_template
 from app import app, db,User,Profile
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager, create_access_token,jwt_required, get_jwt_identity
@@ -10,9 +10,16 @@ bcrypt = Bcrypt(app)
 # Initialize the JWT manager
 jwt = JWTManager(app,db)
 
+
+
 # Set the secret key for JWT
 app.config['JWT_SECRET_KEY'] = 'VMt9di-MO_mHm0vluuMzpiUaQIWC2Mi50lkuA3p4IUs'
 
+# Define the user lookup loader callback function
+@jwt.user_lookup_loader
+def user_lookup_callback(_jwt_header, jwt_data):
+    identity = jwt_data["sub"]
+    return User.query.filter_by(user_id=identity).first()
 
 #registration of a new user 
 @app.route('/register', methods=['POST'])
@@ -91,8 +98,6 @@ def user_login():
         return jsonify({'message': 'Invalid Credentials!'}), 401
     
 #Setting up user profile
-from flask_jwt_extended import jwt_required, get_jwt_identity
-
 @app.route('/profile', methods=['POST'])
 @jwt_required()
 def create_profile():
@@ -134,6 +139,57 @@ def create_profile():
     db.session.commit()
 
     return jsonify({'message': 'Profile created successfully!'})
+
+#Editing and updating user profile
+@app.route('/edit_profile', methods=['GET', 'POST'])
+@jwt_required()
+def edit_profile():
+    try:
+        # Get userID from the JWT token
+        current_user = get_jwt_identity()['user_id']
+
+        # Extract user_id from the current_user dictionary
+        current_user_id = current_user['user_id']
+
+        # Check if the user is registered
+        existing_user = User.query.get(current_user_id)
+        if not existing_user:
+            return jsonify({'message': 'User not registered!'}), 400
+
+        if request.method == 'GET':
+            return render_template('landlord.html', user=existing_user)
+
+        if request.method == 'POST':
+            data = request.get_json()
+            firstname = data.get('firstname')
+            middlename = data.get('middlename')
+            surname = data.get('surname')
+            contact = data.get('contact')
+            address = data.get('address')
+            passport_url = data.get('passport_url')
+            identification_Card_url = data.get('identification_Card_url')
+
+            # Update the user's profile with the provided data
+            existing_user.firstname = firstname
+            existing_user.middlename = middlename
+            existing_user.surname = surname
+            existing_user.contact = contact
+            existing_user.address = address
+            existing_user.passport_url = passport_url
+            existing_user.identification_Card_url = identification_Card_url
+
+            db.session.commit()
+
+            return jsonify({'message': 'Profile updated successfully!'}), 200
+    except Exception as e:
+        return jsonify({'message': str(e)}), 500
+
+
+    
+    
+                
+
+
 
 
     
