@@ -91,11 +91,16 @@ def user_login():
         return jsonify({'message': 'Invalid Credentials!'}), 401
     
 #Setting up user profile
+from flask_jwt_extended import jwt_required, get_jwt_identity
+
 @app.route('/profile', methods=['POST'])
 @jwt_required()
 def create_profile():
     # Get the user ID from the JWT token
-    current_user_id = get_jwt_identity()
+    current_user = get_jwt_identity()
+
+    # Extract user_id from the current_user dictionary
+    current_user_id = current_user['user_id']
 
     # Check if the user is registered
     existing_user = User.query.get(current_user_id)
