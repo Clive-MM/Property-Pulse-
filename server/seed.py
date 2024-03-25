@@ -1,20 +1,16 @@
-from app import db,app,User,Profile,Category, Apartment, Booking, Transaction, Review, Billing, Notification, Document
+from app import db, app, User, Profile, Category, Apartment, Booking, Transaction, Review, Billing, Notification, Document
 from faker import Faker
 from flask_bcrypt import Bcrypt
 from random import randint, choice
 from datetime import datetime, timedelta
 
 fake = Faker()
+bcrypt = Bcrypt()
 
-
-
-#creating fake users
+# Creating fake users
 def create_fake_users(count=15):
-   
-    
     roles = ['Admin', 'Tenant', 'Landlord']
-    bcrypt = Bcrypt()
-
+    
     for _ in range(count):
         username = fake.user_name()
         role = choice(roles)
@@ -33,36 +29,38 @@ def create_fake_users(count=15):
 
     db.session.commit()
 
-#creating fake profiles 
+# Creating fake profiles
 def create_fake_profiles():
     # Query all existing users
     users = User.query.all()
 
     # Iterate over each user
     for user in users:
-        # Generate fake profile details
-        firstname = fake.first_name()
-        middlename = fake.first_name()
-        surname = fake.last_name()
-        contact = fake.phone_number()
-        address = fake.address()
-        passport_url = fake.image_url()
-        identification_card_url = fake.image_url()
-        
-        # Create a new profile instance
-        profile = Profile(
-            user_id=user.id,
-            firstname=firstname,
-            middlename=middlename,
-            surname=surname,
-            contact=contact,
-            address=address,
-            passport_url=passport_url,
-            identification_card_url=identification_card_url
-        )
-        
-        # Add the profile instance to the session
-        db.session.add(profile)
+        # Check if the user already has a profile
+        if not user.profile:
+            # Generate fake profile details
+            firstname = fake.first_name()
+            middlename = fake.first_name()
+            surname = fake.last_name()
+            contact = fake.phone_number()
+            address = fake.address()
+            passport_url = fake.image_url()
+            identification_card_url = fake.image_url()
+            
+            # Create a new profile instance
+            profile = Profile(
+                user_id=user.user_id,
+                firstname=firstname,
+                middlename=middlename,
+                surname=surname,
+                contact=contact,
+                address=address,
+                passport_url=passport_url,
+                identification_card_url=identification_card_url
+            )
+            
+            # Add the profile instance to the session
+            db.session.add(profile)
 
     db.session.commit()
 
@@ -99,8 +97,8 @@ def create_fake_apartments(count=15):
 
             apartment = Apartment(
                 apartment_name=apartment_name,
-                landlord_id=landlord.id,
-                category_id=category.id,
+                landlord_id=landlord.user_id,
+                category_id=category.category_id,
                 description=description,
                 location=location,
                 address=address,
@@ -126,8 +124,8 @@ def create_fake_bookings(count=10):
         timestamp = fake.date_time_between(start_date='-1y', end_date='now')  
 
         booking = Booking(
-            tenant_id=tenant.id,
-            apartment_id=apartment.id,
+            tenant_id=tenant.user_id,
+            apartment_id=apartment.apartment_id,
             description=description,
             payment=payment,
             timestamp=timestamp
@@ -166,9 +164,9 @@ def create_fake_transactions(count=15):
 
         # Create the transaction
         transaction = Transaction(
-            payer_id=payer.id,
-            payee_id=payee.id,
-            apartment_id=apartment.id,
+            payer_id=payer.user_id,
+            payee_id=payee.user_id,
+            apartment_id=apartment.apartment_id,
             purpose=purpose,
             amount=amount,
             timestamp=timestamp
@@ -194,7 +192,7 @@ def create_fake_reviews(count=20):
 
         # Create the review
         review = Review(
-            user_id=reviewed_user.id,
+            user_id=reviewed_user.user_id,
             rating=rating,
             comment=comment
         )
@@ -202,7 +200,6 @@ def create_fake_reviews(count=20):
 
     db.session.commit()
 
-   
 #creating fake billings for apartment's tenants
 def create_fake_billings(count=10):
     # Query all apartments
@@ -213,7 +210,7 @@ def create_fake_billings(count=10):
         apartment = choice(apartments)
 
         # Get the apartment's landlord
-        landlord = User.query.filter_by(id=apartment.landlord_id).first()
+        landlord = User.query.filter_by(user_id=apartment.landlord_id).first()  # Change here
 
         # Randomly select a tenant (resident)
         tenant = User.query.filter_by(role='Tenant').first()
@@ -229,9 +226,9 @@ def create_fake_billings(count=10):
 
         # Create the billing
         billing = Billing(
-            apartment_id=apartment.id,
-            apartment_owner_id=landlord.id,
-            resident_id=tenant.id,
+            apartment_id=apartment.apartment_id,
+            apartment_owner_id=landlord.user_id,
+            resident_id=tenant.user_id,  
             amenity=amenity,
             amount=amount,
             status=status,
@@ -240,6 +237,7 @@ def create_fake_billings(count=10):
         db.session.add(billing)
 
     db.session.commit()
+
 
 #creating fake notifications
 def create_fake_notifications(count=10):
@@ -258,8 +256,8 @@ def create_fake_notifications(count=10):
 
         # Create the notification
         notification = Notification(
-            sender_id=sender.id,
-            recipient_id=recipient.id,
+            sender_id=sender.user_id,
+            recipient_id=recipient.user_id,
             message=message,
             timestamp=datetime.utcnow()
         )
@@ -283,8 +281,8 @@ def create_fake_documents(count=10):
 
         # Create the document
         document = Document(
-            user_id=user.id,
-            apartment_id=apartment.id,
+            user_id=user.user_id,
+            apartment_id=apartment.apartment_id,
             document_url=document_url
         )
         db.session.add(document)

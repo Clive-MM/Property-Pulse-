@@ -27,7 +27,7 @@ migrate = Migrate(app,db)
 class User(db.Model):
     __tablename__ = 'user'
 
-    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String, unique=True, nullable=False)
     role = db.Column(db.String, nullable=False)
     email = db.Column(db.String, nullable=False, unique=True)
@@ -66,8 +66,8 @@ class User(db.Model):
 class Profile(db.Model):
     __tablename__ = 'profile'
 
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False, unique=True)
+    profile_id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False, unique=True)
     firstname = db.Column(db.String, nullable=False)
     middlename = db.Column(db.String, nullable=False)
     surname = db.Column(db.String, nullable=False)
@@ -79,7 +79,7 @@ class Profile(db.Model):
 class Category(db.Model):
     __tablename__ = 'category'
 
-    id = db.Column(db.Integer, primary_key=True)
+    category_id = db.Column(db.Integer, primary_key=True)
     category_name = db.Column(db.String, unique=True)
 
     # Relationship between Category and Apartment
@@ -88,10 +88,10 @@ class Category(db.Model):
 class Apartment(db.Model):
     __tablename__ = 'apartment'
 
-    id = db.Column(db.Integer, primary_key=True)
+    apartment_id = db.Column(db.Integer, primary_key=True)
     apartment_name = db.Column(db.String, nullable=False, unique=True)
-    landlord_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=False)
+    landlord_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
+    category_id = db.Column(db.Integer, db.ForeignKey('category.category_id'), nullable=False)
     description = db.Column(db.String, nullable=False)
     location = db.Column(db.String, nullable=False)
     address = db.Column(db.String, nullable=False)
@@ -115,9 +115,9 @@ class Apartment(db.Model):
 class Booking(db.Model):
     __tablename__ = 'booking'
 
-    id = db.Column(db.Integer, primary_key=True)
-    tenant_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    apartment_id = db.Column(db.Integer, db.ForeignKey('apartment.id'), nullable=False)
+    booking_id = db.Column(db.Integer, primary_key=True)
+    tenant_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
+    apartment_id = db.Column(db.Integer, db.ForeignKey('apartment.apartment_id'), nullable=False)
     description = db.Column(db.String, nullable=False)
     payment = db.Column(db.Integer, nullable=False)
     timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
@@ -128,10 +128,10 @@ class Booking(db.Model):
 class Transaction(db.Model): 
     __tablename__ = 'transaction'
 
-    id = db.Column(db.Integer, primary_key=True)
-    payee_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    payer_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    apartment_id = db.Column(db.Integer, db.ForeignKey('apartment.id'), nullable=False)
+    transaction_id = db.Column(db.Integer, primary_key=True)
+    payee_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
+    payer_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
+    apartment_id = db.Column(db.Integer, db.ForeignKey('apartment.apartment_id'), nullable=False)
     purpose = db.Column(db.String, nullable=False)
     amount = db.Column(db.Integer, nullable=False)
     timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
@@ -139,18 +139,18 @@ class Transaction(db.Model):
 class Review(db.Model):
     __tablename__ = 'review'
 
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    review_id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
     rating = db.Column(db.Integer)
     comment = db.Column(db.String, nullable=True)
 
 class Billing(db.Model): 
     __tablename__ = 'billing'
 
-    id = db.Column(db.Integer, primary_key=True)
-    apartment_id = db.Column(db.Integer, db.ForeignKey('apartment.id'), nullable=False)
-    apartment_owner_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    resident_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    billing_id = db.Column(db.Integer, primary_key=True)
+    apartment_id = db.Column(db.Integer, db.ForeignKey('apartment.apartment_id'), nullable=False)
+    apartment_owner_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
+    resident_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
     amenity = db.Column(db.String, nullable=False)
     amount = db.Column(db.Integer, nullable=False)
     status = db.Column(db.String, nullable=False)
@@ -162,18 +162,18 @@ class Billing(db.Model):
 class Notification(db.Model):
     __tablename__ = 'notification'
 
-    id = db.Column(db.Integer, primary_key=True)
-    sender_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    recipient_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    notification_id = db.Column(db.Integer, primary_key=True)
+    sender_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
+    recipient_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
     message = db.Column(db.String, nullable=False)
     timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
 class Document(db.Model):
     __tablename__ = 'document'
 
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    apartment_id = db.Column(db.Integer, db.ForeignKey('apartment.id'), nullable=False)
+    document_id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
+    apartment_id = db.Column(db.Integer, db.ForeignKey('apartment.apartment_id'), nullable=False)
     document_url = db.Column(db.String, nullable=False)
 
 

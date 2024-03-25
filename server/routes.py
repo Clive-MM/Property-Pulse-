@@ -8,7 +8,7 @@ from flask_jwt_extended import JWTManager, create_access_token,jwt_required, get
 bcrypt = Bcrypt(app)
 
 # Initialize the JWT manager
-jwt = JWTManager(app)
+jwt = JWTManager(app,db)
 
 # Set the secret key for JWT
 app.config['JWT_SECRET_KEY'] = 'VMt9di-MO_mHm0vluuMzpiUaQIWC2Mi50lkuA3p4IUs'
@@ -85,7 +85,7 @@ def user_login():
     user= User.query.filter_by(email=email).first()
 
     if user and bcrypt.check_password_hash(user.password, password):
-        access_token = create_access_token(identity={'user_id': user.id})
+        access_token = create_access_token(identity={'user_id': user.user_id})
         return jsonify({'access_token': access_token, 'message': 'Login successful'}), 200
     else:
         return jsonify({'message': 'Invalid Credentials!'}), 401
@@ -129,6 +129,7 @@ def create_profile():
     db.session.commit()
 
     return jsonify({'message': 'Profile created successfully!'})
+
 
 
     
