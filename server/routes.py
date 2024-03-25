@@ -91,9 +91,10 @@ def user_login():
         return jsonify({'message': 'Invalid Credentials!'}), 401
     
 #Setting up user profile
-@app.route('/create_profile', methods=['POST'])
+@app.route('/profile', methods=['POST'])
 @jwt_required()
 def create_profile():
+    # Get the user ID from the JWT token
     current_user_id = get_jwt_identity()
 
     # Check if the user is registered
@@ -104,7 +105,6 @@ def create_profile():
     data = request.get_json()
 
     # Extract the user profile attributes
-    
     firstname = data.get('firstname')
     middlename = data.get('middlename')
     surname = data.get('surname')
@@ -129,7 +129,6 @@ def create_profile():
     db.session.commit()
 
     return jsonify({'message': 'Profile created successfully!'})
-
 
 
     
