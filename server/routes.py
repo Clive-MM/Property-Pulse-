@@ -2,7 +2,8 @@ from flask import render_template, jsonify, request
 from app import app, db, User, Profile
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
-
+import cloudinary.uploader
+import cloudinary.api
 
 # Initialize the bcrypt
 bcrypt = Bcrypt(app)
@@ -180,6 +181,19 @@ def edit_profile():
 
     # Default response if no condition is met
     return jsonify({'status': 'error', 'message': 'Method not supported'}), 405
+
+#file upload route
+# route.py
+
+@app.route('/upload', methods=['POST'])
+def upload_file():
+    if request.method == 'POST':
+        file = request.files['file']
+        upload_result = cloudinary.uploader.upload(file)
+        # Handle the upload result
+        return jsonify(upload_result)
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
