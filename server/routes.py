@@ -143,7 +143,24 @@ def edit_profile():
             return jsonify({'message': 'User not registered!'}), 400
 
         if request.method == 'GET':
-            return render_template('landlord.html', user=current_user)
+            # Query the Profile table to get the user's profile
+            profile = Profile.query.filter_by(user_id=current_user_id).first()
+            if not profile:
+                return jsonify({'message': 'Profile not found!'}), 404
+
+            # Create a dictionary to hold the profile data
+            profile_data = {
+                'firstname': profile.firstname,
+                'middlename': profile.middlename,
+                'surname': profile.surname,
+                'contact': profile.contact,
+                'address': profile.address,
+                'passport_url': profile.passport_url,
+                'identification_card_url': profile.identification_card_url
+            }
+
+            # Pass the profile data to the template
+            return render_template('profile.html', user=existing_user, profile=profile_data)
 
         elif request.method == 'POST':
             data = request.form
@@ -153,7 +170,7 @@ def edit_profile():
             existing_user.contact = data.get('contact')
             existing_user.address = data.get('address')
             existing_user.passport_url = data.get('passport_url')
-            existing_user.identification_card_url = data.get('identification_Card_url')
+            existing_user.identification_card_url = data.get('identification_card_url')
 
             db.session.commit()
 
@@ -163,7 +180,6 @@ def edit_profile():
 
     # Default response if no condition is met
     return jsonify({'status': 'error', 'message': 'Method not supported'}), 405
-
 
 if __name__ == '__main__':
     app.run(debug=True)
