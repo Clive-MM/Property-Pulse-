@@ -1,4 +1,4 @@
-from flask import jsonify, request, render_template
+from flask import render_template, jsonify, request
 from app import app, db, User, Profile
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
@@ -128,6 +128,41 @@ def create_profile():
 
     return jsonify({'message': 'Profile created successfully!'}),200
 
+#Fetching,editing and updating user profile
+@app.route('/edit_profile', methods=['GET', 'POST'])
+@jwt_required()
+def edit_profile():
+    try:
+        # Get the user ID from the JWT token
+        current_user = get_jwt_identity()
+        current_user_id = current_user['user_id']
+        
+        # Check if the user is registered
+        existing_user = User.query.get(current_user_id)
+        if not existing_user:
+            return jsonify({'message': 'User not registered!'}), 400
+
+        if request.method == 'GET':
+            return render_template('landlord.html', user=current_user)
+
+        elif request.method == 'POST':
+            data = request.form
+            existing_user.firstname = data.get('firstname')
+            existing_user.middlename = data.get('middlename')
+            existing_user.surname = data.get('surname')
+            existing_user.contact = data.get('contact')
+            existing_user.address = data.get('address')
+            existing_user.passport_url = data.get('passport_url')
+            existing_user.identification_card_url = data.get('identification_Card_url')
+
+            db.session.commit()
+
+            return jsonify({'message': 'Profile updated successfully!'}), 200
+    except Exception as e:
+        return jsonify({'message': str(e)}), 500
+
+    # Default response if no condition is met
+    return jsonify({'status': 'error', 'message': 'Method not supported'}), 405
 
 
 if __name__ == '__main__':
