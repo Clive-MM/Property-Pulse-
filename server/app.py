@@ -5,6 +5,7 @@ from flask_migrate import Migrate
 from dotenv import load_dotenv
 import os
 from datetime import datetime
+from cloudinary_config import cloudinary_config
 
 
 load_dotenv ('.flaskenv')
