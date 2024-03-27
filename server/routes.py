@@ -676,7 +676,43 @@ def logout():
     response = make_response(jsonify({'message': 'Logout successful'}), 200)
     response.set_cookie('session', '', expires=0)
     return response
-    
+
+#Viewing apartments
+@app.route('/apartments', methods=['GET'])
+@jwt_required()
+def fetch_apartments():
+    # Capture userID
+    current_user = get_jwt_identity()
+    current_user_id = current_user['user_id']
+
+    # Check if the user is registered
+    existing_user = User.query.get(current_user_id)
+    if not existing_user:
+        return jsonify({'message': 'User not registered!'}), 400
+
+    # Query for apartments available
+    apartments = Apartment.query.all()
+
+    apartment_list = []
+
+    for apartment in apartments:
+        apartment_data = {
+            'apartment_id': apartment.apartment_id,
+            'apartment_name': apartment.apartment_name,
+            'landlord_id': apartment.landlord_id,
+            'category_id': apartment.category_id,
+            'description': apartment.description,
+            'location': apartment.location,
+            'address': apartment.address,
+            'amenities': apartment.amenities,
+            'lease_agreement': apartment.lease_agreement,
+            'image_url': apartment.image_url,
+            'status': apartment.status
+        }
+        apartment_list.append(apartment_data)
+
+    return jsonify({'apartments': apartment_list, 'message': 'Apartments fetched successfully'}), 200
+
 
 if __name__ == '__main__':
     app.run(debug=True)
