@@ -1,9 +1,10 @@
 from flask import render_template, jsonify, request
-from app import app, db, User, Profile,Category, Apartment, Booking, Transaction
+from app import app, db, User, Profile,Category, Apartment, Booking, Transaction, Review, Billing
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 import cloudinary.uploader
 import cloudinary.api
+from datetime import datetime
 
 # Initialize the bcrypt
 bcrypt = Bcrypt(app)
@@ -420,7 +421,142 @@ def fetch_transactions():
     except Exception as e:
         return jsonify({'message': 'An error occurred while fetching transactions.', 'error': str(e)}), 500
             
+#Route for posting areview
+@app.route('/review', methods=['POST'])
+@jwt_required()
+def posting_review():
+    try:
+        # Capture userID
+        current_user = get_jwt_identity()
+        current_user_id = current_user['user_id']
 
+        # Check if the user is registered
+        existing_user = User.query.get(current_user_id)
+        if not existing_user:
+            return jsonify({'message': 'User not registered!'}), 400
+
+        # Get data from request
+        data = request.get_json()
+        rating = data.get('rating')
+        comment = data.get('comment')
+
+        # Create an instance of review
+        new_review = Review(
+            user_id=current_user_id,  
+            rating=rating,
+            comment=comment
+        )
+        db.session.add(new_review)
+        db.session.commit()
+
+        return jsonify({'message': 'Review posted successfully!'}), 200
+    except Exception as e:
+        return jsonify({'message': 'An error occurred while posting the review.', 'error': str(e)}), 500
+
+#Creating a bill for a tenant 
+@app.route('/create_billing', methods=['POST'])
+@jwt_required()
+def create_billing():
+
+    # Capture userID
+    current_user = get_jwt_identity()
+    current_user_id = current_user['user_id']
+
+    # Check if the user is registered
+    existing_user = User.query.get(current_user_id)
+    if not existing_user:
+        return jsonify({'message': 'User not registered!'}), 400
+
+    # Check role of user
+    if existing_user.role not in ['Admin', 'Landlord']:
+        return jsonify({'message': 'User not authorized!'}), 403
+    
+    # Extracting data from request
+    data = request.get_json()
+    amenity = data.get('amenity')
+    amount = data.get('amount')
+    status = data.get('status')
+
+    # Get the current user's apartment
+    apartment = Apartment.query.filter_by(landlord_id=current_user_id).first()
+    if not apartment:
+        return jsonify({'message': 'Apartment not found for the current user!'}), 404
+
+    # Extracting resident_id from request data
+    resident_id = data.get('resident_id')
+    # Validate resident_id
+    resident = User.query.get(resident_id)
+    if not resident:
+        return jsonify({'message': 'Resident not found!'}), 404
+
+    # Creating a new instance of Billing
+    new_billing = Billing(
+        apartment_id=apartment.apartment_id,
+        apartment_owner_id=current_user_id,
+        resident_id=resident_id,
+        amenity=amenity,
+        amount=amount,
+        status=status,
+        timestamp=datetime.utcnow()
+    )
+
+    db.session.add(new_billing)
+    db.session.commit()
+
+    return jsonify({'message': 'Bill created successfully!'}), 200
+
+#Route for fetching the billings for a specific recipient
+@app.route('/fetch_billings', methods=['GET'])
+@jwt_required()
+def fetch_billings():
+
+    # Capture userID
+    current_user = get_jwt_identity()
+    current_user_id = current_user['user_id']
+
+    # Check if the user is registered
+    existing_user = User.query.get(current_user_id)
+    if not existing_user:
+        return jsonify({'message': 'User not found!'}), 400
+
+    # Initialize query to None
+    billings_query = None
+
+    # Check current user role
+    if existing_user.role == 'Admin':
+        # Admin views all billings
+        billings_query = Billing.query.all()
+    elif existing_user.role == 'Landlord':
+        # Landlord views billings of apartments associated with them
+        billings_query = Billing.query.filter_by(apartment_owner_id=current_user_id).all()
+    elif existing_user.role == 'Tenant':
+        # Tenant views their own billings
+        billings_query = Billing.query.filter_by(resident_id=current_user_id).all()
+
+    # Initialize a list to store billing data
+    billings_list = []
+
+    # Iterate through the billings and construct the billing data
+    for billing in billings_query:
+        billing_data = {
+            'billing_id': billing.billing_id,
+            'apartment_id': billing.apartment_id,
+            'apartment_owner_id': billing.apartment_owner_id,
+            'resident_id': billing.resident_id,
+            'amenity': billing.amenity,
+            'amount': billing.amount,
+            'status': billing.status,
+            'timestamp': billing.timestamp
+        }
+        billings_list.append(billing_data)
+
+    return jsonify({'billings': billings_list, 'message': 'Billings fetched successfully!'}), 200
+
+
+    
+
+
+    
 
 
 if __name__ == '__main__':
