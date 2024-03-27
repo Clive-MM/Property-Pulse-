@@ -385,19 +385,20 @@ def fetch_transactions():
         if not existing_user:
             return jsonify({'message': 'User not registered!'}), 400
 
-        # Check if user is an admin or landlord
-        if existing_user.role not in ['Admin', 'Landlord']:
+        # Check if user is an admin, landlord, or tenant
+        if existing_user.role not in ['Admin', 'Landlord', 'Tenant']:
             return jsonify({'message': 'Operation not authorized!'}), 403
 
         # Initialize a list to store transaction data
         transaction_list = []
 
-        # Check for transactions for admin
-        if existing_user.role == 'Admin':
-            transactions = Transaction.query.all()
-        # Check for transactions for a landlord
+        # Check for transactions for admin or landlord
+        if existing_user.role in ['Admin', 'Landlord']:
+            transactions = Transaction.query.filter(Transaction.payee_id == current_user_id)
+
+        # Check for transactions for a tenant
         else:
-            transactions = Transaction.query.filter(Transaction.apartment_id.in_([apartment.apartment_id for apartment in existing_user.apartments]))
+            transactions = Transaction.query.filter_by(payer_id=current_user_id)
 
         # Iterate through the transactions and construct the transaction data
         for transaction in transactions:
@@ -418,7 +419,7 @@ def fetch_transactions():
         return jsonify({'transactions': transaction_list, 'message': 'Transactions fetched successfully!'}), 200
     except Exception as e:
         return jsonify({'message': 'An error occurred while fetching transactions.', 'error': str(e)}), 500
-            
+
 #Route for posting areview
 @app.route('/review', methods=['POST'])
 @jwt_required()
@@ -712,6 +713,263 @@ def fetch_apartments():
         apartment_list.append(apartment_data)
 
     return jsonify({'apartments': apartment_list, 'message': 'Apartments fetched successfully'}), 200
+
+#creating a booking 
+@app.route('/create_booking', methods=['POST'])
+@jwt_required()
+def create_booking():
+
+    # Capture userID
+    current_user = get_jwt_identity()
+    current_user_id = current_user['user_id']
+
+    # Check if the user is registered
+    existing_user = User.query.get(current_user_id)
+    if not existing_user:
+        return jsonify({'message': 'User not registered!'}), 400
+    
+    # Check for the role of user
+    if existing_user.role != 'Tenant':
+        return jsonify({'message': 'Operation not authorized!'}), 403
+
+    data = request.get_json()
+    apartment_id = data.get('apartment_id')
+    description = data.get('description')
+    payment = data.get('payment')
+    timestamp = datetime.utcnow()
+
+    # Create a new booking instance
+    new_booking = Booking(
+        tenant_id=current_user_id,
+        apartment_id=apartment_id,
+        description=description,
+        payment=payment,
+        timestamp=timestamp
+    )
+
+    db.session.add(new_booking)
+    db.session.commit()
+
+    return jsonify({'message': 'Booking created successfully!'}), 200
+
+#Making transaction
+@app.route('/create_transaction', methods=['POST'])
+@jwt_required()
+def create_transaction():
+
+    # Capture userID
+    current_user = get_jwt_identity()
+    current_user_id = current_user['user_id']
+
+    # Check if the user is registered and has the role of landlord or tenant
+    existing_user = User.query.filter(User.user_id == current_user_id, User.role.in_(['Landlord', 'Tenant'])).first()
+    if not existing_user:
+        return jsonify({'message': 'User not registered or not authorized to perform this action!'}), 400
+
+    data = request.get_json()
+    payer_id = current_user_id
+    payee_id = data.get('payee_id')
+    apartment_id = data.get('apartment_id')
+    purpose = data.get('purpose')
+    amount = data.get('amount')
+    timestamp = datetime.utcnow()
+
+    # Create a new transaction instance
+    new_transaction = Transaction(
+        payer_id=payer_id,
+        payee_id=payee_id,
+        apartment_id=apartment_id,
+        purpose=purpose,
+        amount=amount,
+        timestamp=timestamp
+    )
+
+    db.session.add(new_transaction)
+    db.session.commit()
+
+    return jsonify({'message': 'Transaction created successfully!'}), 200
+
+#Fetching users for admin
+@app.route('/fetch_registered_users', methods=['GET'])
+@jwt_required()
+def fetch_registered_users():
+    try:
+        # Capture user ID
+        current_user = get_jwt_identity()
+        current_user_id = current_user['user_id']
+
+        # Check if the user is registered and has the role of Admin
+        existing_user = User.query.get(current_user_id)
+        if not existing_user or existing_user.role != 'Admin':
+            return jsonify({'message': 'Unauthorized access!'}), 403
+
+        # Fetch all registered users
+        registered_users = User.query.all()
+
+        # Initialize a list to store user data
+        users_list = []
+
+        # Iterate through registered users and construct user data
+        for user in registered_users:
+            user_data = {
+                'user_id': user.user_id,
+                'username': user.username,
+                'email': user.email,
+                'role': user.role
+            }
+            users_list.append(user_data)
+
+        return jsonify({'users': users_list, 'message': 'Registered users fetched successfully!'}), 200
+    except Exception as e:
+        return jsonify({'message': 'An error occurred while fetching registered users.', 'error': str(e)}), 500
+
+#Admin updating user details 
+@app.route('/users/<int:user_id>', methods=['PUT'])
+@jwt_required()
+def update_user(user_id):
+    try:
+        # Ensure only admin can access this route
+        current_user = get_jwt_identity()
+        if current_user['role'] != 'Admin':
+            return jsonify({'message': 'Operation not authorized!'}), 403
+
+        # Fetch the user to be updated
+        user = User.query.get(user_id)
+        if not user:
+            return jsonify({'message': 'User not found!'}), 404
+
+        # Parse request data
+        data = request.get_json()
+        # Update user details
+        if 'username' in data:
+            user.username = data['username']
+        if 'email' in data:
+            user.email = data['email']
+        if 'role' in data:
+            user.role = data['role']
+        # Commit changes to the database
+        db.session.commit()
+
+        return jsonify({'message': 'User details updated successfully!'}), 200
+    except Exception as e:
+        return jsonify({'message': 'An error occurred while updating user details.', 'error': str(e)}), 500
+
+#Admin can delete user
+@app.route('/users/<int:user_id>', methods=['DELETE'])
+@jwt_required()
+def delete_user(user_id):
+    try:
+        # Ensure only admin can access this route
+        current_user = get_jwt_identity()
+        if current_user['role'] != 'Admin':
+            return jsonify({'message': 'Operation not authorized!'}), 403
+
+        # Fetch the user to be deleted
+        user = User.query.get(user_id)
+        if not user:
+            return jsonify({'message': 'User not found!'}), 404
+
+        # Delete the user from the database
+        db.session.delete(user)
+        db.session.commit()
+
+        return jsonify({'message': 'User deleted successfully!'}), 200
+    except Exception as e:
+        return jsonify({'message': 'An error occurred while deleting user.', 'error': str(e)}), 500
+
+
+#Admin can create new users
+@app.route('/users', methods=['POST'])
+@jwt_required()
+def create_user():
+    try:
+        # Ensure only admin can access this route
+        current_user = get_jwt_identity()
+        if current_user['role'] != 'Admin':
+            return jsonify({'message': 'Operation not authorized!'}), 403
+
+        # Parse request data
+        data = request.get_json()
+        username = data.get('username')
+        email = data.get('email')
+        role = data.get('role')
+        password = data.get('password')
+
+        # Validate username and email uniqueness
+        existing_username = User.query.filter_by(username=username).first()
+        existing_email = User.query.filter_by(email=email).first()
+
+        if existing_username:
+            return jsonify({'message': 'Username already exists!'}), 400
+        if existing_email:
+            return jsonify({'message': 'Email already exists!'}), 400
+
+        # Create new user instance
+        new_user = User(
+            username=username,
+            email=email,
+            role=role,
+            password=password
+        )
+
+        # Add new user to the database
+        db.session.add(new_user)
+        db.session.commit()
+
+        return jsonify({'message': 'User created successfully!'}), 201
+    except Exception as e:
+        return jsonify({'message': 'An error occurred while creating user.', 'error': str(e)}), 500
+
+
+#An admin can delete a category
+@app.route('/categories/<int:category_id>', methods=['DELETE'])
+@jwt_required()
+def delete_category(category_id):
+    try:
+        # Ensure only admin can access this route
+        current_user = get_jwt_identity()
+        if current_user['role'] != 'Admin':
+            return jsonify({'message': 'Operation not authorized!'}), 403
+
+        # Find the category to delete
+        category = Category.query.get(category_id)
+        if not category:
+            return jsonify({'message': 'Category not found!'}), 404
+
+        # Delete the category
+        db.session.delete(category)
+        db.session.commit()
+
+        return jsonify({'message': 'Category deleted successfully!'}), 200
+    except Exception as e:
+        return jsonify({'message': 'An error occurred while deleting category.', 'error': str(e)}), 500
+
+#Admin can update a category 
+@app.route('/categories/<int:category_id>', methods=['PUT'])
+@jwt_required()
+def update_category(category_id):
+    try:
+        # Ensure only admin can access this route
+        current_user = get_jwt_identity()
+        if current_user['role'] != 'Admin':
+            return jsonify({'message': 'Operation not authorized!'}), 403
+
+        # Find the category to update
+        category = Category.query.get(category_id)
+        if not category:
+            return jsonify({'message': 'Category not found!'}), 404
+
+        # Get updated data from request
+        data = request.get_json()
+        new_category_name = data.get('category_name')
+
+        # Update category name
+        category.category_name = new_category_name
+        db.session.commit()
+
+        return jsonify({'message': 'Category updated successfully!'}), 200
+    except Exception as e:
+        return jsonify({'message': 'An error occurred while updating category.', 'error': str(e)}), 500
 
 
 if __name__ == '__main__':
