@@ -1,5 +1,5 @@
 from flask import render_template, jsonify, request
-from app import app, db, User, Profile,Category, Apartment
+from app import app, db, User, Profile,Category, Apartment, Booking
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 import cloudinary.uploader
@@ -324,7 +324,56 @@ def create_apartment():
         return jsonify({'message': 'An error occurred while creating the apartment.', 'error': str(e)}), 500
 
 
+#Viewing Bookings associated with a specific apartment 
+from flask import jsonify
 
+@app.route('/bookings', methods=['GET'])
+@jwt_required()
+def view_bookings():
+    try:
+        # Capture userID from JWT
+        current_user = get_jwt_identity()
+        current_user_id = current_user['user_id']
+
+        # Check if user is registered
+        existing_user = User.query.get(current_user_id)
+        if not existing_user:
+            return jsonify({'message': 'User not registered!'}), 400
+
+        # Check if user is a landlord or admin
+        if existing_user.role not in ['Admin', 'Landlord']:
+            return jsonify({'message': 'User not authorized!'}), 403
+
+        # Query for bookings associated with that landlord
+        if existing_user.role == 'Admin':
+            # If user is admin, fetch all bookings
+            bookings = Booking.query.all()
+        else:
+            # If user is a landlord, fetch bookings associated with their apartments
+            bookings = Booking.query.filter(Booking.apartment_id.in_([apartment.apartment_id for apartment in existing_user.apartments]))
+
+        # Initialize a list to store booking data
+        booking_list = []
+
+        # Iterate through the bookings and construct the booking data
+        for booking in bookings:
+            tenant_username = User.query.get(booking.tenant_id).username
+            apartment_name = Apartment.query.get(booking.apartment_id).apartment_name
+
+            booking_data = {
+                'tenant_username': tenant_username,
+                'apartment_name': apartment_name,
+                'description': booking.description,
+                'payment': booking.payment
+            }
+            booking_list.append(booking_data)
+
+        return jsonify({'bookings': booking_list, 'message': 'Bookings fetched successfully!'}), 200
+    except Exception as e:
+        return jsonify({'message': 'An error occurred while fetching bookings.', 'error': str(e)}), 500
+
+
+   
 
 
 
