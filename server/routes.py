@@ -372,8 +372,6 @@ def view_bookings():
         return jsonify({'message': 'An error occurred while fetching bookings.', 'error': str(e)}), 500
 
 #Fetching transactions related to a specific apartment
-from flask import jsonify
-
 @app.route('/get_transactions', methods=['GET'])
 @jwt_required()
 def fetch_transactions():
@@ -452,6 +450,50 @@ def posting_review():
         return jsonify({'message': 'Review posted successfully!'}), 200
     except Exception as e:
         return jsonify({'message': 'An error occurred while posting the review.', 'error': str(e)}), 500
+
+#Fetching review 
+@app.route('/fetch_reviews', methods=['GET'])
+@jwt_required()
+def fetch_reviews():
+    
+    # Capture userID
+    current_user = get_jwt_identity()
+    current_user_id = current_user['user_id']
+
+    # Check if user is registered
+    existing_user = User.query.get(current_user_id)
+    if not existing_user:
+        return jsonify({'message': 'User not registered!'}), 400
+
+    # Check if the user is an admin
+    if existing_user.role != 'Admin':
+        return jsonify({'message': 'User not Authorized!'}), 403
+
+    # Fetch all reviews
+    reviews = Review.query.all()
+
+    # Initialize a list to store review data
+    review_list = []
+
+    # Iterate through the reviews and construct the review data
+    for review in reviews:
+        # Fetch the username associated with the user_id
+        user = User.query.get(review.user_id)
+        if user:
+            username = user.username
+        else:
+            username = "Unknown"
+
+        review_data = {
+            'username': username,
+            'rating': review.rating,
+            'comment': review.comment
+        }
+        review_list.append(review_data)
+
+    return jsonify({'reviews': review_list, 'message': 'Reviews retrieved successfully'}), 200
+
+
 
 #Creating a bill for a tenant 
 @app.route('/create_billing', methods=['POST'])
