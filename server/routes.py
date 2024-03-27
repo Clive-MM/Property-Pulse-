@@ -1,5 +1,5 @@
 from flask import render_template, jsonify, request
-from app import app, db, User, Profile,Category, Apartment, Booking
+from app import app, db, User, Profile,Category, Apartment, Booking, Transaction
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 import cloudinary.uploader
@@ -325,8 +325,6 @@ def create_apartment():
 
 
 #Viewing Bookings associated with a specific apartment 
-from flask import jsonify
-
 @app.route('/bookings', methods=['GET'])
 @jwt_required()
 def view_bookings():
@@ -372,12 +370,56 @@ def view_bookings():
     except Exception as e:
         return jsonify({'message': 'An error occurred while fetching bookings.', 'error': str(e)}), 500
 
+#Fetching transactions related to a specific apartment
+from flask import jsonify
 
-   
+@app.route('/get_transactions', methods=['GET'])
+@jwt_required()
+def fetch_transactions():
+    try:
+        # Capture userID
+        current_user = get_jwt_identity()
+        current_user_id = current_user['user_id']
 
+        # Check if the user is registered
+        existing_user = User.query.get(current_user_id)
+        if not existing_user:
+            return jsonify({'message': 'User not registered!'}), 400
 
+        # Check if user is an admin or landlord
+        if existing_user.role not in ['Admin', 'Landlord']:
+            return jsonify({'message': 'Operation not authorized!'}), 403
 
-        
+        # Initialize a list to store transaction data
+        transaction_list = []
+
+        # Check for transactions for admin
+        if existing_user.role == 'Admin':
+            transactions = Transaction.query.all()
+        # Check for transactions for a landlord
+        else:
+            transactions = Transaction.query.filter(Transaction.apartment_id.in_([apartment.apartment_id for apartment in existing_user.apartments]))
+
+        # Iterate through the transactions and construct the transaction data
+        for transaction in transactions:
+            payer_username = User.query.get(transaction.payer_id).username
+            payee_username = User.query.get(transaction.payee_id).username
+            apartment_name = Apartment.query.get(transaction.apartment_id).apartment_name
+
+            transaction_data = {
+                'payer_username': payer_username,
+                'payee_username': payee_username,
+                'apartment_name': apartment_name,
+                'amount': transaction.amount,
+                'purpose': transaction.purpose,
+                'timestamp': transaction.timestamp,
+            }
+            transaction_list.append(transaction_data)
+
+        return jsonify({'transactions': transaction_list, 'message': 'Transactions fetched successfully!'}), 200
+    except Exception as e:
+        return jsonify({'message': 'An error occurred while fetching transactions.', 'error': str(e)}), 500
+            
 
 
 
