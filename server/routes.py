@@ -1,7 +1,7 @@
-from flask import render_template, jsonify, request
+from flask import render_template, jsonify, request,make_response
 from app import app, db, User, Profile,Category, Apartment, Booking, Transaction, Review, Billing, Notification
 from flask_bcrypt import Bcrypt
-from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity,make_response
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 import cloudinary.uploader
 import cloudinary.api
 from datetime import datetime
