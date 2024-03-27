@@ -1,5 +1,5 @@
 from flask import render_template, jsonify, request
-from app import app, db, User, Profile,Category, Apartment, Booking, Transaction, Review, Billing
+from app import app, db, User, Profile,Category, Apartment, Booking, Transaction, Review, Billing, Notification
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 import cloudinary.uploader
@@ -594,9 +594,82 @@ def fetch_billings():
 
     return jsonify({'billings': billings_list, 'message': 'Billings fetched successfully!'}), 200
 
+#Sending a notification
+@app.route('/send_notification', methods=['POST'])
+@jwt_required()
+def send_notification():
+
+    # Capture userID
+    current_user = get_jwt_identity()
+    current_user_id = current_user['user_id']
+
+    # Check if the user is registered
+    existing_user = User.query.get(current_user_id)
+    if not existing_user:
+        return jsonify({'message': 'User not Registered!'}), 400
+    
+    data = request.get_json()
+    message = data.get('message')
+    timestamp = data.get('timestamp')
+    recipient_username = data.get('recipient_username')
+
+    # Query the User table to get recipient_id
+    recipient_user = User.query.filter_by(username=recipient_username).first()
+    if not recipient_user:
+        return jsonify({'message': 'Recipient user not found!'}), 404
+    recipient_id = recipient_user.user_id
+
+    new_notification = Notification(
+       sender_id=current_user_id,
+       recipient_id=recipient_id,
+       message=message,
+       timestamp=timestamp
+    )
+    db.session.add(new_notification)
+    db.session.commit()
+
+    return jsonify({'message': 'Notification created successfully!'}), 200
+
+#Fetching notifications 
+@app.route('/notifications', methods=['GET'])
+@jwt_required()
+def get_notifications():
+
+    # Capture user ID from JWT
+    current_user = get_jwt_identity()
+    current_user_id = current_user['user_id']
+
+    # Check if the user is registered
+    existing_user = User.query.get(current_user_id)
+    if not existing_user:
+        return jsonify({'message': 'User not found'}), 400
+
+    # Query notifications where the current user is either sender or recipient
+    notifications = Notification.query.filter(
+        (Notification.sender_id == current_user_id) |
+        (Notification.recipient_id == current_user_id)
+    ).all()
+
+    # Initialize a list to store notification data
+    notification_list = []
+
+    # Iterate through the notifications and construct the notification data
+    for notification in notifications:
+        sender_username = User.query.get(notification.sender_id).username
+        recipient_username = User.query.get(notification.recipient_id).username
+
+        notification_data = {
+            'sender_username': sender_username,
+            'recipient_username': recipient_username,
+            'message': notification.message,
+            'timestamp': notification.timestamp
+        }
+        notification_list.append(notification_data)
+
+    return jsonify({'notifications': notification_list}), 200
 
     
-
+    
 
     
 
