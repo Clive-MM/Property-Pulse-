@@ -1,7 +1,7 @@
 from flask import render_template, jsonify, request
 from app import app, db, User, Profile,Category, Apartment, Booking, Transaction, Review, Billing, Notification
 from flask_bcrypt import Bcrypt
-from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity,make_response
 import cloudinary.uploader
 import cloudinary.api
 from datetime import datetime
@@ -668,11 +668,15 @@ def get_notifications():
 
     return jsonify({'notifications': notification_list}), 200
 
-    
-    
 
+#user logging out
+@app.route('/logout', methods=['POST'])
+def logout():
+    # Clear the user's session cookie
+    response = make_response(jsonify({'message': 'Logout successful'}), 200)
+    response.set_cookie('session', '', expires=0)
+    return response
     
-
 
 if __name__ == '__main__':
     app.run(debug=True)
