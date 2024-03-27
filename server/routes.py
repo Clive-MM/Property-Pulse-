@@ -1,5 +1,5 @@
 from flask import render_template, jsonify, request
-from app import app, db, User, Profile,Category
+from app import app, db, User, Profile,Category, Apartment
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 import cloudinary.uploader
@@ -258,6 +258,73 @@ def get_categories():
     except Exception as e:
         # If an error occurs, return an error message
         return jsonify({'message': 'Error fetching categories', 'error': str(e)}), 500
+
+#creating an apartment
+@app.route('/create_apartment', methods=['POST'])
+@jwt_required()
+def create_apartment():
+    try:
+        # Extract the userID from the JWT
+        current_user = get_jwt_identity()
+        current_user_id = current_user['user_id']
+
+        # Check if the user is registered
+        existing_user = User.query.get(current_user_id)
+        if not existing_user:
+            return jsonify({'message': 'User not registered!'}), 400
+
+        # Check if the user is a landlord or admin
+        if existing_user.role not in ['Admin', 'Landlord']:
+            return jsonify({'message': 'User not authorized!'}), 403
+
+        # Data about new apartment
+        data = request.get_json()
+        apartment_name = data.get('apartment_name')
+        category_name = data.get('category_name')
+        description = data.get('description')
+        location = data.get('location')
+        address = data.get('address')
+        amenities = data.get('amenities')
+        lease_agreement = data.get('lease_agreement')
+        image_url = data.get('image_url')
+        status = data.get('status', 'Vacant')  
+
+        # Check if all required fields are provided
+        if not all([apartment_name, category_name, description, location, address, amenities, lease_agreement, image_url]):
+            return jsonify({'message': 'All fields are required!'}), 400
+
+        # Get landlord ID from current user ID
+        landlord_id = current_user_id
+
+        # Check if the category exists and get its ID
+        category = Category.query.filter_by(category_name=category_name).first()
+        if not category:
+            return jsonify({'message': 'Category does not exist!'}), 404
+        category_id = category.category_id
+
+        # Create an instance of the apartment
+        new_apartment = Apartment(
+            apartment_name=apartment_name,
+            landlord_id=landlord_id,
+            category_id=category_id,
+            description=description,
+            location=location,
+            address=address,
+            amenities=amenities,
+            lease_agreement=lease_agreement,
+            image_url=image_url,
+            status=status
+        )
+
+        db.session.add(new_apartment)
+        db.session.commit()
+
+        return jsonify({'message': 'Apartment created successfully!'}), 201
+    except Exception as e:
+        return jsonify({'message': 'An error occurred while creating the apartment.', 'error': str(e)}), 500
+
+
+
 
 
 
