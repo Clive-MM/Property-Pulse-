@@ -1,5 +1,5 @@
 from flask import render_template, jsonify, request
-from app import app, db, User, Profile
+from app import app, db, User, Profile,Category
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 import cloudinary.uploader
@@ -183,8 +183,6 @@ def edit_profile():
     return jsonify({'status': 'error', 'message': 'Method not supported'}), 405
 
 #file upload route
-# route.py
-
 @app.route('/upload', methods=['POST'])
 def upload_file():
     if request.method == 'POST':
@@ -192,6 +190,78 @@ def upload_file():
         upload_result = cloudinary.uploader.upload(file)
         # Handle the upload result
         return jsonify(upload_result)
+    
+#creating a category
+@app.route('/create_category', methods=['POST'])
+@jwt_required()
+def create_category():
+    try:
+        # Get the user ID from the JWT
+        current_user = get_jwt_identity()
+        current_user_id = current_user['user_id']
+
+        # Check if the user is registered
+        existing_user = User.query.get(current_user_id)
+        if not existing_user:
+            return jsonify({'message': 'User not registered!'}), 400
+
+        # Check if the user is an admin or landlord
+        if existing_user.role not in ['Admin', 'Landlord']:
+            return jsonify({'message': 'Operation not authorized!'}), 403
+
+        # Get category data from request JSON
+        data = request.get_json()
+        category_name = data.get('category_name')
+
+        # Check if category name is provided
+        if not category_name:
+            return jsonify({'message': 'Category name is required!'}), 400
+
+        # Check if category with the same name already exists
+        existing_category = Category.query.filter_by(category_name=category_name).first()
+        if existing_category:
+            return jsonify({'message': 'Category with this name already exists!'}), 409
+
+        # Create a new category instance
+        new_category = Category(category_name=category_name)
+        
+        # Add and commit the new category to the database
+        db.session.add(new_category)
+        db.session.commit()
+
+        return jsonify({'message': 'Category created successfully!'}), 201
+    except Exception as e:
+        return jsonify({'message': 'An error occurred while creating the category.', 'error': str(e)}), 500
+
+
+
+#Fetching Categories 
+@app.route('/categories', methods=['GET'])
+def get_categories():
+    try:
+        # Query the categories
+        categories = Category.query.all()
+
+        # Initialize an empty list to store category data
+        category_list = []
+
+        # Iterate through the categories and construct the category data
+        for category in categories:
+            category_data = {
+                'category_id': category.category_id,
+                'category_name': category.category_name
+            }
+            category_list.append(category_data)
+
+        # Return the list of categories as JSON response
+        return jsonify({'categories': category_list}), 200
+    except Exception as e:
+        # If an error occurs, return an error message
+        return jsonify({'message': 'Error fetching categories', 'error': str(e)}), 500
+
+
+
+        
 
 
 
