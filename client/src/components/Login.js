@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate from react-router-dom
+import { useNavigate } from "react-router-dom"; 
 
 function Login() {
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate(); 
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -29,8 +29,8 @@ function Login() {
         } else if (data.role === "Tenant") {
           navigate("/tenantDashboard");
         } else {
-          // Redirect to default dashboard or homepage
-          console.log("Invalid role"); // Handle invalid role case
+           // Handle invalid role case
+          console.log("Invalid role"); 
         }
       } else {
         setErrorMessage(data.message);
@@ -49,8 +49,8 @@ function Login() {
         className="d-flex justify-content-center align-items-center"
       >
         <form onSubmit={(e) => {
-          e.preventDefault(); // Prevent default form submission
-          handleLogin(); // Call handleLogin function on form submit
+          e.preventDefault(); 
+          handleLogin(); 
         }}>
           <div className="form-group">
             <label>Email</label>
