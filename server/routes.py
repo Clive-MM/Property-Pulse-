@@ -77,10 +77,11 @@ def user_login():
     user = User.query.filter_by(email=email).first()
 
     if user and bcrypt.check_password_hash(user.password, password):
-        access_token = create_access_token(identity={'user_id': user.user_id})
-        return jsonify({'access_token': access_token, 'message': 'Login successful'}), 200
+        access_token = create_access_token(identity={'user_id': user.user_id, 'role': user.role})
+        return jsonify({'access_token': access_token, 'role': user.role, 'message': 'Login successful'}), 200
     else:
         return jsonify({'message': 'Invalid Credentials!'}), 401
+
 
 
 # Setting up user profile

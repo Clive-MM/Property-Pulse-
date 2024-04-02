@@ -1,7 +1,10 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate from react-router-dom
 import "../styles/styles.css";
 
 function Signup() {
+  const navigate = useNavigate(); // Initialize useNavigate
+
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("");
@@ -31,6 +34,8 @@ function Signup() {
         setEmail("");
         setRole("");
         setPassword("");
+        // Redirect to login page upon successful registration
+        navigate("/login");
       } else {
         setErrorMessage(data.message);
         setSuccessMessage("");
