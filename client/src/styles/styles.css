@@ -1,0 +1,11 @@
+  /* Define styles for the link */
+  .form-group a {
+    color: rgb(29, 15, 235); 
+    text-decoration: none; 
+    transition: color 0.3s; 
+  }
+
+  /* Define hover effect */
+  .form-group a:hover {
+    color: green;
+  }

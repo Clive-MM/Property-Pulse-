@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
+import "../styles/styles.css";
 
 function Login() {
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -29,8 +30,8 @@ function Login() {
         } else if (data.role === "Tenant") {
           navigate("/tenantDashboard");
         } else {
-           // Handle invalid role case
-          console.log("Invalid role"); 
+          // Handle invalid role case
+          console.log("Invalid role");
         }
       } else {
         setErrorMessage(data.message);
@@ -48,10 +49,12 @@ function Login() {
         id="container"
         className="d-flex justify-content-center align-items-center"
       >
-        <form onSubmit={(e) => {
-          e.preventDefault(); 
-          handleLogin(); 
-        }}>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleLogin();
+          }}
+        >
           <div className="form-group">
             <label>Email</label>
             <input
@@ -76,10 +79,15 @@ function Login() {
             ></input>
           </div>
 
-          <div className="form-group mt-3"> 
+          <div className="form-group mt-3">
             <button type="submit" className="btn btn-success">
               Login
             </button>
+          </div>
+          <div className="form-group mt-3">
+            <p>
+              Don't have an account? <a href="/register">Sign Up Here!</a>
+            </p>
           </div>
           {errorMessage && (
             <div className="alert alert-danger" role="alert">
