@@ -9,3 +9,30 @@
   .form-group a:hover {
     color: green;
   }
+
+  #card{
+    
+    height: 20em;
+    margin-top: .5em;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  #para1{
+    margin-top: 6em;
+  }
+
+  #aboutus{
+   
+   margin: 10px;
+    
+   
+  }
+
+  #products{
+    height: 15em;
+  }
+
+  #summary{
+    height: 17.5em;
+  }
