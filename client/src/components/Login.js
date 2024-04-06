@@ -86,7 +86,7 @@ function Login() {
           </div>
           <div className="form-group mt-3">
             <p>
-              Don't have an account? <a href="/register">Sign Up Here!</a>
+              Don't have an account? <a href="/register">Sign Up Here</a>
             </p>
           </div>
           {errorMessage && (
