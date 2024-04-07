@@ -10,6 +10,7 @@ import AboutUs from './components/AboutUs';
 import ContactUs  from './components/ContactUs';
 
 
+
 function App() {
   return (
     <div className="App">
@@ -22,6 +23,7 @@ function App() {
       <Route path='/' element={<Homepage/>}></Route>
       <Route path='/aboutus' element={<AboutUs/>}></Route>
       <Route path='/contactus' element={<ContactUs/>}></Route>
+     
       </Routes>
       </BrowserRouter>
       

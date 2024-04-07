@@ -1,7 +1,26 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "../styles/styles.css";
 
 function Homepage() {
+  useEffect(() => {
+   
+    const tabLinks = document.querySelectorAll('.nav-link');
+
+    tabLinks.forEach(tab => {
+      tab.addEventListener('click', function(event) {
+        event.preventDefault();
+        
+        const tabId = this.getAttribute('data-tab');
+        
+        document.querySelectorAll('.card-text').forEach(content => {
+          content.style.display = 'none';
+        });
+
+        document.getElementById(tabId + '-content').style.display = 'block';
+      });
+    });
+  }, []); 
+
   return (
     <div className="homepage">
       <div>
@@ -90,7 +109,31 @@ function Homepage() {
           </div>
         </div>
       </div>
+
+      <div class="card text-center" id="feedback">
+        <div class="card-header">
+          <ul class="nav nav-tabs card-header-tabs">
+          <li class="nav-item">
+              <a class="nav-link"  data-tab="acquisition">Acquisition</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link"  data-tab="feedback">Feedback</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link "  data-tab="review">Reviews</a>
+            </li>
+            
+          </ul>
+        </div>
+        <div class="card-body" id="displaycard">
+        <p class="card-text" id="acquisition-content">Process of renting an apartment</p>
+          <p class="card-text" id="feedback-content">Content for Feedback tab</p>
+          <p class="card-text" id="review-content" >Content for Link tab</p>
+          
+        </div>
+      </div>
     </div>
   );
 }
+
 export default Homepage;
