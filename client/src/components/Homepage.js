@@ -38,9 +38,9 @@ function Homepage() {
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
           <div class="container">
             <a class="navbar-brand" href="/">
-              <h1>PROPERTY PULSE</h1>
+              <h1 style={{marginLeft:"1em"}}>PROPERTY PULSE</h1>
               <p>
-                <em>Click Your Way Home</em>
+                <em style={{color:"blue", marginLeft:".5em"}}>Click Your Way Home</em>
               </p>
             </a>
           </div>
