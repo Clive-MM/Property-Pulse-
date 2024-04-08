@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import "../styles/styles.css";
 
+
 function Homepage() {
   useEffect(() => {
     const tabLinks = document.querySelectorAll(".nav-link");
@@ -11,14 +12,26 @@ function Homepage() {
 
         const tabId = this.getAttribute("data-tab");
 
+        // Hide all tab contents
         document.querySelectorAll(".card-text").forEach((content) => {
           content.style.display = "none";
         });
 
+        // Show the selected tab content
         document.getElementById(tabId + "-content").style.display = "block";
       });
     });
-  }, []);
+
+    // Show default tab content when component mounts
+    document.getElementById("acquisition-content").style.display = "block";
+
+    // Hide other tab contents
+    document.querySelectorAll(".card-text").forEach((content) => {
+      if (content.id !== "acquisition-content") {
+        content.style.display = "none";
+      }
+    });
+  }, []); 
 
   return (
     <div className="homepage">
@@ -125,34 +138,34 @@ function Homepage() {
         </div>
       </div>
 
-      <div class="card text-center" id="feedback">
-        <div class="card-header">
-          <ul class="nav nav-tabs card-header-tabs">
-            <li class="nav-item">
-              <a class="nav-link" data-tab="acquisition">
+      <div className="card text-center" id="feedback">
+        <div className="card-header">
+          <ul className="nav nav-tabs card-header-tabs">
+            <li className="nav-item">
+              <a className="nav-link" data-tab="acquisition">
                 Acquisition
               </a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" data-tab="feedback">
+            <li className="nav-item">
+              <a className="nav-link" data-tab="feedback">
                 Feedback
               </a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link " data-tab="review">
+            <li className="nav-item">
+              <a className="nav-link" data-tab="review">
                 Reviews
               </a>
             </li>
           </ul>
         </div>
-        <div class="card-body" id="displaycard">
-          <p class="card-text" id="acquisition-content">
+        <div className="card-body" id="displaycard">
+          <p className="card-text" id="acquisition-content">
             Process of renting an apartment
           </p>
-          <p class="card-text" id="feedback-content">
+          <p className="card-text" id="feedback-content">
             Content for Feedback tab
           </p>
-          <p class="card-text" id="review-content">
+          <p className="card-text" id="review-content">
             Content for review tab
           </p>
         </div>
