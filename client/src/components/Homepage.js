@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import "../styles/styles.css";
 
-
 function Homepage() {
   useEffect(() => {
     const tabLinks = document.querySelectorAll(".nav-link");
@@ -31,11 +30,11 @@ function Homepage() {
         content.style.display = "none";
       }
     });
-  }, []); 
+  }, []);
 
   return (
     <div className="homepage">
-      <div>
+      <div id="navbar">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
           <div class="container">
             <a class="navbar-brand" href="/">
@@ -159,18 +158,37 @@ function Homepage() {
           </ul>
         </div>
         <div className="card-body" id="displaycard">
-          <p className="card-text" id="acquisition-content">
+          <div className="card-text" id="acquisition-content">
             Process of renting an apartment
-          </p>
-          <p className="card-text" id="feedback-content">
-            Content for Feedback tab
-          </p>
-          <p className="card-text" id="review-content">
+          </div>
+          <div className="card-text" id="feedback-content">
+            <div class="mb-3">
+              <input
+                type="email"
+                class="form-control"
+                id="exampleFormControlInput1"
+                placeholder="email"
+              />
+            </div>
+            <div class="mb-3">
+              <textarea
+                class="form-control"
+                id="exampleFormControlTextarea1"
+                rows="3"
+                placeholder="message"
+              ></textarea>
+            </div>
+          </div>
+          <div className="card-text" id="review-content">
             Content for review tab
-          </p>
+          </div>
         </div>
       </div>
-      <footer className="bg-primary text-white text-center text-lg-start">
+
+      <footer
+        className="bg-primary text-white text-center text-lg-start"
+        id="footer"
+      >
         <div className="container p-4">
           <div className="row">
             <div className="col-lg-6 col-md-12 mb-4 mb-md-0">
@@ -200,7 +218,6 @@ function Homepage() {
             <div className="col-lg-3 col-md-6 mb-4 mb-md-0">
               <h5 className="text-uppercase mb-0">CONTACT US</h5>
               <section className="mb-4">
-           
                 <a
                   data-mdb-ripple-init
                   className="btn btn-outline btn-floating m-1"
@@ -210,7 +227,6 @@ function Homepage() {
                   <i className="fab fa-facebook-f"></i>
                 </a>
 
-                
                 <a
                   data-mdb-ripple-init
                   className="btn btn-outline btn-floating m-1"
@@ -220,7 +236,6 @@ function Homepage() {
                   <i className="fab fa-twitter"></i>
                 </a>
 
-               
                 <a
                   data-mdb-ripple-init
                   className="btn btn-outline btn-floating m-1"
@@ -230,7 +245,6 @@ function Homepage() {
                   <i className="fab fa-google"></i>
                 </a>
 
-                
                 <a
                   data-mdb-ripple-init
                   className="btn btn-outline btn-floating m-1"
@@ -240,7 +254,6 @@ function Homepage() {
                   <i className="fab fa-instagram"></i>
                 </a>
 
-              
                 <a
                   data-mdb-ripple-init
                   className="btn btn-outline btn-floating m-1"
@@ -250,7 +263,6 @@ function Homepage() {
                   <i className="fab fa-linkedin-in"></i>
                 </a>
 
-               
                 <a
                   data-mdb-ripple-init
                   className="btn btn-outline btn-floating m-1"
@@ -267,9 +279,9 @@ function Homepage() {
           className="text-center p-3"
           style={{ backgroundColor: "rgba(0, 0, 0, 0.2)" }}
         >
-          © 2024:
+          © 2024
           <a className="text-white" href="/">
-           <em>propertypulse</em>
+            <em>www.propertypulse.com</em>
           </a>
         </div>
       </footer>

@@ -43,58 +43,60 @@ function Login() {
   };
 
   return (
-    <div>
-      <h1>Login</h1>
-      <div
-        id="container"
-        className="d-flex justify-content-center align-items-center"
-      >
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            handleLogin();
-          }}
-        >
-          <div className="form-group">
-            <label>Email</label>
-            <input
-              type="email"
-              id="email"
-              placeholder="email"
-              className="form-control form-control-sm"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            ></input>
-          </div>
+    <div id="login">
+      <div class="card text-center" style={{ width: "30em" ,marginLeft:"14em"}}>
+        <div class="card-header">Login</div>
 
-          <div className="form-group">
-            <label>Password</label>
-            <input
-              type="password"
-              id="password"
-              placeholder="password"
-              className="form-control form-control-sm"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            ></input>
-          </div>
-
-          <div className="form-group mt-3">
-            <button type="submit" className="btn btn-success">
-              Login
-            </button>
-          </div>
-          <div className="form-group mt-3">
-            <p>
-              Don't have an account? <a href="/register">Sign Up Here</a>
-            </p>
-          </div>
-          {errorMessage && (
-            <div className="alert alert-danger" role="alert">
-              {errorMessage}
+        <div class="card-body" >
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleLogin();
+            }}
+          >
+            <div className="form-group">
+              <label>Email</label>
+              <input
+                type="email"
+                id="email"
+                placeholder="email"
+                className="form-control form-control-sm"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              ></input>
             </div>
-          )}
-        </form>
+
+            <div className="form-group">
+              <label>Password</label>
+              <input
+                type="password"
+                id="password"
+                placeholder="password"
+                className="form-control form-control-sm"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              ></input>
+            </div>
+
+            <div className="form-group mt-3">
+              
+            </div>
+            
+            {errorMessage && (
+              <div className="alert alert-danger" role="alert">
+                {errorMessage}
+              </div>
+            )}
+          </form>
+          <button type="submit" className="btn btn-success">
+                Login
+              </button>
+        </div>
+        <div class="card-footer text-muted">
+        <p>
+                Don't have an account? <a href="/register">Sign Up Here</a>
+              </p>
+  </div>
       </div>
     </div>
   );

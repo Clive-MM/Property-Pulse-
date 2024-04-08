@@ -46,3 +46,17 @@
   #displaycard{
     line-height: 15em;
   }
+  #footer{
+    border: 2px;
+    border-radius: 4px;
+    margin: 4.8px;
+  }
+  #login{
+    margin: 10em;
+   
+  }
+
+  #register{
+    margin-top: 8em;
+    width: 28em;
+  }
