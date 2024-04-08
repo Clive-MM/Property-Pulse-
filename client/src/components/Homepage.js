@@ -193,7 +193,7 @@ function Homepage() {
           <div className="row">
             <div className="col-lg-6 col-md-12 mb-4 mb-md-0">
               <h5 className="text-uppercase">PROPERTY PULSE</h5>
-              <p>Don't do the hardwork.Click your way home.</p>
+              <p><em>Click your way home.</em></p>
             </div>
             <div className="col-lg-3 col-md-6 mb-4 mb-md-0">
               <h5 className="text-uppercase">Links</h5>
