@@ -3,23 +3,22 @@ import "../styles/styles.css";
 
 function Homepage() {
   useEffect(() => {
-   
-    const tabLinks = document.querySelectorAll('.nav-link');
+    const tabLinks = document.querySelectorAll(".nav-link");
 
-    tabLinks.forEach(tab => {
-      tab.addEventListener('click', function(event) {
+    tabLinks.forEach((tab) => {
+      tab.addEventListener("click", function (event) {
         event.preventDefault();
-        
-        const tabId = this.getAttribute('data-tab');
-        
-        document.querySelectorAll('.card-text').forEach(content => {
-          content.style.display = 'none';
+
+        const tabId = this.getAttribute("data-tab");
+
+        document.querySelectorAll(".card-text").forEach((content) => {
+          content.style.display = "none";
         });
 
-        document.getElementById(tabId + '-content').style.display = 'block';
+        document.getElementById(tabId + "-content").style.display = "block";
       });
     });
-  }, []); 
+  }, []);
 
   return (
     <div className="homepage">
@@ -40,11 +39,15 @@ function Homepage() {
           </div>
 
           <div class="container">
-            <a class="navbar-brand" href="/aboutus">ABOUT US</a>
+            <a class="navbar-brand" href="/aboutus">
+              ABOUT US
+            </a>
           </div>
 
           <div class="container">
-            <a class="navbar-brand"href="/contactus" >CONTACTS</a>
+            <a class="navbar-brand" href="/contactus">
+              CONTACTS
+            </a>
           </div>
 
           <div class="container">
@@ -92,19 +95,31 @@ function Homepage() {
             <div class="card-body">
               <h5 class="card-title">WHAT DO WE OFFER?</h5>
               <p class="card-text">
-              <h7><em>At the heart of our mission is the seamless management of the leasing cycle, ensuring both landlords and tenants experience efficiency and effectiveness. Landlords have the power to effortlessly list their apartments for potential tenants, manage periodic billings, and engage with tenants for any inquiries. Meanwhile, tenants can communicate with landlords as needed when booking or reporting any concerns, while both parties uphold integrity through the upload of verification documents and the provision of lease agreements.
-              </em></h7></p>
+                <h7>
+                  <em>
+                    At the heart of our mission is the seamless management of
+                    the leasing cycle, ensuring both landlords and tenants
+                    experience efficiency and effectiveness. Landlords have the
+                    power to effortlessly list their apartments for potential
+                    tenants, manage periodic billings, and engage with tenants
+                    for any inquiries. Meanwhile, tenants can communicate with
+                    landlords as needed when booking or reporting any concerns,
+                    while both parties uphold integrity through the upload of
+                    verification documents and the provision of lease
+                    agreements.
+                  </em>
+                </h7>
+              </p>
               <a href="/aboutus" class="btn btn-primary">
                 ABOUT US
               </a>
             </div>
           </div>
         </div>
-        <div class="col-sm-6"  id="products">
-          <div class="card"id="summary">
+        <div class="col-sm-6" id="products">
+          <div class="card" id="summary">
             <div class="card-body">
               <h5 class="card-title">OUR PRODUCTS</h5>
-                           
             </div>
           </div>
         </div>
@@ -113,25 +128,138 @@ function Homepage() {
       <div class="card text-center" id="feedback">
         <div class="card-header">
           <ul class="nav nav-tabs card-header-tabs">
-          <li class="nav-item">
-              <a class="nav-link"  data-tab="acquisition">Acquisition</a>
+            <li class="nav-item">
+              <a class="nav-link" data-tab="acquisition">
+                Acquisition
+              </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link"  data-tab="feedback">Feedback</a>
+              <a class="nav-link" data-tab="feedback">
+                Feedback
+              </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link "  data-tab="review">Reviews</a>
+              <a class="nav-link " data-tab="review">
+                Reviews
+              </a>
             </li>
-            
           </ul>
         </div>
         <div class="card-body" id="displaycard">
-        <p class="card-text" id="acquisition-content">Process of renting an apartment</p>
-          <p class="card-text" id="feedback-content">Content for Feedback tab</p>
-          <p class="card-text" id="review-content" >Content for Link tab</p>
-          
+          <p class="card-text" id="acquisition-content">
+            Process of renting an apartment
+          </p>
+          <p class="card-text" id="feedback-content">
+            Content for Feedback tab
+          </p>
+          <p class="card-text" id="review-content">
+            Content for review tab
+          </p>
         </div>
       </div>
+      <footer className="bg-primary text-white text-center text-lg-start">
+        <div className="container p-4">
+          <div className="row">
+            <div className="col-lg-6 col-md-12 mb-4 mb-md-0">
+              <h5 className="text-uppercase">PROPERTY PULSE</h5>
+              <p>Don't do the hardwork.Click your way home.</p>
+            </div>
+            <div className="col-lg-3 col-md-6 mb-4 mb-md-0">
+              <h5 className="text-uppercase">Links</h5>
+              <ul className="list-unstyled mb-0">
+                <li>
+                  <a href="/" className="text-white">
+                    HOME
+                  </a>
+                </li>
+                <li>
+                  <a href="/aboutus" className="text-white">
+                    ABOUT US
+                  </a>
+                </li>
+                <li>
+                  <a href="/login" className="text-white">
+                    LOG IN
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div className="col-lg-3 col-md-6 mb-4 mb-md-0">
+              <h5 className="text-uppercase mb-0">CONTACT US</h5>
+              <section className="mb-4">
+           
+                <a
+                  data-mdb-ripple-init
+                  className="btn btn-outline btn-floating m-1"
+                  href="#!"
+                  role="button"
+                >
+                  <i className="fab fa-facebook-f"></i>
+                </a>
+
+                
+                <a
+                  data-mdb-ripple-init
+                  className="btn btn-outline btn-floating m-1"
+                  href="#!"
+                  role="button"
+                >
+                  <i className="fab fa-twitter"></i>
+                </a>
+
+               
+                <a
+                  data-mdb-ripple-init
+                  className="btn btn-outline btn-floating m-1"
+                  href="#!"
+                  role="button"
+                >
+                  <i className="fab fa-google"></i>
+                </a>
+
+                
+                <a
+                  data-mdb-ripple-init
+                  className="btn btn-outline btn-floating m-1"
+                  href="#!"
+                  role="button"
+                >
+                  <i className="fab fa-instagram"></i>
+                </a>
+
+              
+                <a
+                  data-mdb-ripple-init
+                  className="btn btn-outline btn-floating m-1"
+                  href="#!"
+                  role="button"
+                >
+                  <i className="fab fa-linkedin-in"></i>
+                </a>
+
+               
+                <a
+                  data-mdb-ripple-init
+                  className="btn btn-outline btn-floating m-1"
+                  href="#!"
+                  role="button"
+                >
+                  <i className="fab fa-github"></i>
+                </a>
+              </section>
+            </div>
+          </div>
+        </div>
+        <div
+          className="text-center p-3"
+          style={{ backgroundColor: "rgba(0, 0, 0, 0.2)" }}
+        >
+          © 2024:
+          <a className="text-white" href="/">
+           <em>propertypulse</em>
+          </a>
+        </div>
+      </footer>
     </div>
   );
 }
