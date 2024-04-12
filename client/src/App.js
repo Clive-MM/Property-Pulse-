@@ -11,7 +11,9 @@ import ContactUs  from './components/ContactUs';
 import Profile from './components/Profile';
 import Category from './components/Category';
 import CreateApartment  from './components/CreateApartment';
-
+import Review from './components/Review';
+import Billing from './components/Billing';
+import Notification from './components/Notification'
 
 
 function App() {
@@ -29,6 +31,9 @@ function App() {
       <Route path='/profile' element={<Profile/>}></Route>
       <Route path='/category' element={<Category/>}></Route>
       <Route path='/createapartment' element={<CreateApartment/>}></Route>
+      <Route path='/review' element={<Review/>}></Route>
+      <Route path='/billing' element={<Billing/>}></Route>
+      <Route path='/notification' element={<Notification/>}></Route>
       </Routes>
       </BrowserRouter>
       

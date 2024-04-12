@@ -78,6 +78,12 @@ function Login() {
               ></input>
             </div>
 
+            <div style={{marginTop:"2em"}}>
+            <button type="submit" className="btn btn-success">
+                Login
+              </button>
+            </div>
+
             <div className="form-group mt-3">
               
             </div>
@@ -88,9 +94,7 @@ function Login() {
               </div>
             )}
           </form>
-          <button type="submit" className="btn btn-success">
-                Login
-              </button>
+          
         </div>
         <div class="card-footer text-muted">
         <p>

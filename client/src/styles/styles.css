@@ -77,3 +77,16 @@
 #apartment{
   margin:2em;
 }
+/* styles.css */
+
+#dashboard {
+  display: flex;
+}
+
+#sidepane {
+  flex: 0 0 15em; /* Set sidepane width */
+}
+
+#main body {
+  width: calc(100% - 15em); /* Set mainview width to fill remaining space */
+}
