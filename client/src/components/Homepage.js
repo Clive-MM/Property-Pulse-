@@ -150,11 +150,7 @@ function Homepage() {
                 Feedback
               </a>
             </li>
-            <li className="nav-item">
-              <a className="nav-link" data-tab="review">
-                Reviews
-              </a>
-            </li>
+            
           </ul>
         </div>
         <div className="card-body" id="displaycard">
@@ -163,7 +159,7 @@ function Homepage() {
           </div>
           <div className="card-text" id="feedback-content">
             <div class="mb-3">
-              <input
+              <input style={{width:"20em"}}
                 type="email"
                 class="form-control"
                 id="exampleFormControlInput1"
@@ -178,10 +174,9 @@ function Homepage() {
                 placeholder="message"
               ></textarea>
             </div>
+           
           </div>
-          <div className="card-text" id="review-content">
-            Content for review tab
-          </div>
+         
         </div>
       </div>
 

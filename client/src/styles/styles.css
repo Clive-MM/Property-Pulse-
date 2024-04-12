@@ -60,3 +60,16 @@
     margin-top: 8em;
     width: 28em;
   }
+#passport{
+  margin: 3em;
+  width: 18em;
+  line-height: 10em;
+}
+#profile{
+ 
+  margin: 2em;
+  width: 20em;
+}
+#category{
+  margin:  2em;
+}

@@ -88,33 +88,33 @@ def user_login():
 @app.route('/profile', methods=['POST'])
 @jwt_required()
 def create_profile():
-    # Get the user ID from the JWT token
     current_user = get_jwt_identity()
-
-    # Extract user_id from the current_user dictionary
     current_user_id = current_user['user_id']
-
-    # Print the user ID and its data type
-    print("User ID:", current_user_id)
-    print("Data type of User ID:", type(current_user_id))
-
-    # Check if the user is registered
     existing_user = User.query.get(current_user_id)
+
     if not existing_user:
-        return jsonify({'message': 'Only registered users can create their Profiles!'}),400
+        return jsonify({'message': 'Only registered users can create their Profiles!'}), 400
 
-    data = request.get_json()
+    data = request.form  
 
-    # Extract the user profile attributes
     firstname = data.get('firstname')
     middlename = data.get('middlename')
     surname = data.get('surname')
     contact = data.get('contact')
     address = data.get('address')
-    passport_url = data.get('passport_url')
-    identification_card_url = data.get('identification_card_url')
 
-    # Create a new profile instance for the existing user
+    # Handle file uploads
+    passport_file = request.files['passport_url']
+    identification_file = request.files['identification_card_url']
+
+    # Upload files to Cloudinary
+    passport_upload_result = cloudinary.uploader.upload(passport_file)
+    identification_upload_result = cloudinary.uploader.upload(identification_file)
+
+    # Extract URLs from upload results
+    passport_url = passport_upload_result['secure_url']
+    identification_card_url = identification_upload_result['secure_url']
+
     new_profile = Profile(
         user_id=current_user_id,
         firstname=firstname,
@@ -129,7 +129,8 @@ def create_profile():
     db.session.add(new_profile)
     db.session.commit()
 
-    return jsonify({'message': 'Profile created successfully!'}),200
+    return jsonify({'message': 'Profile created successfully!'}), 200
+
 
 #Fetching,editing and updating user profile
 @app.route('/edit_profile', methods=['GET', 'POST'])

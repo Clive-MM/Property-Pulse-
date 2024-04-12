@@ -8,6 +8,9 @@ import TenantDashboard from './components/TenantDashboard';
 import Homepage from './components/Homepage';
 import AboutUs from './components/AboutUs';
 import ContactUs  from './components/ContactUs';
+import Profile from './components/Profile';
+import Category from './components/Category';
+import CreateApartment  from './components/CreateApartment';
 
 
 
@@ -23,7 +26,9 @@ function App() {
       <Route path='/' element={<Homepage/>}></Route>
       <Route path='/aboutus' element={<AboutUs/>}></Route>
       <Route path='/contactus' element={<ContactUs/>}></Route>
-     
+      <Route path='/profile' element={<Profile/>}></Route>
+      <Route path='/category' element={<Category/>}></Route>
+      <Route path='/createapartment' element={<CreateApartment/>}></Route>
       </Routes>
       </BrowserRouter>
       
