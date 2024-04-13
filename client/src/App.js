@@ -13,7 +13,8 @@ import Category from './components/Category';
 import CreateApartment  from './components/CreateApartment';
 import Review from './components/Review';
 import Billing from './components/Billing';
-import Notification from './components/Notification'
+import Notification from './components/Notification';
+import Account from './components/Account';
 
 
 function App() {
@@ -34,6 +35,7 @@ function App() {
       <Route path='/review' element={<Review/>}></Route>
       <Route path='/billing' element={<Billing/>}></Route>
       <Route path='/notification' element={<Notification/>}></Route>
+      <Route path='/useraccount' element={<Account/>}></Route>
       </Routes>
       </BrowserRouter>
       

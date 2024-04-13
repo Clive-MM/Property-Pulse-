@@ -83,8 +83,7 @@ def user_login():
         return jsonify({'message': 'Invalid Credentials!'}), 401
 
 
-
-# Setting up user profile
+#create profile
 @app.route('/profile', methods=['POST'])
 @jwt_required()
 def create_profile():
@@ -95,13 +94,11 @@ def create_profile():
     if not existing_user:
         return jsonify({'message': 'Only registered users can create their Profiles!'}), 400
 
-    data = request.form  
-
-    firstname = data.get('firstname')
-    middlename = data.get('middlename')
-    surname = data.get('surname')
-    contact = data.get('contact')
-    address = data.get('address')
+    firstname = request.form.get('firstname')
+    middlename = request.form.get('middlename')
+    surname = request.form.get('surname')
+    contact = request.form.get('contact')
+    address = request.form.get('address')
 
     # Handle file uploads
     passport_file = request.files['passport_url']
@@ -159,8 +156,7 @@ def edit_profile():
                 'surname': profile.surname,
                 'contact': profile.contact,
                 'address': profile.address,
-                'passport_url': profile.passport_url,
-                'identification_card_url': profile.identification_card_url
+                
             }
 
             # Pass the profile data to the template
@@ -173,8 +169,7 @@ def edit_profile():
             existing_user.surname = data.get('surname')
             existing_user.contact = data.get('contact')
             existing_user.address = data.get('address')
-            existing_user.passport_url = data.get('passport_url')
-            existing_user.identification_card_url = data.get('identification_card_url')
+          
 
             db.session.commit()
 
@@ -184,6 +179,49 @@ def edit_profile():
 
     # Default response if no condition is met
     return jsonify({'status': 'error', 'message': 'Method not supported'}), 405
+
+#View user account
+@app.route('/profile', methods=['GET'])
+@jwt_required()
+def view_profile():
+    try:
+        # Get the user ID from the JWT token
+        current_user = get_jwt_identity()
+        current_user_id = current_user['user_id']
+        
+        # Check if the user is registered
+        existing_user = User.query.get(current_user_id)
+        if not existing_user:
+            return jsonify({'message': 'User not registered!'}), 400
+
+        # Query the Profile table to get the user's profile
+        profile = Profile.query.filter_by(user_id=current_user_id).first()
+        if not profile:
+            return jsonify({'message': 'Profile not found!'}), 404
+
+        # Create a dictionary to hold the profile data
+        profile_data = {
+            'firstname': profile.firstname,
+            'middlename': profile.middlename,
+            'surname': profile.surname,
+            'contact': profile.contact,
+            'address': profile.address,
+            'passport_url': profile.passport_url,
+            'identification_card_url': profile.identification_card_url
+        }
+
+        # Pass the profile data to the frontend
+        return jsonify(profile_data), 200
+
+    except Exception as e:
+        error_message = str(e)
+        error_details = {
+            'error': 'Unauthorized',
+            'message': error_message,
+            'details': 'User is not authenticated or the JWT token is invalid'
+        }
+        return jsonify(error_details), 401
+
 
 #file upload route
 @app.route('/upload', methods=['POST'])

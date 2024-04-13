@@ -23,12 +23,7 @@
             <label for="address">Address:</label>
             <input type="text" name="address" value="{{ profile.address }}" required>
         
-            <label for="passport_url">Passport:</label>
-            <input type="text" name="passport_url" value="{{ profile.passport_url }}" required>
-        
-            <label for="identification_card_url">ID :</label>
-            <input type="text" name="identification_card_url" value="{{ profile.identification_card_url | default('') }}" required>
-        
+            
             <button type="submit">UPDATE</button>
         </form>
     </body>
