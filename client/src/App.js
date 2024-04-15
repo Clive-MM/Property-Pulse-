@@ -18,6 +18,8 @@ import Account from './components/Account';
 import Bookings from './components/Bookings';
 import Transactions from './components/Transactions';
 import ViewApartments from './components/ViewApartments';
+import ViewBillings from './components/ViewBillings';
+import Message from './components/Message';
 
 function App() {
   return (
@@ -41,7 +43,9 @@ function App() {
       <Route path='/transactions' element={<Transactions/>}></Route>
       <Route path='/bookings' element={<Bookings/>}></Route>
       <Route path='/viewpartments' element={<ViewApartments/>}></Route>
-      
+      <Route path='/viewbillings' element={<ViewBillings/>}></Route>
+      <Route path='/message' element={<Message/>}></Route>
+
       </Routes>
       </BrowserRouter>
       

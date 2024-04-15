@@ -5,10 +5,12 @@ import "../styles/styles.css";
 import Profile from "./Profile";
 import ViewApartments from "./ViewApartments";
 
-import Billing from "./Billing";
+
 import Review from "./Review";
 import Notification from "./Notification";
-import Transactions from "./Transactions";
+
+import ViewBillings from "./ViewBillings";
+import Message from "./Message";
 
 
 import Account from "./Account";
@@ -83,14 +85,16 @@ function LandlordDashboard() {
                 <h6>APARTMENTS</h6>
               </div>
              
-              <div onClick={() => handleLinkClick(<Transactions />)} style={{ marginTop: "1.5em" }}>
-                <h6>TRANSACTIONS</h6>
-              </div>
-              <div onClick={() => handleLinkClick(<Billing />)} style={{ marginTop: "1.5em" }}>
+              
+              <div onClick={() => handleLinkClick(<ViewBillings />)} style={{ marginTop: "1.5em" }}>
                 <h6>BILLINGS</h6>
               </div>
               <div onClick={() => handleLinkClick(<Notification />)} style={{ marginTop: "1.5em" }}>
-                <h6>NOTIFICATION</h6>
+                <h6>ENQUIRY</h6>
+              </div>
+
+              <div onClick={() => handleLinkClick(<Message />)} style={{ marginTop: "1.5em" }}>
+                <h6>MESSAGES</h6>
               </div>
               <div onClick={() => handleLinkClick(<Review />)} style={{ marginTop: "1.5em" }}>
                 <h6>REVIEW</h6>
