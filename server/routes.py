@@ -221,6 +221,60 @@ def view_profile():
             'details': 'User is not authenticated or the JWT token is invalid'
         }
         return jsonify(error_details), 401
+    
+#update user profile
+from werkzeug.utils import secure_filename  
+
+@app.route('/update_profile', methods=['PUT'])
+@jwt_required()
+def update_profile():
+    try:
+        # Get the user ID from the JWT token
+        current_user = get_jwt_identity()
+        current_user_id = current_user['user_id']
+        
+        # Check if the user is registered
+        existing_user = User.query.get(current_user_id)
+        if not existing_user:
+            return jsonify({'message': 'User not registered!'}), 400
+
+        # Parse the JSON data containing the profile update information
+        data = request.json  
+
+        # Logging the update information
+        print("Update Information:")
+        print("User ID:", current_user_id)
+        print("New Profile Data:", data)
+
+        # Update user profile fields
+        existing_user.firstname = data.get('firstname')
+        existing_user.middlename = data.get('middlename')
+        existing_user.surname = data.get('surname')
+        existing_user.contact = data.get('contact')
+        existing_user.address = data.get('address')
+
+        # Handle file uploads if present
+        if 'passport_url' in data:
+            passport_file = data['passport_url']
+            passport_upload_result = cloudinary.uploader.upload(passport_file)
+            existing_user.passport_url = passport_upload_result['secure_url']
+        if 'identification_card_url' in data:
+            identification_file = data['identification_card_url']
+            identification_upload_result = cloudinary.uploader.upload(identification_file)
+            existing_user.identification_card_url = identification_upload_result['secure_url']
+
+        # Commit changes to the database
+        db.session.commit()
+
+        # Logging successful update
+        print("Profile updated successfully!")
+
+        return jsonify({'message': 'Profile updated successfully!'}), 200
+
+    except Exception as e:
+        # Logging any exceptions or errors
+        print("Error updating profile:", e)
+        return jsonify({'message': str(e)}), 500
 
 
 #file upload route
@@ -301,6 +355,9 @@ def get_categories():
         return jsonify({'message': 'Error fetching categories', 'error': str(e)}), 500
 
 #creating an apartment
+
+import logging
+
 @app.route('/create_apartment', methods=['POST'])
 @jwt_required()
 def create_apartment():
@@ -312,49 +369,59 @@ def create_apartment():
         # Check if the user is registered
         existing_user = User.query.get(current_user_id)
         if not existing_user:
+            logging.error('User not registered')
             return jsonify({'message': 'User not registered!'}), 400
 
         # Check if the user is a landlord or admin
         if existing_user.role not in ['Admin', 'Landlord']:
+            logging.error('User not authorized')
             return jsonify({'message': 'User not authorized!'}), 403
 
         # Data about new apartment
-        data = request.get_json()
-        apartment_name = data.get('apartment_name')
-        category_name = data.get('category_name')
-        description = data.get('description')
-        location = data.get('location')
-        address = data.get('address')
-        amenities = data.get('amenities')
-        lease_agreement = data.get('lease_agreement')
-        image_url = data.get('image_url')
-        status = data.get('status', 'Vacant')  
+        data = request.form.to_dict()
 
         # Check if all required fields are provided
-        if not all([apartment_name, category_name, description, location, address, amenities, lease_agreement, image_url]):
-            return jsonify({'message': 'All fields are required!'}), 400
+        required_fields = ['apartment_name', 'category_name', 'description', 'location', 'address', 'amenities']
+        missing_fields = [field for field in required_fields if field not in data]
+        if missing_fields:
+            logging.error(f'Missing required fields: {", ".join(missing_fields)}')
+            return jsonify({'message': 'All fields are required!', 'missing_fields': missing_fields}), 400
+
+        # Handle file uploads to Cloudinary
+        lease_agreement_file = request.files.get('lease_agreement')
+        image_file = request.files.get('image_url')
+
+        if lease_agreement_file:
+            lease_agreement_upload_result = cloudinary.uploader.upload(lease_agreement_file)
+            data['lease_agreement'] = lease_agreement_upload_result['secure_url']
+
+        if image_file:
+            image_upload_result = cloudinary.uploader.upload(image_file)
+            data['image_url'] = image_upload_result['secure_url']
 
         # Get landlord ID from current user ID
         landlord_id = current_user_id
 
-        # Check if the category exists and get its ID
+        # Query for category ID based on category name
+        category_name = data.pop('category_name')  # Remove category_name from data
         category = Category.query.filter_by(category_name=category_name).first()
         if not category:
+            logging.error('Category does not exist')
             return jsonify({'message': 'Category does not exist!'}), 404
         category_id = category.category_id
 
         # Create an instance of the apartment
         new_apartment = Apartment(
-            apartment_name=apartment_name,
+            apartment_name=data['apartment_name'],
             landlord_id=landlord_id,
             category_id=category_id,
-            description=description,
-            location=location,
-            address=address,
-            amenities=amenities,
-            lease_agreement=lease_agreement,
-            image_url=image_url,
-            status=status
+            description=data['description'],
+            location=data['location'],
+            address=data['address'],
+            amenities=data['amenities'],
+            lease_agreement=data.get('lease_agreement'),
+            image_url=data.get('image_url'),
+            status=data.get('status', 'Vacant')
         )
 
         db.session.add(new_apartment)
@@ -362,8 +429,11 @@ def create_apartment():
 
         return jsonify({'message': 'Apartment created successfully!'}), 201
     except Exception as e:
-        return jsonify({'message': 'An error occurred while creating the apartment.', 'error': str(e)}), 500
+        # Log the details of the error
+        logging.error(f'Error creating apartment: {str(e)}')
 
+        # Return a generic error message
+        return jsonify({'message': 'An error occurred while creating the apartment. Please try again later.'}), 500
 
 #Viewing Bookings associated with a specific apartment 
 @app.route('/bookings', methods=['GET'])
@@ -1010,6 +1080,38 @@ def update_category(category_id):
         return jsonify({'message': 'Category updated successfully!'}), 200
     except Exception as e:
         return jsonify({'message': 'An error occurred while updating category.', 'error': str(e)}), 500
+
+
+#review the website
+@app.route('/submit_review', methods=['POST'])
+@jwt_required()
+def submit_review():
+    try:
+        # Extract user ID from JWT
+        current_user = get_jwt_identity()
+        user_id = current_user['user_id']
+
+        # Extract data from request
+        data = request.json
+
+        # Extract rating and comment from data
+        rating = data.get('rating')
+        comment = data.get('comment')
+
+        # Create a new review instance
+        new_review = Review(
+            user_id=user_id,
+            rating=rating,
+            comment=comment
+        )
+
+        # Add the review to the database
+        db.session.add(new_review)
+        db.session.commit()
+
+        return jsonify({'message': 'Review submitted successfully!'}), 200
+    except Exception as e:
+        return jsonify({'message': 'An error occurred while submitting the review.'}), 500
 
 
 if __name__ == '__main__':

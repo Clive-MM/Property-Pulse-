@@ -50,19 +50,16 @@ function Account() {
     const handleEditMode = () => {
         setEditMode(true);
         setFormData({
-            firstname: profile.firstname,
-            middlename: profile.middlename,
-            surname: profile.surname,
-            contact: profile.contact,
-            address: profile.address,
-            passport_url: profile.passport_url,
-            identification_card_url: profile.identification_card_url
+            ...profile // Populate form data with profile data
         });
     };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+        setFormData(prevFormData => ({
+            ...prevFormData,
+            [name]: value
+        }));
     };
 
     const handleProfileUpdate = async () => {
@@ -72,8 +69,8 @@ function Account() {
                 throw new Error("JWT token not found in local storage");
             }
 
-            const response = await fetch("http://127.0.0.1:5000/edit_profile", {
-                method: "POST",
+            const response = await fetch("http://127.0.0.1:5000/update_profile", {
+                method: "PUT", // Using PUT method for updating profile
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${token}`,
@@ -85,10 +82,20 @@ function Account() {
                 throw new Error("Failed to update profile");
             }
 
+            // Assuming the response contains the updated profile data
+            const updatedProfile = await response.json();
+
+            // Display a notification to the user
+            alert("Profile updated successfully!");
+
+            // Set the updated profile to display
+            setProfile(updatedProfile);
+
+            // Disable edit mode
             setEditMode(false);
-            fetchUserProfile();
         } catch (error) {
             console.error("Error updating profile:", error.message);
+            setError("Failed to update profile. Please try again.");
         }
     };
 
