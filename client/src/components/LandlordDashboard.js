@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../styles/styles.css";
 
 // Import components
@@ -14,6 +14,30 @@ import Account from "./Account";
 
 function LandlordDashboard() {
   const [activeComponent, setActiveComponent] = useState(null);
+  const [username, setUsername] = useState('');
+
+  useEffect(() => {
+    const fetchUsername = async () => {
+      try {
+        const token = localStorage.getItem("access_token");
+        const response = await fetch("http://127.0.0.1:5000/username", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setUsername(data.username);
+        } else {
+          console.error("Failed to fetch username:", response.statusText);
+        }
+      } catch (error) {
+        console.error("Error fetching username:", error);
+      }
+    };
+
+    fetchUsername();
+  }, []);
 
   const handleLinkClick = (component) => {
     setActiveComponent(component);
@@ -84,7 +108,7 @@ function LandlordDashboard() {
 
         <div className="col-sm-6" id="main body">
           <div className="card" style={{ height: "30em", width: "50em", marginRight: "5em" }}>
-            <h5>Welcome,username</h5>
+            <h5>Welcome, {username}</h5>
             <div className="card-body">
               {activeComponent}
             </div>

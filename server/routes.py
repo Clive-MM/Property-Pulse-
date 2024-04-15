@@ -5,6 +5,8 @@ from flask_jwt_extended import JWTManager, create_access_token, jwt_required, ge
 import cloudinary.uploader
 import cloudinary.api
 from datetime import datetime
+import logging
+from werkzeug.utils import secure_filename  
 
 # Initialize the bcrypt
 bcrypt = Bcrypt(app)
@@ -223,8 +225,6 @@ def view_profile():
         return jsonify(error_details), 401
     
 #update user profile
-from werkzeug.utils import secure_filename  
-
 @app.route('/update_profile', methods=['PUT'])
 @jwt_required()
 def update_profile():
@@ -355,9 +355,6 @@ def get_categories():
         return jsonify({'message': 'Error fetching categories', 'error': str(e)}), 500
 
 #creating an apartment
-
-import logging
-
 @app.route('/create_apartment', methods=['POST'])
 @jwt_required()
 def create_apartment():
@@ -434,6 +431,91 @@ def create_apartment():
 
         # Return a generic error message
         return jsonify({'message': 'An error occurred while creating the apartment. Please try again later.'}), 500
+
+#view apartments
+@app.route('/viewapartments', methods=['GET'])
+@jwt_required()
+def view_apartments():
+    try:
+        # Extract the userID from the JWT
+        current_user = get_jwt_identity()
+        current_user_id = current_user['user_id']
+
+        # Check if the user is registered
+        existing_user = User.query.get(current_user_id)
+        if not existing_user:
+            logging.error('User not registered')
+            return jsonify({'message': 'User not registered!'}), 400
+
+        # Fetch apartments
+        apartments = Apartment.query.all()
+
+        # Prepare response data
+        apartments_data = []
+        for apartment in apartments:
+            category_name = Category.query.filter_by(category_id=apartment.category_id).first().category_name
+
+            apartment_data = {
+                'apartment_id': apartment.apartment_id,
+                'apartment_name': apartment.apartment_name,
+                'category_name': category_name,
+                'location': apartment.location,
+                'image_url': apartment.image_url,
+                'status': apartment.status
+            }
+            apartments_data.append(apartment_data)
+
+        return jsonify(apartments_data), 200
+
+    except Exception as e:
+        logging.error(f"Error fetching apartments: {str(e)}")
+        return jsonify({'message': 'Internal server error'}), 500
+
+#view details of a specific apartment
+@app.route('/apartmentdetails/<int:apartment_id>', methods=['GET'])
+@jwt_required()
+def view_apartment_details(apartment_id):
+    try:
+        # Extract the user ID from the JWT
+        current_user = get_jwt_identity()
+        current_user_id = current_user['user_id']
+
+        # Check if the user is registered
+        existing_user = User.query.get(current_user_id)
+        if not existing_user:
+            logging.error('User not registered')
+            return jsonify({'message': 'User not registered!'}), 400
+
+        # Fetch the details of the specified apartment
+        apartment = Apartment.query.get(apartment_id)
+        if not apartment:
+            logging.error('Apartment not found')
+            return jsonify({'message': 'Apartment not found!'}), 404
+
+        
+
+        # Prepare and return the apartment details
+        apartment_details = {
+            'apartment_name': apartment.apartment_name,
+            'description': apartment.description,
+            'location': apartment.location,
+            'address': apartment.address,
+            'amenities': apartment.amenities,
+            'lease_agreement': apartment.lease_agreement,
+            'image_url': apartment.image_url,
+            'status': apartment.status
+        }
+
+        return jsonify(apartment_details), 200
+
+    except Exception as e:
+        logging.error(f"Error fetching apartment details: {str(e)}")
+        return jsonify({'message': 'Internal server error'}), 500
+
+       
+
+        
+
 
 #Viewing Bookings associated with a specific apartment 
 @app.route('/bookings', methods=['GET'])
@@ -1112,6 +1194,27 @@ def submit_review():
         return jsonify({'message': 'Review submitted successfully!'}), 200
     except Exception as e:
         return jsonify({'message': 'An error occurred while submitting the review.'}), 500
+    
+
+#fetch the username of logged in user
+@app.route('/username', methods=['GET'])
+@jwt_required()
+def get_username():
+    # Extract user ID from JWT
+    current_user = get_jwt_identity()
+    user_id = current_user['user_id']
+
+    # Query for the username
+    user = User.query.filter_by(user_id=user_id).first()
+    if user:
+        username = user.username
+        return jsonify(username=username), 200
+    else:
+        return jsonify(message="User not found"), 404
+
+
+
+
 
 
 if __name__ == '__main__':
