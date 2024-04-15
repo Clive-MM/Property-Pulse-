@@ -7,7 +7,7 @@ import ViewApartments from "./ViewApartments";
 
 
 import Review from "./Review";
-import Notification from "./Notification";
+import Enquiry from "./Equiry";
 
 import ViewBillings from "./ViewBillings";
 import Message from "./Message";
@@ -73,7 +73,7 @@ function LandlordDashboard() {
           <div className="card" style={{ width: "12em", height: "30em", marginLeft: "4px" }}>
             <div className="card-body">
               <div>
-                <a href="/landlorddashboard">
+                <a href="/tenantDashboard">
                   <h6><strong>DASHBOARD</strong></h6>
                 </a>
               </div>
@@ -89,7 +89,7 @@ function LandlordDashboard() {
               <div onClick={() => handleLinkClick(<ViewBillings />)} style={{ marginTop: "1.5em" }}>
                 <h6>BILLINGS</h6>
               </div>
-              <div onClick={() => handleLinkClick(<Notification />)} style={{ marginTop: "1.5em" }}>
+              <div onClick={() => handleLinkClick(<Enquiry />)} style={{ marginTop: "1.5em" }}>
                 <h6>ENQUIRY</h6>
               </div>
 

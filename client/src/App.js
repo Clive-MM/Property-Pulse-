@@ -20,6 +20,7 @@ import Transactions from './components/Transactions';
 import ViewApartments from './components/ViewApartments';
 import ViewBillings from './components/ViewBillings';
 import Message from './components/Message';
+import Enquiry from './components/Equiry';
 
 function App() {
   return (
@@ -45,6 +46,8 @@ function App() {
       <Route path='/viewpartments' element={<ViewApartments/>}></Route>
       <Route path='/viewbillings' element={<ViewBillings/>}></Route>
       <Route path='/message' element={<Message/>}></Route>
+      <Route path='/enquiry' element={<Enquiry/>}></Route>
+
 
       </Routes>
       </BrowserRouter>
