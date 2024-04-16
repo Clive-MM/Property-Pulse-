@@ -14,7 +14,7 @@ import CreateApartment  from './components/CreateApartment';
 import Review from './components/Review';
 import Billing from './components/Billing';
 import Notification from './components/Notification';
-import Account from './components/Account';
+
 import Bookings from './components/Bookings';
 import Transactions from './components/Transactions';
 import ViewApartments from './components/ViewApartments';
@@ -40,7 +40,7 @@ function App() {
       <Route path='/review' element={<Review/>}></Route>
       <Route path='/billing' element={<Billing/>}></Route>
       <Route path='/notification' element={<Notification/>}></Route>
-      <Route path='/useraccount' element={<Account/>}></Route>
+      
       <Route path='/transactions' element={<Transactions/>}></Route>
       <Route path='/bookings' element={<Bookings/>}></Route>
       <Route path='/viewpartments' element={<ViewApartments/>}></Route>

@@ -10,7 +10,7 @@ import Review from "./Review";
 import Notification from "./Notification";
 import Transactions from "./Transactions";
 import Bookings from "./Bookings";
-import Account from "./Account";
+
 
 function LandlordDashboard() {
   const [activeComponent, setActiveComponent] = useState(null);
@@ -99,16 +99,14 @@ function LandlordDashboard() {
               <div onClick={() => handleLinkClick(<Review />)} style={{ marginTop: "1.5em" }}>
                 <h6>REVIEW</h6>
               </div>
-              <div onClick={() => handleLinkClick(<Account />)} style={{ marginTop: "1.5em" }}>
-                <h6>ACCOUNT</h6>
-              </div>
+            
             </div>
           </div>
         </div>
 
         <div className="col-sm-6" id="main body">
           <div className="card" style={{ height: "30em", width: "50em", marginRight: "5em" }}>
-            <h5>Welcome, {username}</h5>
+            <h5>Hello, {username}</h5>
             <div className="card-body">
               {activeComponent}
             </div>
