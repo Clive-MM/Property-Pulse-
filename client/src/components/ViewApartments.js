@@ -76,11 +76,11 @@ function ViewApartments() {
       {selectedApartment ? (
         <div>
           <div className="card" style={{ height: "15em", marginBottom: "1em" }}>
-            <img
-              src={selectedApartment.image_url}
-              alt={selectedApartment.apartment_name}
-              style={{ height: "100%", objectFit: "cover" }}
-            />
+          <img
+  src={selectedApartment.image_url}
+  alt={selectedApartment.apartment_name}
+  style={{ height: "100%", objectFit: "cover", width: "100%" }}
+/>
           </div>
           <div>
             <h2>{selectedApartment.apartment_name}</h2>

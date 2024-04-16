@@ -4,16 +4,10 @@ import "../styles/styles.css";
 // Import components
 import Profile from "./Profile";
 import ViewApartments from "./ViewApartments";
-
-
 import Review from "./Review";
 import Enquiry from "./Equiry";
-
 import ViewBillings from "./ViewBillings";
 import Message from "./Message";
-
-
-
 
 function TenantDashboard() {
   const [activeComponent, setActiveComponent] = useState(null);
@@ -44,6 +38,24 @@ function TenantDashboard() {
 
   const handleLinkClick = (component) => {
     setActiveComponent(component);
+  };
+
+  const handleLogout = async () => {
+    try {
+      const response = await fetch("http://127.0.0.1:5000/logout", {
+        method: "POST",
+      });
+      if (response.ok) {
+        // Clear localStorage
+        localStorage.clear();
+        // Redirect to the login page
+        window.location.href = "/login"; // Change to your login page URL
+      } else {
+        console.error("Failed to logout:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
   };
 
   return (
@@ -96,8 +108,8 @@ function TenantDashboard() {
               <div onClick={() => handleLinkClick(<Message />)} style={{ marginTop: "3em" }}>
                 <h6>MESSAGES</h6>
               </div>
-              <div onClick={() => handleLinkClick(<Review />)} style={{ marginTop: "3em" }}>
-                <h6>REVIEW</h6>
+              <div onClick={handleLogout} style={{ marginTop: "9em" }}>
+                <h6>LOG OUT</h6>
               </div>
               
             </div>

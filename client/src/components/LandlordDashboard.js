@@ -43,6 +43,25 @@ function LandlordDashboard() {
     setActiveComponent(component);
   };
 
+  const handleLogout = async () => {
+    try {
+      const response = await fetch("http://127.0.0.1:5000/logout", {
+        method: "POST",
+      });
+      if (response.ok) {
+        // Clear localStorage
+        localStorage.clear();
+        // Redirect to the login page
+        window.location.href = "/login"; // Change to your login page URL
+      } else {
+        console.error("Failed to logout:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
+  };
+
+
   return (
     <div className="dashboard">
       <div id="navbar">
@@ -67,7 +86,7 @@ function LandlordDashboard() {
 
       <div className="row" id="dashboard">
         <div className="col-sm-6" id="sidepane">
-          <div className="card" style={{ width: "12em", height: "30em", marginLeft: "4px" }}>
+          <div className="card" style={{  width: "12em", height: "35em", marginLeft: "3px"}}>
             <div className="card-body">
               <div>
                 <a href="/landlorddashboard">
@@ -75,29 +94,33 @@ function LandlordDashboard() {
                 </a>
               </div>
 
-              <div onClick={() => handleLinkClick(<Profile />)} style={{ marginTop: "1.5em" }}>
+              <div onClick={() => handleLinkClick(<Profile />)} style={{ marginTop: "2em" }}>
                 <h6>PROFILE</h6>
               </div>
-              <div onClick={() => handleLinkClick(<CreateApartment />)} style={{ marginTop: "1.5em" }}>
+              <div onClick={() => handleLinkClick(<CreateApartment />)} style={{ marginTop: "2em" }}>
                 <h6>APARTMENTS</h6>
               </div>
-              <div onClick={() => handleLinkClick(<Category />)} style={{ marginTop: "1.5em" }}>
+              <div onClick={() => handleLinkClick(<Category />)} style={{ marginTop: "2em" }}>
                 <h6>CATEGORY</h6>
               </div>
-              <div onClick={() => handleLinkClick(<Bookings />)} style={{ marginTop: "1.5em" }}>
+              <div onClick={() => handleLinkClick(<Bookings />)} style={{ marginTop: "2em" }}>
                 <h6>BOOKINGS</h6>
               </div>
-              <div onClick={() => handleLinkClick(<Transactions />)} style={{ marginTop: "1.5em" }}>
+              <div onClick={() => handleLinkClick(<Transactions />)} style={{ marginTop: "2em" }}>
                 <h6>TRANSACTIONS</h6>
               </div>
-              <div onClick={() => handleLinkClick(<Billing />)} style={{ marginTop: "1.5em" }}>
+              <div onClick={() => handleLinkClick(<Billing />)} style={{ marginTop: "2em" }}>
                 <h6>BILLINGS</h6>
               </div>
-              <div onClick={() => handleLinkClick(<Notification />)} style={{ marginTop: "1.5em" }}>
+              <div onClick={() => handleLinkClick(<Notification />)} style={{ marginTop: "2em" }}>
                 <h6>NOTIFICATION</h6>
               </div>
-              <div onClick={() => handleLinkClick(<Review />)} style={{ marginTop: "1.5em" }}>
+              <div onClick={() => handleLinkClick(<Review />)} style={{ marginTop: "2em" }}>
                 <h6>REVIEW</h6>
+              </div>
+
+              <div onClick={handleLogout} style={{ marginTop: "5.5em" }}>
+                <h6>LOG OUT</h6>
               </div>
             
             </div>
@@ -105,7 +128,7 @@ function LandlordDashboard() {
         </div>
 
         <div className="col-sm-6" id="main body">
-          <div className="card" style={{ height: "30em", width: "50em", marginRight: "5em" }}>
+          <div className="card" style={{ height: "35em", width: "60em", marginRight: "5em" }}>
             <h5>Hello, {username}</h5>
             <div className="card-body">
               {activeComponent}
