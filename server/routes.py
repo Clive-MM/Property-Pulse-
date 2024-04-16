@@ -433,7 +433,7 @@ def create_apartment():
         return jsonify({'message': 'An error occurred while creating the apartment. Please try again later.'}), 500
 
 #view apartments
-from flask import request
+
 
 @app.route('/viewapartments', methods=['GET'])
 @jwt_required()
@@ -521,6 +521,48 @@ def view_apartment_details(apartment_id):
         logging.error(f"Error fetching apartment details: {str(e)}")
         return jsonify({'message': 'Internal server error'}), 500
 
+
+#Book for an apartment 
+@app.route('/bookings', methods=['POST'])
+@jwt_required()
+def create_booking():
+    try:
+        # Extract the user ID from the JWT
+        current_user = get_jwt_identity()
+        current_user_id = current_user['user_id']
+
+        # Check if the user is registered
+        existing_user = User.query.get(current_user_id)
+        if not existing_user:
+            return jsonify({'message': 'User not registered!'}), 400
+        
+        # Extract data from the request
+        data = request.json
+        apartment_id = data.get('apartment_id')
+        description = data.get('description')
+        payment = data.get('payment')
+        
+        # Validate data
+        if not all([apartment_id, description, payment]):
+            return jsonify({'message': 'Missing required fields.'}), 400
+        
+        # Create a new booking instance
+        booking = Booking(
+            tenant_id=current_user_id,
+            apartment_id=apartment_id,
+            description=description,
+            payment=payment,
+            timestamp=datetime.utcnow()  # Timestamp obtained from the current time of system
+        )
+
+        # Add the new booking to the database
+        db.session.add(booking)
+        db.session.commit()
+
+        return jsonify({'message': 'Booking created successfully.'}), 201
+
+    except Exception as e:
+        return jsonify({'message': str(e)}), 500
        
 
         
@@ -915,43 +957,7 @@ def fetch_apartments():
 
     return jsonify({'apartments': apartment_list, 'message': 'Apartments fetched successfully'}), 200
 
-#creating a booking 
-@app.route('/create_booking', methods=['POST'])
-@jwt_required()
-def create_booking():
 
-    # Capture userID
-    current_user = get_jwt_identity()
-    current_user_id = current_user['user_id']
-
-    # Check if the user is registered
-    existing_user = User.query.get(current_user_id)
-    if not existing_user:
-        return jsonify({'message': 'User not registered!'}), 400
-    
-    # Check for the role of user
-    if existing_user.role != 'Tenant':
-        return jsonify({'message': 'Operation not authorized!'}), 403
-
-    data = request.get_json()
-    apartment_id = data.get('apartment_id')
-    description = data.get('description')
-    payment = data.get('payment')
-    timestamp = datetime.utcnow()
-
-    # Create a new booking instance
-    new_booking = Booking(
-        tenant_id=current_user_id,
-        apartment_id=apartment_id,
-        description=description,
-        payment=payment,
-        timestamp=timestamp
-    )
-
-    db.session.add(new_booking)
-    db.session.commit()
-
-    return jsonify({'message': 'Booking created successfully!'}), 200
 
 #Making transaction
 @app.route('/create_transaction', methods=['POST'])
