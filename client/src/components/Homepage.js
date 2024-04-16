@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import "../styles/styles.css";
 
+
+
 function Homepage() {
   useEffect(() => {
     const tabLinks = document.querySelectorAll(".nav-link");
@@ -132,6 +134,7 @@ function Homepage() {
           <div class="card" id="summary">
             <div class="card-body">
               <h5 class="card-title">OUR PRODUCTS</h5>
+               
             </div>
           </div>
         </div>
