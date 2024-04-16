@@ -255,8 +255,8 @@ function Profile() {
         </div>
       ) : (
         <div>
-          <h1>No Profile Found</h1>
-          <button type="button" onClick={handleCreateProfile}>
+          <h1 className="text-muted">No Profile Found</h1>
+          <button type="button" onClick={handleCreateProfile} className="btn btn-success">
             Create Profile
           </button>
         </div>
