@@ -433,10 +433,19 @@ def create_apartment():
         return jsonify({'message': 'An error occurred while creating the apartment. Please try again later.'}), 500
 
 #view apartments
+from flask import request
+
 @app.route('/viewapartments', methods=['GET'])
 @jwt_required()
 def view_apartments():
     try:
+        # Extract pagination parameters from query string
+        page = request.args.get('page', default=1, type=int)
+        per_page = 8  # Number of apartments per page
+
+        # Calculate the offset based on the page number and per_page value
+        offset = (page - 1) * per_page
+
         # Extract the userID from the JWT
         current_user = get_jwt_identity()
         current_user_id = current_user['user_id']
@@ -447,8 +456,8 @@ def view_apartments():
             logging.error('User not registered')
             return jsonify({'message': 'User not registered!'}), 400
 
-        # Fetch apartments
-        apartments = Apartment.query.all()
+        # Fetch apartments with pagination
+        apartments = Apartment.query.offset(offset).limit(per_page).all()
 
         # Prepare response data
         apartments_data = []

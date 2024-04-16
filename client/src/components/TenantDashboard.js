@@ -15,7 +15,7 @@ import Message from "./Message";
 
 
 
-function LandlordDashboard() {
+function TenantDashboard() {
   const [activeComponent, setActiveComponent] = useState(null);
   const [username, setUsername] = useState('');
 
@@ -70,7 +70,7 @@ function LandlordDashboard() {
 
       <div className="row" id="dashboard">
         <div className="col-sm-6" id="sidepane">
-          <div className="card" style={{ width: "12em", height: "30em", marginLeft: "4px" }}>
+          <div className="card" style={{ width: "12em", height: "40em", marginLeft: "3px" }}>
             <div className="card-body">
               <div>
                 <a href="/tenantDashboard">
@@ -78,25 +78,25 @@ function LandlordDashboard() {
                 </a>
               </div>
 
-              <div onClick={() => handleLinkClick(<Profile />)} style={{ marginTop: "1.5em" }}>
+              <div onClick={() => handleLinkClick(<Profile />)} style={{ marginTop: "3em" }}>
                 <h6>PROFILE</h6>
               </div>
-              <div onClick={() => handleLinkClick(<ViewApartments />)} style={{ marginTop: "1.5em" }}>
+              <div onClick={() => handleLinkClick(<ViewApartments />)} style={{ marginTop: "3em" }}>
                 <h6>APARTMENTS</h6>
               </div>
              
               
-              <div onClick={() => handleLinkClick(<ViewBillings />)} style={{ marginTop: "1.5em" }}>
+              <div onClick={() => handleLinkClick(<ViewBillings />)} style={{ marginTop: "3em" }}>
                 <h6>BILLINGS</h6>
               </div>
-              <div onClick={() => handleLinkClick(<Enquiry />)} style={{ marginTop: "1.5em" }}>
+              <div onClick={() => handleLinkClick(<Enquiry />)} style={{ marginTop: "3em" }}>
                 <h6>ENQUIRY</h6>
               </div>
 
-              <div onClick={() => handleLinkClick(<Message />)} style={{ marginTop: "1.5em" }}>
+              <div onClick={() => handleLinkClick(<Message />)} style={{ marginTop: "3em" }}>
                 <h6>MESSAGES</h6>
               </div>
-              <div onClick={() => handleLinkClick(<Review />)} style={{ marginTop: "1.5em" }}>
+              <div onClick={() => handleLinkClick(<Review />)} style={{ marginTop: "3em" }}>
                 <h6>REVIEW</h6>
               </div>
               
@@ -105,8 +105,9 @@ function LandlordDashboard() {
         </div>
 
         <div className="col-sm-6" id="main body">
-          <div className="card" style={{ height: "30em", width: "50em", marginRight: "5em" }}>
-            <h5>Hello, {username}</h5>
+          <div className="card" style={{ height: "40em", width: "60em", marginRight: "3em" }}>
+          <h5 className=" text-muted" >Hello {username}</h5>
+
             <div className="card-body">
               {activeComponent}
             </div>
@@ -117,4 +118,4 @@ function LandlordDashboard() {
   );
 }
 
-export default LandlordDashboard;
+export default TenantDashboard;

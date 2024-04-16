@@ -157,25 +157,47 @@ function Profile() {
               </div>
             </div>
 
-            <div style={{ display: "flex", flexDirection: "row", marginTop: "2em" }}>
-              <div className="card">
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                marginTop: "2em",
+              }}
+            >
+              <div
+                className="card"
+                style={{ width: "50%", height: "15em", overflow: "hidden" }}
+              >
                 <div className="card-body">
                   <h5 className="card-title">Passport</h5>
                   <img
                     src={profile.passport_url}
                     className="card-img-top"
                     alt="Passport"
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                    }}
                   />
                 </div>
               </div>
               <div style={{ width: "1em" }}></div>
-              <div className="card" >
-                <div className="card-body" style={{marginRight:".5em"}} >
+              <div
+                className="card"
+                style={{ width: "50%", height: "15em", overflow: "hidden" }}
+              >
+                <div className="card-body">
                   <h5 className="card-title">Identification Card</h5>
                   <img
                     src={profile.identification_card_url}
                     className="card-img-top"
                     alt="Identification Card"
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                    }}
                   />
                 </div>
               </div>
@@ -186,77 +208,81 @@ function Profile() {
         <div>
           <h1 className="text-muted">Create Profile</h1>
 
-
           <form>
-            <div >
-            <input
-              type="text"
-              name="firstname"
-              placeholder="First Name"
-              value={firstname}
-              onChange={handleChange}
-            />
+            <div>
+              <input
+                type="text"
+                name="firstname"
+                placeholder="First Name"
+                value={firstname}
+                onChange={handleChange}
+              />
             </div>
-          <div style={{marginTop: "1em"}}>
-          <input
-              type="text"
-              name="middlename"
-              placeholder="Middle Name"
-              value={middlename}
-              onChange={handleChange}
-            />
-          </div>
-          <div style={{marginTop: "1em"}}>
-            <input
-              type="text"
-              name="surname"
-              placeholder="Surname"
-              value={surname}
-              onChange={handleChange}
-            />
+            <div style={{ marginTop: "1em" }}>
+              <input
+                type="text"
+                name="middlename"
+                placeholder="Middle Name"
+                value={middlename}
+                onChange={handleChange}
+              />
             </div>
-            <div style={{marginTop: "1em"}}>
-            <input
-              type="text"
-              name="address"
-              placeholder="Address"
-              value={address}
-              onChange={handleChange}
-            />
+            <div style={{ marginTop: "1em" }}>
+              <input
+                type="text"
+                name="surname"
+                placeholder="Surname"
+                value={surname}
+                onChange={handleChange}
+              />
             </div>
-                        
+            <div style={{ marginTop: "1em" }}>
+              <input
+                type="text"
+                name="address"
+                placeholder="Address"
+                value={address}
+                onChange={handleChange}
+              />
+            </div>
 
-            <div style={{marginTop: "1em", marginLeft: "7em"}}>
+            <div style={{ marginTop: "1em", marginLeft: "7em" }}>
               <label>Passport</label>
               <input
                 type="file"
                 onChange={(e) => setPassportFile(e.target.files[0])}
-                style={ {margin: ".4em"}}
+                style={{ margin: ".4em" }}
               />
             </div>
-            <div style={{marginTop: "1em", marginLeft: "11em"}}>
-              <label >Identification Card</label>
+            <div style={{ marginTop: "1em", marginLeft: "11em" }}>
+              <label>Identification Card</label>
               <input
                 type="file"
                 onChange={(e) => setIdentificationFile(e.target.files[0])}
-                style={ {margin: ".4em"}}
+                style={{ margin: ".4em" }}
               />
             </div>
 
             {successMessage && <p>{successMessage}</p>}
-            <div style={{marginTop: "1em"}}>
-            <button type="button" className="btn btn-success" onClick={handleSubmitProfile}>
-              Create Profile
-            </button>
-
+            <div style={{ marginTop: "1em" }}>
+              <button
+                type="button"
+                className="btn btn-success"
+                onClick={handleSubmitProfile}
+              >
+                Create Profile
+              </button>
             </div>
-           
           </form>
         </div>
       ) : (
         <div>
           <h1 className="text-muted">No Profile Found</h1>
-          <button type="button" onClick={handleCreateProfile} className="btn btn-success">
+          <button
+            type="button"
+            onClick={handleCreateProfile}
+            className="btn btn-success"
+          >
             Create Profile
           </button>
         </div>
