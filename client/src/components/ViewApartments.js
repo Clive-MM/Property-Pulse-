@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 
 function ViewApartments() {
   const [apartments, setApartments] = useState([]);
@@ -77,6 +76,7 @@ function ViewApartments() {
   const handleBook = () => {
     setBookingData({ description: "", payment: "" });
     setBookingFormVisible(true);
+    setSelectedApartment(null); // Hide apartment details when booking form is shown
   };
 
   const handleInputChange = (e) => {
@@ -100,7 +100,7 @@ function ViewApartments() {
       });
       if (response.ok) {
         setBookingFormVisible(false);
-        alert("Apartment Booked Successful!");
+        alert("Apartment Booked Successfully!");
       } else {
         const data = await response.json();
         alert("Failed to book: " + data.message);
@@ -150,110 +150,112 @@ function ViewApartments() {
           </div>
         </div>
       ) : (
-        <div
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            justifyContent: "space-around",
-          }}
-        >
-          {apartments.map((apartment, index) => (
-            <div
-              className="card"
-              key={index}
-              style={{ width: "12rem", margin: "10px", height: "15rem" }}
-            >
-              <div
-                className="card-img-container"
-                style={{ height: "7rem", overflow: "hidden" }}
-              >
-                <img
-                  className="card-img-top"
-                  src={apartment.image_url}
-                  alt={apartment.apartment_name}
-                  style={{ height: "100%", objectFit: "cover" }}
+        <div>
+          {bookingFormVisible && (
+            <div style={{ marginTop: "1em" }}>
+              <h4>Book Apartment</h4>
+              <div>
+                <label>Description:</label>
+                <input
+                  type="text"
+                  name="description"
+                  value={bookingData.description}
+                  onChange={handleInputChange}
                 />
               </div>
-              <div className="card-body" style={{ padding: "0.5rem" }}>
-                <h6 className="card-title" style={{ marginBottom: "0.5rem" }}>
-                  {apartment.apartment_name}
-                </h6>
-                <ul
-                  className="list-group list-group-flush"
-                  style={{ marginBottom: "0.5rem" }}
-                >
-                  <li
-                    className="list-group-item"
-                    style={{ padding: "0.25rem 0" }}
-                  >
-                    Category: {apartment.category_name}
-                  </li>
-                </ul>
-                <div style={{ textAlign: "center" }}>
-                  <button
-                    onClick={() => handleViewApartment(apartment.apartment_id)}
-                    className="btn btn-primary"
-                    style={{ fontSize: "0.75rem" }}
-                  >
-                    VIEW
-                  </button>
-                </div>
+              <div>
+                <label>Payment:</label>
+                <input
+                  type="number"
+                  name="payment"
+                  value={bookingData.payment}
+                  onChange={handleInputChange}
+                />
               </div>
+              <button onClick={handleSubmitBooking}>Submit</button>
             </div>
-          ))}
-        </div>
-      )}
-      {selectedApartment === null && (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            marginTop: ".5rem",
-          }}
-        >
-          <button
-            type="button"
-            className="btn btn-primary"
-            onClick={handlePreviousPage}
-            disabled={currentPage === 1}
-          >
-            Previous Page
-          </button>
-          <button
-            type="button"
-            className="btn btn-primary"
-            onClick={handleNextPage}
-            style={{ marginLeft: "0.5rem" }}
-            disabled={apartments.length < perPage}
-          >
-            Next Page
-          </button>
-        </div>
-      )}
-
-      {/* Booking Form */}
-      {bookingFormVisible && (
-        <div style={{ marginTop: "1em" }}>
-          <h4>Book Apartment</h4>
-          <div>
-            <label>Description:</label>
-            <input
-              type="text"
-              name="description"
-              value={bookingData.description}
-              onChange={handleInputChange}
-            />
-          </div>
-          <div>
-            <label>Payment:</label>
-            <input
-              type="number"
-              name="payment"
-              value={bookingData.payment}
-              onChange={handleInputChange}
-            />
-          </div>
-          <button onClick={handleSubmitBooking}>Submit</button>
+          )}
+          {!bookingFormVisible && (
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                justifyContent: "space-around",
+              }}
+            >
+              {apartments.map((apartment, index) => (
+                <div
+                  className="card"
+                  key={index}
+                  style={{ width: "12rem", margin: "10px", height: "15rem" }}
+                >
+                  <div
+                    className="card-img-container"
+                    style={{ height: "7rem", overflow: "hidden" }}
+                  >
+                    <img
+                      className="card-img-top"
+                      src={apartment.image_url}
+                      alt={apartment.apartment_name}
+                      style={{ height: "100%", objectFit: "cover" }}
+                    />
+                  </div>
+                  <div className="card-body" style={{ padding: "0.5rem" }}>
+                    <h6 className="card-title" style={{ marginBottom: "0.5rem" }}>
+                      {apartment.apartment_name}
+                    </h6>
+                    <ul
+                      className="list-group list-group-flush"
+                      style={{ marginBottom: "0.5rem" }}
+                    >
+                      <li
+                        className="list-group-item"
+                        style={{ padding: "0.25rem 0" }}
+                      >
+                        Category: {apartment.category_name}
+                      </li>
+                    </ul>
+                    <div style={{ textAlign: "center" }}>
+                      <button
+                        onClick={() => handleViewApartment(apartment.apartment_id)}
+                        className="btn btn-primary"
+                        style={{ fontSize: "0.75rem" }}
+                      >
+                        VIEW
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+          {selectedApartment === null && (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                marginTop: ".5rem",
+              }}
+            >
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={handlePreviousPage}
+                disabled={currentPage === 1}
+              >
+                Previous Page
+              </button>
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={handleNextPage}
+                style={{ marginLeft: "0.5rem" }}
+                disabled={apartments.length < perPage}
+              >
+                Next Page
+              </button>
+            </div>
+          )}
         </div>
       )}
     </div>
