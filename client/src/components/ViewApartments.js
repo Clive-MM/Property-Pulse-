@@ -155,30 +155,32 @@ function ViewApartments() {
       ) : (
         <div>
           {bookingFormVisible && (
-            <div style={{ marginTop: "1em" }}>
+            <div style={{ marginTop: "4em" }}>
               <h4 className=" text-muted">Book Apartment</h4>
               <div>
                 <div>
-                  <label>Description:</label>
+                  <label>Description</label>
                   <input
                     type="text"
                     name="description"
                     value={bookingData.description}
                     onChange={handleInputChange}
+                    style={ {marginLeft: "2em"}}
                   />
                 </div>
                 <div>
-                  <label>Payment:</label>
+                  <label>Payment</label>
                   <input
                     type="number"
                     name="payment"
                     value={bookingData.payment}
                     onChange={handleInputChange}
+                    style={ {marginLeft: "3.3em"}}
                   />
                 </div>
               </div>
             <div style={{marginTop:"1em"}}>
-            <button type="button" className="btn btn-success" onClick={handleSubmitBooking}>Submit</button>
+            <button type="button" className="btn btn-success" onClick={handleSubmitBooking} style={{marginLeft:"8em"}}>Submit</button>
             </div>
              
             </div>
