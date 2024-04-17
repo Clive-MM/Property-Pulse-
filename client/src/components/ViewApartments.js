@@ -5,7 +5,10 @@ function ViewApartments() {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedApartment, setSelectedApartment] = useState(null);
   const [bookingFormVisible, setBookingFormVisible] = useState(false);
-  const [bookingData, setBookingData] = useState({ description: "", payment: "" });
+  const [bookingData, setBookingData] = useState({
+    description: "",
+    payment: "",
+  });
   const [selectedApartmentId, setSelectedApartmentId] = useState(null); // State to store the selected apartment ID
   const perPage = 8;
 
@@ -61,7 +64,7 @@ function ViewApartments() {
       if (response.ok) {
         const data = await response.json();
         setSelectedApartment(data);
-        setSelectedApartmentId(data.apartment_id); 
+        setSelectedApartmentId(data.apartment_id);
       } else {
         console.error(
           "Failed to fetch apartment details:",
@@ -155,24 +158,29 @@ function ViewApartments() {
             <div style={{ marginTop: "1em" }}>
               <h4>Book Apartment</h4>
               <div>
-                <label>Description:</label>
-                <input
-                  type="text"
-                  name="description"
-                  value={bookingData.description}
-                  onChange={handleInputChange}
-                />
+                <div>
+                  <label>Description:</label>
+                  <input
+                    type="text"
+                    name="description"
+                    value={bookingData.description}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div>
+                  <label>Payment:</label>
+                  <input
+                    type="number"
+                    name="payment"
+                    value={bookingData.payment}
+                    onChange={handleInputChange}
+                  />
+                </div>
               </div>
-              <div>
-                <label>Payment:</label>
-                <input
-                  type="number"
-                  name="payment"
-                  value={bookingData.payment}
-                  onChange={handleInputChange}
-                />
-              </div>
-              <button onClick={handleSubmitBooking}>Submit</button>
+            <div style={{marginTop:"1em"}}>
+            <button type="button" className="btn btn-success" onClick={handleSubmitBooking}>Submit</button>
+            </div>
+             
             </div>
           )}
           {!bookingFormVisible && (
@@ -201,7 +209,10 @@ function ViewApartments() {
                     />
                   </div>
                   <div className="card-body" style={{ padding: "0.5rem" }}>
-                    <h6 className="card-title" style={{ marginBottom: "0.5rem" }}>
+                    <h6
+                      className="card-title"
+                      style={{ marginBottom: "0.5rem" }}
+                    >
                       {apartment.apartment_name}
                     </h6>
                     <ul
@@ -217,7 +228,9 @@ function ViewApartments() {
                     </ul>
                     <div style={{ textAlign: "center" }}>
                       <button
-                        onClick={() => handleViewApartment(apartment.apartment_id)}
+                        onClick={() =>
+                          handleViewApartment(apartment.apartment_id)
+                        }
                         className="btn btn-primary"
                         style={{ fontSize: "0.75rem" }}
                       >
