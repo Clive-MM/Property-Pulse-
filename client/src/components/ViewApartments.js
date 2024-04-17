@@ -62,7 +62,7 @@ function ViewApartments() {
       if (response.ok) {
         const data = await response.json();
         setSelectedApartment(data);
-        setSelectedApartmentId(data.apartment_id); // Set the selected apartment ID
+        setSelectedApartmentId(data.apartment_id); 
       } else {
         console.error(
           "Failed to fetch apartment details:",
