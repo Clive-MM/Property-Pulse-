@@ -156,7 +156,7 @@ function ViewApartments() {
         <div>
           {bookingFormVisible && (
             <div style={{ marginTop: "1em" }}>
-              <h4>Book Apartment</h4>
+              <h4 className=" text-muted">Book Apartment</h4>
               <div>
                 <div>
                   <label>Description:</label>
