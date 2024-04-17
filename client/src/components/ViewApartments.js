@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import "../styles/styles.css";
 
 function ViewApartments() {
   const [apartments, setApartments] = useState([]);
@@ -96,7 +97,7 @@ function ViewApartments() {
           Authorization: `Bearer ${localStorage.getItem("access_token")}`,
         },
         body: JSON.stringify({
-          apartment_id: selectedApartmentId, // Use the selected apartment ID
+          apartment_id: selectedApartmentId,
           description: bookingData.description,
           payment: bookingData.payment,
         }),
@@ -118,20 +119,54 @@ function ViewApartments() {
     <div>
       {selectedApartment ? (
         <div>
-          <div className="card" style={{ height: "15em", marginBottom: "1em" }}>
+          <div
+            className="card"
+            style={{
+              height: "15em",
+              width: "fit-content",
+              margin: "auto",
+              marginBottom: "1em",
+              overflow: "hidden",
+            }}
+          >
             <img
               src={selectedApartment.image_url}
               alt={selectedApartment.apartment_name}
-              style={{ height: "100%", objectFit: "cover", width: "100%" }}
+              style={{
+                maxHeight: "100%",
+                maxWidth: "100%",
+                objectFit: "contain",
+              }}
             />
           </div>
+
           <div>
-            <h2>{selectedApartment.apartment_name}</h2>
-            <p>Description: {selectedApartment.description}</p>
-            <p>Location: {selectedApartment.location}</p>
-            <p>Address: {selectedApartment.address}</p>
-            <p>Amenities: {selectedApartment.amenities}</p>
-            <p>Lease Agreement: {selectedApartment.lease_agreement}</p>
+            <div
+              style={{
+                padding: "1em",
+                border: "1px solid #ccc",
+                borderRadius: "0.5em",
+              }}
+            >
+              <h2 className="text-muted">{selectedApartment.apartment_name}</h2>
+              <p style={{ textAlign: "left" }}>
+                <strong className="text-muted">Description: </strong>
+                {selectedApartment.description}
+              </p>
+              <p style={{ textAlign: "left" }}>
+                <strong className="text-muted">Location:</strong>
+                {selectedApartment.location}
+              </p>
+              <p style={{ textAlign: "left" }}>
+                <strong className="text-muted">Address:</strong>{" "}
+                {selectedApartment.address}
+              </p>
+              <p style={{ textAlign: "left" }}>
+                <strong className="text-muted">Amenities:</strong>{" "}
+                {selectedApartment.amenities}
+              </p>
+            </div>
+
             <div
               style={{
                 display: "flex",
@@ -144,8 +179,9 @@ function ViewApartments() {
               </button>
               <div style={{ width: "2em" }}></div>
               <button
+                type="button"
                 onClick={() => setSelectedApartment(null)}
-                className="btn btn-secondary"
+                className="btn btn-success"
               >
                 Back to Apartments
               </button>
@@ -165,9 +201,11 @@ function ViewApartments() {
                     name="description"
                     value={bookingData.description}
                     onChange={handleInputChange}
-                    style={ {marginLeft: "2em"}}
+                    style={{ marginLeft: "2em" }}
+                    placeholder="Payment Purpose"
                   />
                 </div>
+                <div style={{margin:"2em"}}></div>
                 <div>
                   <label>Payment</label>
                   <input
@@ -175,14 +213,21 @@ function ViewApartments() {
                     name="payment"
                     value={bookingData.payment}
                     onChange={handleInputChange}
-                    style={ {marginLeft: "3.3em"}}
+                    style={{ marginLeft: "3.3em" }}
+                    placeholder="Deposit Amount"
                   />
                 </div>
               </div>
-            <div style={{marginTop:"1em"}}>
-            <button type="button" className="btn btn-success" onClick={handleSubmitBooking} style={{marginLeft:"8em"}}>Submit</button>
-            </div>
-             
+              <div style={{ marginTop: "1em" }}>
+                <button
+                  type="button"
+                  className="btn btn-success"
+                  onClick={handleSubmitBooking}
+                  style={{ marginLeft: "8em" }}
+                >
+                  Submit
+                </button>
+              </div>
             </div>
           )}
           {!bookingFormVisible && (
@@ -212,11 +257,14 @@ function ViewApartments() {
                   </div>
                   <div className="card-body" style={{ padding: "0.5rem" }}>
                     <h6
-                      className="card-title"
-                      style={{ marginBottom: "0.5rem" }}
+                      className="card-title text-muted"
+                      style={{
+                        marginBottom: "0.5rem",
+                      }}
                     >
                       {apartment.apartment_name}
                     </h6>
+
                     <ul
                       className="list-group list-group-flush"
                       style={{ marginBottom: "0.5rem" }}

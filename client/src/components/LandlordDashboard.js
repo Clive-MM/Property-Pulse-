@@ -51,8 +51,8 @@ function LandlordDashboard() {
       if (response.ok) {
         // Clear localStorage
         localStorage.clear();
-        // Redirect to the login page
-        window.location.href = "/login"; // Change to your login page URL
+       
+        window.location.href = "/"; 
       } else {
         console.error("Failed to logout:", response.statusText);
       }

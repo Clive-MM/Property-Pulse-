@@ -46,14 +46,11 @@ function Enquiry() {
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          firstname: recipient.split(" ")[0], // Extract first name
-          surname: recipient.split(" ")[1], // Extract surname
+          recipient: recipient,
           message: message,
         }),
       });
       if (response.ok) {
-        const data = await response.json();
-        console.log(data.message);
         // Show alert for successful submission
         alert("Enquiry sent successfully!");
         // Clear form fields after successful submission
@@ -68,14 +65,14 @@ function Enquiry() {
   };
 
   return (
-    <div className="Notification">
-      <div className="card text-center" style={{ width: "18em", marginLeft: "20em", marginTop: "5em" }}>
+    <div className="Notification" style={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: "5em" }}>
+      <div className="card text-center" style={{ width: "40em", lineHeight: "5em" }}>
         <div className="card-body">
-          <form>
+          <form onSubmit={handleSubmit}>
             <div>
               <label htmlFor="recipient">Recipient</label>
-              <select id="recipient" value={recipient} onChange={handleRecipientChange}>
-                <option value="">Select Recipient</option>
+              <select id="recipient" value={recipient} onChange={handleRecipientChange} style={{ marginBottom: "1em", marginLeft: "2em" }}>
+                <option className="text-muted" value="">Select Recipient</option>
                 {landlords.map((landlord, index) => (
                   <option key={index} value={`${landlord.firstname} ${landlord.surname}`}>
                     {`${landlord.firstname} ${landlord.surname}`}
@@ -83,19 +80,14 @@ function Enquiry() {
                 ))}
               </select>
             </div>
-            <div style={{ marginTop: "2em" }}>
-              <textarea
-                value={message}
-                onChange={handleMessageChange}
-                placeholder="Message"
-              ></textarea>
+            <div className="form-group">
+              <label htmlFor="message">Message</label>
+              <textarea id="message" value={message} onChange={handleMessageChange} className="form-control" rows="3"></textarea>
+            </div>
+            <div>
+              <button type="submit" className="btn btn-success">ENQUIRE</button>
             </div>
           </form>
-        </div>
-        <div className="card-footer text-muted">
-          <button type="button" className="btn btn-primary" onClick={handleSubmit}>
-            SUBMIT
-          </button>
         </div>
       </div>
     </div>
