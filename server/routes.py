@@ -8,6 +8,7 @@ from datetime import datetime
 import logging
 from werkzeug.utils import secure_filename  
 from datetime import datetime
+from sqlalchemy import func
 
 # Initialize the bcrypt
 bcrypt = Bcrypt(app)
@@ -1245,8 +1246,86 @@ def get_username():
         return jsonify(username=username), 200
     else:
         return jsonify(message="User not found"), 404
+    
+#Get landlords
+@app.route('/landlords', methods=['GET'])
+@jwt_required()
+def get_landlords():
+    try:
+        # Ensure only tenant can access this route
+        current_user = get_jwt_identity()
+        if current_user['role'] != 'Tenant':
+            return jsonify({'message': 'Operation not authorized!'}), 403
+        
+        # Fetch landlords' profiles
+        landlords_profiles = Profile.query.join(User).filter(User.role == 'Landlord').all()
+        
+        # Extract required information (firstname, middlename, surname)
+        landlords_info = []
+        for profile in landlords_profiles:
+            landlords_info.append({
+                'firstname': profile.firstname,
+                'middlename': profile.middlename,
+                'surname': profile.surname
+            })
+        
+        return jsonify({'landlords_info': landlords_info}), 200
+
+    except Exception as e:
+        return jsonify({'message': str(e)}), 500
 
 
+#send enquiry
+@app.route('/send_enquiry', methods=['POST'])
+@jwt_required()
+def send_enquiry():
+    try:
+        # Capture user ID
+        current_user = get_jwt_identity()
+        current_user_id = current_user['user_id']
+
+        # Check if the user is registered and has the role of Tenant
+        existing_user = User.query.get(current_user_id)
+        if not existing_user or existing_user.role != 'Tenant':
+            return jsonify({'message': 'Unauthorized access!'}), 403
+
+        # Extract data from the request
+        data = request.json
+        firstname = data.get('firstname')
+        surname = data.get('surname')
+        message = data.get('message')
+
+        # Validate data
+        if not all([firstname, surname, message]):
+            return jsonify({'message': 'Missing required fields.'}), 400
+
+        # Query the Profile table to find the recipient ID based on first name and surname
+        recipient_profile = Profile.query.filter(func.lower(Profile.firstname) == func.lower(firstname),
+                                                 func.lower(Profile.surname) == func.lower(surname)).first()
+
+        # Check if recipient profile exists
+        if not recipient_profile:
+            return jsonify({'message': 'Recipient profile not found.'}), 404
+
+        # Get the recipient ID
+        recipient_id = recipient_profile.user_id
+
+        # Create a new notification (enquiry) instance
+        enquiry = Notification(
+            sender_id=current_user_id,
+            recipient_id=recipient_id,
+            message=message,
+            timestamp=datetime.utcnow()
+        )
+
+        # Add the new enquiry to the database
+        db.session.add(enquiry)
+        db.session.commit()
+
+        return jsonify({'message': 'Enquiry sent successfully.'}), 201
+
+    except Exception as e:
+        return jsonify({'message': str(e)}), 500
 
 
 
