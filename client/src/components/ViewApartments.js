@@ -5,7 +5,10 @@ function ViewApartments() {
   const [apartments, setApartments] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedApartment, setSelectedApartment] = useState(null);
-  const perPage = 8; // Number of apartments per page
+  const [bookingFormVisible, setBookingFormVisible] = useState(false);
+  const [bookingData, setBookingData] = useState({ description: "", payment: "" });
+  const [selectedApartmentId, setSelectedApartmentId] = useState(null); // State to store the selected apartment ID
+  const perPage = 8;
 
   useEffect(() => {
     fetchApartments(currentPage);
@@ -59,6 +62,7 @@ function ViewApartments() {
       if (response.ok) {
         const data = await response.json();
         setSelectedApartment(data);
+        setSelectedApartmentId(data.apartment_id); // Set the selected apartment ID
       } else {
         console.error(
           "Failed to fetch apartment details:",
@@ -70,17 +74,53 @@ function ViewApartments() {
     }
   };
 
-  
+  const handleBook = () => {
+    setBookingData({ description: "", payment: "" });
+    setBookingFormVisible(true);
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setBookingData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmitBooking = async () => {
+    try {
+      const response = await fetch(`http://127.0.0.1:5000/bookings`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+        body: JSON.stringify({
+          apartment_id: selectedApartmentId, // Use the selected apartment ID
+          description: bookingData.description,
+          payment: bookingData.payment,
+        }),
+      });
+      if (response.ok) {
+        setBookingFormVisible(false);
+        alert("Apartment Booked Successful!");
+      } else {
+        const data = await response.json();
+        alert("Failed to book: " + data.message);
+      }
+    } catch (error) {
+      console.error("Error booking apartment:", error);
+      alert("Failed to book: " + error.message);
+    }
+  };
+
   return (
     <div>
       {selectedApartment ? (
         <div>
           <div className="card" style={{ height: "15em", marginBottom: "1em" }}>
-          <img
-  src={selectedApartment.image_url}
-  alt={selectedApartment.apartment_name}
-  style={{ height: "100%", objectFit: "cover", width: "100%" }}
-/>
+            <img
+              src={selectedApartment.image_url}
+              alt={selectedApartment.apartment_name}
+              style={{ height: "100%", objectFit: "cover", width: "100%" }}
+            />
           </div>
           <div>
             <h2>{selectedApartment.apartment_name}</h2>
@@ -96,10 +136,10 @@ function ViewApartments() {
                 marginTop: ".5rem",
               }}
             >
-              <button  className="btn btn-primary">
+              <button onClick={handleBook} className="btn btn-primary">
                 Book
               </button>
-              <div style={{width:"2em"}}></div>
+              <div style={{ width: "2em" }}></div>
               <button
                 onClick={() => setSelectedApartment(null)}
                 className="btn btn-secondary"
@@ -188,6 +228,32 @@ function ViewApartments() {
           >
             Next Page
           </button>
+        </div>
+      )}
+
+      {/* Booking Form */}
+      {bookingFormVisible && (
+        <div style={{ marginTop: "1em" }}>
+          <h4>Book Apartment</h4>
+          <div>
+            <label>Description:</label>
+            <input
+              type="text"
+              name="description"
+              value={bookingData.description}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div>
+            <label>Payment:</label>
+            <input
+              type="number"
+              name="payment"
+              value={bookingData.payment}
+              onChange={handleInputChange}
+            />
+          </div>
+          <button onClick={handleSubmitBooking}>Submit</button>
         </div>
       )}
     </div>

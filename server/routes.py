@@ -7,6 +7,7 @@ import cloudinary.api
 from datetime import datetime
 import logging
 from werkzeug.utils import secure_filename  
+from datetime import datetime
 
 # Initialize the bcrypt
 bcrypt = Bcrypt(app)
@@ -505,6 +506,7 @@ def view_apartment_details(apartment_id):
 
         # Prepare and return the apartment details
         apartment_details = {
+            'apartment_id':apartment.apartment_id,
             'apartment_name': apartment.apartment_name,
             'description': apartment.description,
             'location': apartment.location,
@@ -531,6 +533,9 @@ def create_booking():
         current_user = get_jwt_identity()
         current_user_id = current_user['user_id']
 
+        # Log user ID for debugging
+        print("Current user ID:", current_user_id)
+
         # Check if the user is registered
         existing_user = User.query.get(current_user_id)
         if not existing_user:
@@ -538,13 +543,29 @@ def create_booking():
         
         # Extract data from the request
         data = request.json
+
+        # Log the received data for debugging
+        print("Received request data:", data)
+
+        # Define expected fields
+        expected_fields = ['apartment_id', 'description', 'payment']
+        
+        # Check for missing fields
+        missing_fields = [field for field in expected_fields if field not in data]
+        if missing_fields:
+            return jsonify({'message': f'Missing fields: {", ".join(missing_fields)}'}), 400
+        
         apartment_id = data.get('apartment_id')
         description = data.get('description')
         payment = data.get('payment')
         
-        # Validate data
-        if not all([apartment_id, description, payment]):
-            return jsonify({'message': 'Missing required fields.'}), 400
+        # Validate data (same as before)
+        if apartment_id is None:
+            return jsonify({'message': 'Missing apartment_id field.'}), 400
+        if description is None:
+            return jsonify({'message': 'Missing description field.'}), 400
+        if payment is None:
+            return jsonify({'message': 'Missing payment field.'}), 400
         
         # Create a new booking instance
         booking = Booking(
@@ -559,14 +580,12 @@ def create_booking():
         db.session.add(booking)
         db.session.commit()
 
-        return jsonify({'message': 'Booking created successfully.'}), 201
+        return jsonify({'message': 'Apartment booked successfully.'}), 201
 
     except Exception as e:
-        return jsonify({'message': str(e)}), 500
-       
-
-        
-
+        # Log any exceptions or errors
+        print("Error:", e)
+        return jsonify({'message': 'An error occurred. Please try again later.'}), 500
 
 #Viewing Bookings associated with a specific apartment 
 @app.route('/bookings', methods=['GET'])
