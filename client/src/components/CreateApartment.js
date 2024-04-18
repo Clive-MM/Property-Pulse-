@@ -11,7 +11,7 @@ function CreateApartment() {
     amenities: "",
     lease_agreement: null,
     image_url: null,
-    status: ""
+    status: "",
   });
   const [categories, setCategories] = useState([]);
 
@@ -49,12 +49,12 @@ function CreateApartment() {
       if (!token) {
         throw new Error("Access token not found");
       }
-  
+
       const formDataToSend = new FormData();
       for (const key in formData) {
         formDataToSend.append(key, formData[key]);
       }
-  
+
       const response = await fetch("http://127.0.0.1:5000/create_apartment", {
         method: "POST",
         headers: {
@@ -73,87 +73,99 @@ function CreateApartment() {
   };
 
   return (
-    <div id="apartment">
-      <h1>Apartment Creation</h1>
-      <div>
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label>Apartment Name</label>
-            <input
-              type="text"
-              className="form-control"
-              id="apartment_name"
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div style={{ marginTop: "1em" }}>
-  <label>Category</label>
-  <select
-    className="form-select"
-    id="category_name" // Change id to category_name
-    onChange={handleChange}
-    required
-  >
-    <option value="" disabled selected>
-      Select Category
-    </option>
-    {categories.map((category) => (
-      <option key={category.category_id} value={category.category_name}> {/* Change value to category_name */}
-        {category.category_name}
-      </option>
-    ))}
-  </select>
-</div>
-
-
-          <div style={{ marginTop: "1em" }}>
-            <label>Description</label>
-            <input
-              type="text"
-              className="form-control"
-              id="description"
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div style={{ marginTop: "1em" }}>
-            <label>Location</label>
-            <input
-              type="text"
-              className="form-control"
-              id="location"
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div style={{ marginTop: "1em" }}>
-            <label>Address</label>
-            <input
-              type="text"
-              className="form-control"
-              id="address"
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div style={{ marginTop: "1em" }}>
-            <label>Amenities</label>
-            <input
-              type="text"
-              className="form-control"
-              id="amenities"
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div style={{ marginTop: "1em" }}>
-            <label>Lease Agreement</label>
+    <div style={{ display: "flex", flexDirection: "row" }}>
+      <div id="apartment" style={{ marginRight: "2em" }}>
+        <h1 className="">Apartment Creation</h1>
+        <div>
+          <form onSubmit={handleSubmit}>
+            <div className="form-column">
+              <div className="form-group col-md-10">
+                <label className="text-muted">Apartment Name</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="apartment_name"
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="form-group col-md-10">
+                <label className="text-muted">Category</label>
+                <select
+                  className="form-select"
+                  id="category_name"
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="" disabled selected>
+                    Select Category
+                  </option>
+                  {categories.map((category) => (
+                    <option
+                      key={category.category_id}
+                      value={category.category_name}
+                    >
+                      {category.category_name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="form-group col-md-10">
+                <label className="text-muted">Description</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="description"
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="form-group col-md-10">
+                <label className="text-muted">Amenities</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="amenities"
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </div>
+            <div className="form-group col-md-10" style={{ marginTop: "1em" }}>
+              <label className="text-muted">Location</label>
+              <input
+                type="text"
+                className="form-control"
+                id="location"
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div style={{ marginTop: "1em" }}>
+              <button
+                type="submit"
+                className="btn btn-success"
+              >
+                Create Apartment
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div style={{ marginTop: "4.5em" }}>
+        <div className="form-group col-md-15" style={{ marginTop: "1em" }}>
+          <label className="text-muted">Address</label>
+          <input
+            type="text"
+            className="form-control"
+            id="address"
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div className="form-column">
+          <div className="form-group col-md-15">
+            <label className="text-muted">Lease Agreement</label>
             <input
               type="file"
               className="form-control"
@@ -163,9 +175,8 @@ function CreateApartment() {
               required
             />
           </div>
-
-          <div className="mb-3" style={{ marginTop: "1em" }}>
-            <label htmlFor="image" className="form-label">
+          <div className="form-group col-md-15">
+            <label htmlFor="image" className="form-label text-muted">
               Apartment Image
             </label>
             <input
@@ -177,8 +188,7 @@ function CreateApartment() {
               required
             />
           </div>
-
-          <div style={{ marginTop: "1em" }}>
+          <div className="form-group col-md-8" style={{ marginTop: "1.5em" }}>
             <select
               className="form-select"
               id="status"
@@ -192,11 +202,7 @@ function CreateApartment() {
               <option value="Fully Occupied">Fully Occupied</option>
             </select>
           </div>
-
-          <button type="submit" className="btn btn-success" style={{ marginTop: "1em" }}>
-            Create Apartment
-          </button>
-        </form>
+        </div>
       </div>
     </div>
   );
