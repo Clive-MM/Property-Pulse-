@@ -43,7 +43,7 @@ function Category() {
 
   return (
     <div>
-      <h1>Category</h1>
+      <h1 className="text-muted">Category</h1>
       <div id="category">
         <form onSubmit={handleSubmit}>
           <div className="form-group">
@@ -57,7 +57,7 @@ function Category() {
           </div>
           <div style={{ marginTop: "2em" }}>
             <button type="submit" className="btn btn-success">
-              ADD CATEGORY
+             CREATE CATEGORY
             </button>
           </div>
         </form>

@@ -1326,6 +1326,59 @@ def send_enquiry():
 
     except Exception as e:
         return jsonify({'message': str(e)}), 500
+    
+#Get Tenants 
+@app.route('/tenants', methods=['GET'])
+@jwt_required()
+def get_tenants():
+    try:
+        # Ensure only landlords can access this route
+        current_user = get_jwt_identity()
+        if current_user['role'] != 'Landlord':
+            return jsonify({'message': 'Operation not authorized!'}), 403
+        
+        # Fetch tenants' profiles
+        tenants_profiles = Profile.query.join(User).filter(User.role == 'Tenant').all()
+        
+        # Extract required information (firstname, middlename, surname)
+        tenants_info = []
+        for profile in tenants_profiles:
+            tenants_info.append({
+                'firstname': profile.firstname,
+                'middlename': profile.middlename,
+                'surname': profile.surname
+            })
+        
+        return jsonify({'tenants_info': tenants_info}), 200
+
+    except Exception as e:
+        return jsonify({'message': str(e)}), 500
+
+
+#GET APARTMENTS ASSOCIATED TO A SPECIFIC LANDLORD
+@app.route('/myapartments', methods=['GET'])
+@jwt_required()
+def get_myapartments():
+    try:
+        # Capture user ID
+        current_user = get_jwt_identity()
+        current_user_id = current_user['user_id']
+        
+        # Check if the user is registered and has the role of Landlord
+        existing_user = User.query.get(current_user_id)
+        if not existing_user or existing_user.role != 'Landlord':
+            return jsonify({'message': 'Unauthorized access!'}), 403
+        
+        # Fetch apartment names associated with the current landlord
+        landlord_apartments = Apartment.query.with_entities(Apartment.apartment_name).filter_by(landlord_id=current_user_id).all()
+        
+        # Extract apartment names from the query result
+        apartments_data = [apartment.apartment_name for apartment in landlord_apartments]
+        
+        return jsonify({'apartments': apartments_data}), 200
+    
+    except Exception as e:
+        return jsonify({'message': str(e)}), 500
 
 
 
