@@ -590,51 +590,49 @@ def create_booking():
         return jsonify({'message': 'An error occurred. Please try again later.'}), 500
 
 #Viewing Bookings associated with a specific apartment 
+import traceback
+
 @app.route('/bookings', methods=['GET'])
 @jwt_required()
-def view_bookings():
+def get_user_bookings():
     try:
-        # Capture userID from JWT
-        current_user = get_jwt_identity()
-        current_user_id = current_user['user_id']
+        # Get the current user's ID from the JWT token
+        current_user_id = get_jwt_identity()['user_id']
 
-        # Check if user is registered
-        existing_user = User.query.get(current_user_id)
-        if not existing_user:
-            return jsonify({'message': 'User not registered!'}), 400
+        # Query apartments where the landlord_id matches the current user's ID
+        apartments = Apartment.query.filter_by(landlord_id=current_user_id).all()
 
-        # Check if user is a landlord or admin
-        if existing_user.role not in ['Admin', 'Landlord']:
-            return jsonify({'message': 'User not authorized!'}), 403
+        # Get a list of apartment IDs associated with the current user
+        apartment_ids = [apartment.apartment_id for apartment in apartments]
 
-        # Query for bookings associated with that landlord
-        if existing_user.role == 'Admin':
-            # If user is admin, fetch all bookings
-            bookings = Booking.query.all()
-        else:
-            # If user is a landlord, fetch bookings associated with their apartments
-            bookings = Booking.query.filter(Booking.apartment_id.in_([apartment.apartment_id for apartment in existing_user.apartments]))
+        # Query bookings where the apartment_id is in the list of apartment IDs
+        bookings = Booking.query.filter(Booking.apartment_id.in_(apartment_ids)).all()
 
         # Initialize a list to store booking data
-        booking_list = []
+        bookings_list = []
 
         # Iterate through the bookings and construct the booking data
         for booking in bookings:
-            tenant_username = User.query.get(booking.tenant_id).username
-            apartment_name = Apartment.query.get(booking.apartment_id).apartment_name
+            # Query the tenant's name based on their tenant_id
+            tenant = User.query.get(booking.tenant_id)
+            tenant_name = tenant.username if tenant else "Unknown"
 
             booking_data = {
-                'tenant_username': tenant_username,
-                'apartment_name': apartment_name,
+                'tenant_name': tenant_name,
                 'description': booking.description,
-                'payment': booking.payment
+                'payment': booking.payment,
+                'timestamp': booking.timestamp.strftime("%Y-%m-%d %H:%M:%S")
             }
-            booking_list.append(booking_data)
+            bookings_list.append(booking_data)
 
-        return jsonify({'bookings': booking_list, 'message': 'Bookings fetched successfully!'}), 200
+        return jsonify({'bookings': bookings_list}), 200
+
     except Exception as e:
-        return jsonify({'message': 'An error occurred while fetching bookings.', 'error': str(e)}), 500
+        # Log the error traceback to the terminal
+        traceback.print_exc()
+        return jsonify({'message': str(e)}), 500
 
+    
 #Fetching transactions related to a specific apartment
 @app.route('/get_transactions', methods=['GET'])
 @jwt_required()
