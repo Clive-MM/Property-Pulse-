@@ -39,14 +39,14 @@ function Enquiry() {
   const handleSubmit = async () => {
     try {
       const token = localStorage.getItem("access_token");
-      const response = await fetch("http://127.0.0.1:5000/send_enquiry", {
+      const response = await fetch("http://127.0.0.1:5000/landlord_notification", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          recipient: recipient,
+          recipient_name: recipient, // Use the correct field name
           message: message,
         }),
       });
@@ -74,8 +74,8 @@ function Enquiry() {
               <select id="recipient" value={recipient} onChange={handleRecipientChange} style={{ marginBottom: "1em", marginLeft: "2em" }}>
                 <option className="text-muted" value="">Select Recipient</option>
                 {landlords.map((landlord, index) => (
-                  <option key={index} value={`${landlord.firstname} ${landlord.surname}`}>
-                    {`${landlord.firstname} ${landlord.surname}`}
+                  <option key={index} value={`${landlord.firstname} ${landlord.middlename} ${landlord.surname} `}>
+                    {`${landlord.firstname} ${landlord.middlename} ${landlord.surname}`}
                   </option>
                 ))}
               </select>

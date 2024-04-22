@@ -8,7 +8,7 @@ import CreateApartment from "./CreateApartment";
 import Billing from "./Billing";
 import Review from "./Review";
 import Notification from "./Notification";
-import Transactions from "./Transactions";
+
 import Bookings from "./Bookings";
 
 
@@ -106,9 +106,7 @@ function LandlordDashboard() {
               <div onClick={() => handleLinkClick(<Bookings />)} style={{ marginTop: "2em" }}>
                 <h6>BOOKINGS</h6>
               </div>
-              <div onClick={() => handleLinkClick(<Transactions />)} style={{ marginTop: "2em" }}>
-                <h6>TRANSACTIONS</h6>
-              </div>
+              
               <div onClick={() => handleLinkClick(<Billing />)} style={{ marginTop: "2em" }}>
                 <h6>BILLINGS</h6>
               </div>

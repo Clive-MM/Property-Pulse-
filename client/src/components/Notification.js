@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
 
 function Notification() {
-  // State to hold the list of tenants
   const [tenants, setTenants] = useState([]);
   const [message, setMessage] = useState("");
-  const [recipientName, setRecipientName] = useState(""); // State to hold recipient name
+  const [recipientName, setRecipientName] = useState("");
   const [notificationSent, setNotificationSent] = useState(false);
 
-  // Function to fetch tenants' names from backend
   useEffect(() => {
     fetchTenants();
   }, []);
@@ -19,13 +17,11 @@ function Notification() {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          // Include the JWT token for authentication
           "Authorization": `Bearer ${token}`
         },
       });
       const data = await response.json();
       if (response.ok) {
-        // Update state with the list of tenants
         setTenants(data.tenants_info);
       } else {
         console.error("Failed to fetch tenants:", data.message);
@@ -35,7 +31,6 @@ function Notification() {
     }
   };
 
-  // Function to handle sending the enquiry
   const handleSendEnquiry = async () => {
     try {
       const token = localStorage.getItem("access_token");
@@ -44,11 +39,10 @@ function Notification() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          // Include the JWT token for authentication
           "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify({
-          recipient_name: recipientName, // Use the correct field name
+          recipient_name: recipientName,
           message: message
         }),
       });
@@ -56,10 +50,8 @@ function Notification() {
       if (response.ok) {
         console.log("Enquiry sent successfully:", data.message);
         setNotificationSent(true);
-        // Clear the fields
         setMessage("");
         setRecipientName("");
-        // Set timer to hide the notification after 2 seconds
         setTimeout(() => {
           setNotificationSent(false);
         }, 1000);
@@ -72,43 +64,33 @@ function Notification() {
   };
 
   return (
-    <div className="Notification">
+    <div className="Notification" style={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: "5em" }}>
       {notificationSent && (
         <div className="alert alert-success" role="alert">
           Notification sent successfully!
         </div>
       )}
-      <div className="card text-center" style={{ width: "18em", marginLeft: "33em", marginTop: "8em" }}>
-        <div className="card-header">
-          <h1>Notification</h1>
-        </div>
+      <div className="card text-center" style={{ width: "40em", lineHeight: "2em" }}>
         <div className="card-body">
           <form>
             <div>
               <label>Recipient</label>
-              {/* Dropdown list to select tenant */}
-              <select id="recipient" value={recipientName} onChange={(e) => setRecipientName(e.target.value)}>
+              <select id="recipient" value={recipientName} onChange={(e) => setRecipientName(e.target.value)} style={{ marginBottom: "1em", marginLeft: "2em", width: "90%" }}>
                 <option value="">Select recipient</option>
-                {/* Map through the tenants and create an option for each */}
                 {tenants.map((tenant) => (
                   <option key={tenant.user_id}>{`${tenant.firstname} ${tenant.middlename} ${tenant.surname}`}</option>
                 ))}
               </select>
             </div>
-
-            <div style={{ marginTop: "2em" }}>
-              <textarea
-                placeholder="Message"
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-              ></textarea>
+            <div className="form-group" style={{ marginTop: "1em" }}>
+              <label htmlFor="message">Message</label>
+              <textarea id="message" value={message} onChange={(e) => setMessage(e.target.value)} className="form-control" rows="3"></textarea>
+            </div>
+            <div style={ {marginTop:"2em"}}></div>
+            <div>
+              <button type="button" className="btn btn-primary" onClick={handleSendEnquiry}>SEND NOTIFICATION</button>
             </div>
           </form>
-        </div>
-        <div className="card-footer text-muted">
-          <button type="button" className="btn btn-primary" onClick={handleSendEnquiry}>
-            SEND NOTIFICATION
-          </button>
         </div>
       </div>
     </div>

@@ -1212,6 +1212,7 @@ def get_landlords():
         landlords_info = []
         for profile in landlords_profiles:
             landlords_info.append({
+                'user_id': profile.user_id,
                 'firstname': profile.firstname,
                 'middlename': profile.middlename,
                 'surname': profile.surname
@@ -1223,10 +1224,10 @@ def get_landlords():
         return jsonify({'message': str(e)}), 500
 
 
-#send enquiry
-@app.route('/send_enquiry', methods=['POST'])
+#send enquiry to tenant
+@app.route('/landlord_notification', methods=['POST'])
 @jwt_required()
-def send_enquiry():
+def landlord_notification():
     try:
         # Capture user ID
         current_user = get_jwt_identity()
@@ -1239,15 +1240,22 @@ def send_enquiry():
 
         # Extract data from the request
         data = request.json
-        fullname = data.get('fullname')
+        recipient_name = data.get('recipient_name')
         message = data.get('message')
 
         # Validate data
-        if not all([fullname, message]):
-            return jsonify({'message': 'Missing required fields.'}), 400
+        if not all([recipient_name, message]):
+            missing_fields = []
+            if not recipient_name:
+                missing_fields.append('recipient_name')
+            if not message:
+                missing_fields.append('message')
+            error_message = {'message': 'Missing required fields.', 'missing_fields': missing_fields}
+            app.logger.error(f"Missing required fields: {missing_fields}")
+            return jsonify(error_message), 400
 
-        # Split fullname into first name, middle name, and surname
-        firstname, middlename, surname = fullname.split(' ', 2)
+        # Split recipient name into first name, middle name, and surname
+        firstname, middlename, surname = recipient_name.split(' ', 2)
 
         # Query the Profile table to find the user_id based on first name, middle name, and surname
         recipient_user_id = Profile.query.filter(
@@ -1258,25 +1266,28 @@ def send_enquiry():
 
         # Check if recipient user_id exists
         if not recipient_user_id:
-            return jsonify({'message': 'Recipient user ID not found.'}), 404
+            error_message = {'message': 'Recipient user not found.'}
+            app.logger.error("Recipient user not found.")
+            return jsonify(error_message), 404
 
-        # Create a new notification (enquiry) instance
-        enquiry = Notification(
+        # Create a new notification instance
+        notification = Notification(
             sender_id=current_user_id,
             recipient_id=recipient_user_id,
             message=message,
             timestamp=datetime.utcnow()
         )
 
-        # Add the new enquiry to the database
-        db.session.add(enquiry)
+        # Add the new notification to the database
+        db.session.add(notification)
         db.session.commit()
 
-        return jsonify({'message': 'Enquiry sent successfully.'}), 201
+        return jsonify({'message': 'Notification sent successfully.'}), 201
 
     except Exception as e:
-        return jsonify({'message': str(e)}), 500
-    
+        error_message = {'message': str(e)}
+        app.logger.error(f"Error in landlord_notification: {str(e)}")
+        return jsonify(error_message), 500
 
 #Get Tenants 
 @app.route('/tenants', methods=['GET'])
@@ -1412,6 +1423,7 @@ def create_billing():
         app.logger.error(f"Error creating billing: {str(e)}")
         return jsonify({'message': 'An error occurred while creating the billing. Please try again later.'}), 500
 
+#Landlord sending an enquiry
 #Landlord sending an enquiry
 @app.route('/tenant_notification', methods=['POST'])
 @jwt_required()
