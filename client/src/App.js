@@ -20,7 +20,7 @@ import Transactions from './components/Transactions';
 import ViewApartments from './components/ViewApartments';
 import ViewBillings from './components/ViewBillings';
 import Message from './components/Message';
-import Enquiry from './components/Equiry';
+import Enquiry from './components/Enquiry';
 
 function App() {
   return (

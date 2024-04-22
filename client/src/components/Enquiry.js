@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from "react";
 
-function Notification() {
-  const [tenants, setTenants] = useState([]);
+function Enquiry() {
+  const [landlords, setLandlords] = useState([]); // Update to use landlords
   const [message, setMessage] = useState("");
   const [recipientName, setRecipientName] = useState("");
   const [notificationSent, setNotificationSent] = useState(false);
 
   useEffect(() => {
-    fetchTenants();
+    fetchLandlords(); // Update to fetchLandlords
   }, []);
 
-  const fetchTenants = async () => {
+  const fetchLandlords = async () => { // Update to fetchLandlords
     try {
       const token = localStorage.getItem("access_token");
-      const response = await fetch("http://127.0.0.1:5000/tenants", {
+      const response = await fetch("http://127.0.0.1:5000/landlords", { // Update to fetch landlords
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -22,21 +22,19 @@ function Notification() {
       });
       const data = await response.json();
       if (response.ok) {
-        setTenants(data.tenants_info);
+        setLandlords(data.landlords_info); // Update to use landlords_info
       } else {
-        console.error("Failed to fetch tenants:", data.message);
+        console.error("Failed to fetch landlords:", data.message);
       }
     } catch (error) {
-      console.error("Error fetching tenants:", error);
+      console.error("Error fetching landlords:", error);
     }
   };
 
   const handleSendEnquiry = async () => {
     try {
       const token = localStorage.getItem("access_token");
-      // eslint-disable-next-line
-      const [firstname, middlename, surname] = recipientName.split(" ");
-      const response = await fetch("http://127.0.0.1:5000/tenant_notification", {
+      const response = await fetch("http://127.0.0.1:5000/landlord_notification", { // Update to tenant_notification
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -78,8 +76,8 @@ function Notification() {
               <label>Recipient</label>
               <select id="recipient" value={recipientName} onChange={(e) => setRecipientName(e.target.value)} style={{ marginBottom: "1em", marginLeft: "2em", width: "90%" }}>
                 <option value="">Select recipient</option>
-                {tenants.map((tenant) => (
-                  <option key={tenant.user_id}>{`${tenant.firstname} ${tenant.middlename} ${tenant.surname}`}</option>
+                {landlords?.map((landlord) => ( // Update to use landlords
+                  <option key={landlord.user_id}>{`${landlord.firstname} ${landlord.middlename} ${landlord.surname}`}</option>
                 ))}
               </select>
             </div>
@@ -98,4 +96,4 @@ function Notification() {
   );
 }
 
-export default Notification;
+export default Enquiry;

@@ -5,7 +5,7 @@ import "../styles/styles.css";
 import Profile from "./Profile";
 import ViewApartments from "./ViewApartments";
 import Review from "./Review";
-import Enquiry from "./Equiry";
+import Enquiry from "./Enquiry";
 import ViewBillings from "./ViewBillings";
 import Message from "./Message";
 
