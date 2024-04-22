@@ -110,7 +110,8 @@ function Billing() {
 
   return (
     <div className="billing">
-      <h1 className="text-muted">Billing</h1>
+     <h1 className="text-muted" >Billing</h1>
+
       <div className="card text-center" style={{ width: "18em", marginLeft: "20em", marginTop: "1em" }}>
         
         <div className="card-body">
