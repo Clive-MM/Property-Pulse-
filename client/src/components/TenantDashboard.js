@@ -108,6 +108,9 @@ function TenantDashboard() {
               <div onClick={() => handleLinkClick(<Message />)} style={{ marginTop: "3em" }}>
                 <h6>MESSAGES</h6>
               </div>
+              <div onClick={() => handleLinkClick(<Review />)} style={{ marginTop: "2em" }}>
+                <h6>REVIEW</h6>
+              </div>
               <div onClick={handleLogout} style={{ marginTop: "9em" }}>
                 <h6>LOG OUT</h6>
               </div>

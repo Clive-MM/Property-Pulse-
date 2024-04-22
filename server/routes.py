@@ -846,39 +846,31 @@ def send_notification():
 @app.route('/notifications', methods=['GET'])
 @jwt_required()
 def get_notifications():
+    try:
+        # Get the current user's ID from the JWT token
+        current_user_id = get_jwt_identity()['user_id']
 
-    # Capture user ID from JWT
-    current_user = get_jwt_identity()
-    current_user_id = current_user['user_id']
+        # Query notifications where the recipient_id matches the current user's ID
+        notifications = Notification.query.filter_by(recipient_id=current_user_id).all()
 
-    # Check if the user is registered
-    existing_user = User.query.get(current_user_id)
-    if not existing_user:
-        return jsonify({'message': 'User not found'}), 400
+        # Initialize a list to store notification data
+        notification_list = []
 
-    # Query notifications where the current user is either sender or recipient
-    notifications = Notification.query.filter(
-        (Notification.sender_id == current_user_id) |
-        (Notification.recipient_id == current_user_id)
-    ).all()
+        # Iterate through the notifications and construct the notification data
+        for notification in notifications:
+            sender_username = User.query.get(notification.sender_id).username
 
-    # Initialize a list to store notification data
-    notification_list = []
+            notification_data = {
+                'sender_username': sender_username,
+                'message': notification.message,
+                'timestamp': notification.timestamp
+            }
+            notification_list.append(notification_data)
 
-    # Iterate through the notifications and construct the notification data
-    for notification in notifications:
-        sender_username = User.query.get(notification.sender_id).username
-        recipient_username = User.query.get(notification.recipient_id).username
+        return jsonify({'notifications': notification_list}), 200
 
-        notification_data = {
-            'sender_username': sender_username,
-            'recipient_username': recipient_username,
-            'message': notification.message,
-            'timestamp': notification.timestamp
-        }
-        notification_list.append(notification_data)
-
-    return jsonify({'notifications': notification_list}), 200
+    except Exception as e:
+        return jsonify({'message': str(e)}), 500
 
 
 #user logging out
@@ -1224,7 +1216,7 @@ def get_landlords():
         return jsonify({'message': str(e)}), 500
 
 
-#send enquiry to tenant
+#send enquiry to landlord
 @app.route('/landlord_notification', methods=['POST'])
 @jwt_required()
 def landlord_notification():
@@ -1423,7 +1415,7 @@ def create_billing():
         app.logger.error(f"Error creating billing: {str(e)}")
         return jsonify({'message': 'An error occurred while creating the billing. Please try again later.'}), 500
 
-#Landlord sending an enquiry
+
 #Landlord sending an enquiry
 @app.route('/tenant_notification', methods=['POST'])
 @jwt_required()
@@ -1491,7 +1483,35 @@ def tenant_notification():
         app.logger.error(f"Error in tenant_notification: {str(e)}")
         return jsonify(error_message), 500
     
+#route for viewing the notifications of user
+@app.route('/view_notifications', methods=['GET'])
+@jwt_required()
+def view_notifications():
+    try:
+        # Get the current user's ID from the JWT token
+        current_user_id = get_jwt_identity()['user_id']
 
+        # Fetch notifications for the current user where they are the recipient
+        notifications = Notification.query.filter_by(recipient_id=current_user_id).all()
+
+        # Prepare response data
+        notifications_info = []
+        for notification in notifications:
+            # Fetch the sender's name from the User table
+            sender = User.query.get(notification.sender_id)
+            sender_name = f"{sender.firstname} {sender.middlename} {sender.surname}" if sender else "Unknown"
+
+            notifications_info.append({
+                'notification_id': notification.notification_id,
+                'sender_name': sender_name,
+                'message': notification.message,
+                'timestamp': notification.timestamp.strftime("%Y-%m-%d %H:%M:%S")
+            })
+
+        return jsonify({'notifications_info': notifications_info}), 200
+
+    except Exception as e:
+        return jsonify({'message': str(e)}), 500
 
 
 if __name__ == '__main__':
