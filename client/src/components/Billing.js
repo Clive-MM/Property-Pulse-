@@ -3,10 +3,15 @@ import React, { useState, useEffect } from "react";
 function Billing() {
   const [apartments, setApartments] = useState([]);
   const [selectedApartment, setSelectedApartment] = useState("");
+  const [tenants, setTenants] = useState([]);
+  const [selectedTenant, setSelectedTenant] = useState("");
+  const [amenity, setAmenity] = useState("");
+  const [amount, setAmount] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     fetchApartments();
+    fetchTenants();
   }, []);
 
   const fetchApartments = async () => {
@@ -15,7 +20,7 @@ function Billing() {
       if (!accessToken) {
         throw new Error("Access token not found");
       }
-      
+
       const response = await fetch("http://127.0.0.1:5000/myapartments", {
         method: "GET",
         headers: {
@@ -23,16 +28,83 @@ function Billing() {
           Authorization: `Bearer ${accessToken}`,
         },
       });
-      
+
       if (!response.ok) {
         throw new Error("Failed to fetch apartments");
       }
-      
+
       const data = await response.json();
       setApartments(data.apartments);
     } catch (error) {
       console.error("Error fetching apartments:", error.message);
       setErrorMessage("An error occurred. Please try again later.");
+    }
+  };
+
+  const fetchTenants = async () => {
+    try {
+      const accessToken = localStorage.getItem("access_token");
+      if (!accessToken) {
+        throw new Error("Access token not found");
+      }
+
+      const response = await fetch("http://127.0.0.1:5000/tenants", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch tenants");
+      }
+
+      const data = await response.json();
+      setTenants(data.tenants_info.map((tenant) => `${tenant.firstname} ${tenant.middlename} ${tenant.surname}`));
+    } catch (error) {
+      console.error("Error fetching tenants:", error.message);
+      setErrorMessage("An error occurred. Please try again later.");
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const accessToken = localStorage.getItem("access_token");
+      if (!accessToken) {
+        throw new Error("Access token not found");
+      }
+
+      const response = await fetch("http://127.0.0.1:5000/create_billing", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({
+          amenity,
+          amount,
+          apartment_name: selectedApartment,
+          resident_name: selectedTenant,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to create billing");
+      }
+
+      setErrorMessage("");
+      setAmenity("");
+      setAmount("");
+      setSelectedApartment("");
+      setSelectedTenant("");
+
+      alert("Bill created successfully!");
+    } catch (error) {
+      console.error("Error creating billing:", error.message);
+      setErrorMessage("An error occurred while creating billing. Please try again later.");
     }
   };
 
@@ -43,7 +115,7 @@ function Billing() {
           <h1>Billing</h1>
         </div>
         <div className="card-body">
-          <form>
+          <form onSubmit={handleSubmit}>
             <div style={{ marginBottom: "1em" }}>
               <label htmlFor="apartment">Apartment</label>
               <select id="apartment" value={selectedApartment} onChange={(e) => setSelectedApartment(e.target.value)}>
@@ -56,28 +128,38 @@ function Billing() {
               </select>
             </div>
 
-            <div>
+            <div style={{ marginBottom: "1em" }}>
               <label htmlFor="resident">Resident</label>
-              <input type="text" id="resident" />
+              <select id="resident" value={selectedTenant} onChange={(e) => setSelectedTenant(e.target.value)}>
+                <option value="">Select Tenant</option>
+                {tenants.map((tenant, index) => (
+                  <option key={index} value={tenant}>
+                    {tenant}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div style={{ marginTop: "2em" }}>
               <label htmlFor="amenity">Amenity</label>
-              <input type="text" id="amenity" />
+              <input type="text" id="amenity" value={amenity} onChange={(e) => setAmenity(e.target.value)} />
             </div>
 
             <div style={{ marginTop: "2em" }}>
               <label htmlFor="amount">Amount</label>
-              <input type="number" id="amount" />
+              <input type="number" id="amount" value={amount} onChange={(e) => setAmount(e.target.value)} />
             </div>
+
+            <button type="submit" className="btn btn-primary" style={{ marginTop: "2em" }}>
+              SEND THE BILL
+            </button>
           </form>
         </div>
-        <div className="card-footer text-muted">
-          <button type="button" className="btn btn-primary">SEND THE BILL</button>
-        </div>
         {errorMessage && (
-          <div className="alert alert-danger" role="alert">
-            {errorMessage}
+          <div className="card-footer text-muted">
+            <div className="alert alert-danger" role="alert">
+              {errorMessage}
+            </div>
           </div>
         )}
       </div>

@@ -10,6 +10,7 @@ from werkzeug.utils import secure_filename
 from datetime import datetime
 from sqlalchemy import func
 
+
 # Initialize the bcrypt
 bcrypt = Bcrypt(app)
 
@@ -758,59 +759,6 @@ def fetch_reviews():
     return jsonify({'reviews': review_list, 'message': 'Reviews retrieved successfully'}), 200
 
 
-
-#Creating a bill for a tenant 
-@app.route('/create_billing', methods=['POST'])
-@jwt_required()
-def create_billing():
-
-    # Capture userID
-    current_user = get_jwt_identity()
-    current_user_id = current_user['user_id']
-
-    # Check if the user is registered
-    existing_user = User.query.get(current_user_id)
-    if not existing_user:
-        return jsonify({'message': 'User not registered!'}), 400
-
-    # Check role of user
-    if existing_user.role not in ['Admin', 'Landlord']:
-        return jsonify({'message': 'User not authorized!'}), 403
-    
-    # Extracting data from request
-    data = request.get_json()
-    amenity = data.get('amenity')
-    amount = data.get('amount')
-    status = data.get('status')
-
-    # Get the current user's apartment
-    apartment = Apartment.query.filter_by(landlord_id=current_user_id).first()
-    if not apartment:
-        return jsonify({'message': 'Apartment not found for the current user!'}), 404
-
-    # Extracting resident_id from request data
-    resident_id = data.get('resident_id')
-    # Validate resident_id
-    resident = User.query.get(resident_id)
-    if not resident:
-        return jsonify({'message': 'Resident not found!'}), 404
-
-    # Creating a new instance of Billing
-    new_billing = Billing(
-        apartment_id=apartment.apartment_id,
-        apartment_owner_id=current_user_id,
-        resident_id=resident_id,
-        amenity=amenity,
-        amount=amount,
-        status=status,
-        timestamp=datetime.utcnow()
-    )
-
-    db.session.add(new_billing)
-    db.session.commit()
-
-    return jsonify({'message': 'Bill created successfully!'}), 200
-
 #Route for fetching the billings for a specific recipient
 @app.route('/fetch_billings', methods=['GET'])
 @jwt_required()
@@ -1340,10 +1288,11 @@ def get_tenants():
         # Fetch tenants' profiles
         tenants_profiles = Profile.query.join(User).filter(User.role == 'Tenant').all()
         
-        # Extract required information (firstname, middlename, surname)
+        # Extract required information (firstname, middlename, surname, and user_id)
         tenants_info = []
         for profile in tenants_profiles:
             tenants_info.append({
+                'user_id': profile.user_id,
                 'firstname': profile.firstname,
                 'middlename': profile.middlename,
                 'surname': profile.surname
@@ -1379,9 +1328,88 @@ def get_myapartments():
     
     except Exception as e:
         return jsonify({'message': str(e)}), 500
+    
+#create a bill for a customer
+from sqlalchemy import func
 
+@app.route('/create_billing', methods=['POST'])
+@jwt_required()
+def create_billing():
+    try:
+        # Capture user ID
+        current_user = get_jwt_identity()
+        current_user_id = current_user['user_id']
 
+        # Check if the user is registered and authorized as a landlord
+        existing_user = User.query.get(current_user_id)
+        if not existing_user or existing_user.role != 'Landlord':
+            app.logger.error('User not authorized')
+            return jsonify({'message': 'User not authorized!'}), 403
 
+        # Extract data from request
+        data = request.get_json()
+        amenity = data.get('amenity')
+        amount = data.get('amount')
+        apartment_name = data.get('apartment_name')  # Assuming the apartment name is also provided
+        resident_name = data.get('resident_name')
+
+        # Log request data for debugging purposes
+        app.logger.info(f"Request data: amenity={amenity}, amount={amount}, apartment_name={apartment_name}, resident_name={resident_name}")
+
+        # Check if all required fields are present in the payload
+        if not all([amenity, amount, apartment_name, resident_name]):
+            missing_fields = []
+            if not amenity:
+                missing_fields.append('amenity')
+            if not amount:
+                missing_fields.append('amount')
+            if not apartment_name:
+                missing_fields.append('apartment_name')
+            if not resident_name:
+                missing_fields.append('resident_name')
+
+            app.logger.error(f'Missing required fields: {", ".join(missing_fields)}')
+            return jsonify({'message': 'Incomplete data!', 'missing_fields': missing_fields}), 400
+
+        # Get the current user's apartment
+        apartment = Apartment.query.filter_by(apartment_name=apartment_name, landlord_id=current_user_id).first()
+        if not apartment:
+            app.logger.error('Apartment not found for the current user')
+            return jsonify({'message': 'Apartment not found for the current user!'}), 404
+
+        # Split resident name into first name, middle name, and surname
+        firstname, middlename, surname = resident_name.split(' ', 2)
+
+        # Query the Profile table to find the user_id based on first name, middle name, and surname
+        resident_user_id = Profile.query.filter(
+            func.lower(Profile.firstname) == func.lower(firstname),
+            func.lower(Profile.middlename) == func.lower(middlename),
+            func.lower(Profile.surname) == func.lower(surname)
+        ).with_entities(Profile.user_id).scalar()
+
+        if not resident_user_id:
+            app.logger.error('Resident user ID not found')
+            return jsonify({'message': 'Resident user ID not found!'}), 403
+
+        # Creating a new instance of Billing
+        new_billing = Billing(
+            apartment_id=apartment.apartment_id,
+            apartment_owner_id=current_user_id,
+            resident_id=resident_user_id,  # Using the user_id obtained from the Profile table
+            amenity=amenity,
+            amount=amount,
+            status='Pending',  # Set default status to 'Pending'
+            timestamp=datetime.utcnow()  # Set timestamp to system time
+        )
+
+        db.session.add(new_billing)
+        db.session.commit()
+
+        return jsonify({'message': 'Bill created successfully!'}), 200
+
+    except Exception as e:
+        app.logger.error(f"Error creating billing: {str(e)}")
+        return jsonify({'message': 'An error occurred while creating the billing. Please try again later.'}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)
