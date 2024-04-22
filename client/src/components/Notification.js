@@ -5,13 +5,13 @@ function Notification() {
   const [tenants, setTenants] = useState([]);
   const [message, setMessage] = useState("");
   const [recipientName, setRecipientName] = useState(""); // State to hold recipient name
+  const [notificationSent, setNotificationSent] = useState(false);
 
-  // Fetch tenants' names from backend when the component mounts
+  // Function to fetch tenants' names from backend
   useEffect(() => {
     fetchTenants();
   }, []);
 
-  // Function to fetch tenants' names from backend
   const fetchTenants = async () => {
     try {
       const token = localStorage.getItem("access_token");
@@ -55,6 +55,14 @@ function Notification() {
       const data = await response.json();
       if (response.ok) {
         console.log("Enquiry sent successfully:", data.message);
+        setNotificationSent(true);
+        // Clear the fields
+        setMessage("");
+        setRecipientName("");
+        // Set timer to hide the notification after 2 seconds
+        setTimeout(() => {
+          setNotificationSent(false);
+        }, 1000);
       } else {
         console.error("Failed to send enquiry:", data.message);
       }
@@ -65,6 +73,11 @@ function Notification() {
 
   return (
     <div className="Notification">
+      {notificationSent && (
+        <div className="alert alert-success" role="alert">
+          Notification sent successfully!
+        </div>
+      )}
       <div className="card text-center" style={{ width: "18em", marginLeft: "33em", marginTop: "8em" }}>
         <div className="card-header">
           <h1>Notification</h1>
