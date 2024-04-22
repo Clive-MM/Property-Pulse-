@@ -110,13 +110,12 @@ function Billing() {
 
   return (
     <div className="billing">
-      <div className="card text-center" style={{ width: "18em", marginLeft: "33em", marginTop: "8em" }}>
-        <div className="card-header">
-          <h1>Billing</h1>
-        </div>
+      <h1 className="text-muted">Billing</h1>
+      <div className="card text-center" style={{ width: "18em", marginLeft: "20em", marginTop: "1em" }}>
+        
         <div className="card-body">
           <form onSubmit={handleSubmit}>
-            <div style={{ marginBottom: "1em" }}>
+            <div style={{ marginBottom: ".5em" }}>
               <label htmlFor="apartment">Apartment</label>
               <select id="apartment" value={selectedApartment} onChange={(e) => setSelectedApartment(e.target.value)}>
                 <option value="">Select Apartment</option>

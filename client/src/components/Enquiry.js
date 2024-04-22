@@ -75,7 +75,7 @@ function Enquiry() {
             <div>
               <label>Recipient</label>
               <select id="recipient" value={recipientName} onChange={(e) => setRecipientName(e.target.value)} style={{ marginBottom: "1em", marginLeft: "2em", width: "90%" }}>
-                <option value="">Select recipient</option>
+                <option value="">Select Landlord</option>
                 {landlords?.map((landlord) => ( // Update to use landlords
                   <option key={landlord.user_id}>{`${landlord.firstname} ${landlord.middlename} ${landlord.surname}`}</option>
                 ))}
