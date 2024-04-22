@@ -101,7 +101,7 @@ function Billing() {
       setSelectedApartment("");
       setSelectedTenant("");
 
-      alert("Bill created successfully!");
+      alert("Bill sent successfully!");
     } catch (error) {
       console.error("Error creating billing:", error.message);
       setErrorMessage("An error occurred while creating billing. Please try again later.");

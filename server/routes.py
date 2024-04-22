@@ -1239,29 +1239,31 @@ def send_enquiry():
 
         # Extract data from the request
         data = request.json
-        firstname = data.get('firstname')
-        surname = data.get('surname')
+        fullname = data.get('fullname')
         message = data.get('message')
 
         # Validate data
-        if not all([firstname, surname, message]):
+        if not all([fullname, message]):
             return jsonify({'message': 'Missing required fields.'}), 400
 
-        # Query the Profile table to find the recipient ID based on first name and surname
-        recipient_profile = Profile.query.filter(func.lower(Profile.firstname) == func.lower(firstname),
-                                                 func.lower(Profile.surname) == func.lower(surname)).first()
+        # Split fullname into first name, middle name, and surname
+        firstname, middlename, surname = fullname.split(' ', 2)
 
-        # Check if recipient profile exists
-        if not recipient_profile:
-            return jsonify({'message': 'Recipient profile not found.'}), 404
+        # Query the Profile table to find the user_id based on first name, middle name, and surname
+        recipient_user_id = Profile.query.filter(
+            func.lower(Profile.firstname) == func.lower(firstname),
+            func.lower(Profile.middlename) == func.lower(middlename),
+            func.lower(Profile.surname) == func.lower(surname)
+        ).with_entities(Profile.user_id).scalar()
 
-        # Get the recipient ID
-        recipient_id = recipient_profile.user_id
+        # Check if recipient user_id exists
+        if not recipient_user_id:
+            return jsonify({'message': 'Recipient user ID not found.'}), 404
 
         # Create a new notification (enquiry) instance
         enquiry = Notification(
             sender_id=current_user_id,
-            recipient_id=recipient_id,
+            recipient_id=recipient_user_id,
             message=message,
             timestamp=datetime.utcnow()
         )
@@ -1275,6 +1277,7 @@ def send_enquiry():
     except Exception as e:
         return jsonify({'message': str(e)}), 500
     
+
 #Get Tenants 
 @app.route('/tenants', methods=['GET'])
 @jwt_required()
@@ -1330,8 +1333,6 @@ def get_myapartments():
         return jsonify({'message': str(e)}), 500
     
 #create a bill for a customer
-from sqlalchemy import func
-
 @app.route('/create_billing', methods=['POST'])
 @jwt_required()
 def create_billing():
@@ -1410,6 +1411,76 @@ def create_billing():
     except Exception as e:
         app.logger.error(f"Error creating billing: {str(e)}")
         return jsonify({'message': 'An error occurred while creating the billing. Please try again later.'}), 500
+
+#Landlord sending an enquiry
+@app.route('/tenant_notification', methods=['POST'])
+@jwt_required()
+def tenant_notification():
+    try:
+        # Capture user ID
+        current_user = get_jwt_identity()
+        current_user_id = current_user['user_id']
+
+        # Check if the user is registered and has the role of Landlord
+        existing_user = User.query.get(current_user_id)
+        if not existing_user or existing_user.role != 'Landlord':
+            return jsonify({'message': 'Unauthorized access!'}), 403
+
+        # Extract data from the request
+        data = request.json
+        recipient_name = data.get('recipient_name')
+        message = data.get('message')
+
+        # Validate data
+        if not all([recipient_name, message]):
+            missing_fields = []
+            if not recipient_name:
+                missing_fields.append('recipient_name')
+            if not message:
+                missing_fields.append('message')
+            error_message = {'message': 'Missing required fields.', 'missing_fields': missing_fields}
+            app.logger.error(f"Missing required fields: {missing_fields}")
+            return jsonify(error_message), 400
+
+        # Split recipient name into first name, middle name, and surname
+        firstname, middlename, surname = recipient_name.split(' ', 2)
+
+        # Query the Profile table to find the user_id based on first name, middle name, and surname
+        recipient_user = Profile.query.filter(
+            func.lower(Profile.firstname) == func.lower(firstname),
+            func.lower(Profile.middlename) == func.lower(middlename),
+            func.lower(Profile.surname) == func.lower(surname)
+        ).first()
+
+        # Check if recipient user exists
+        if not recipient_user:
+            error_message = {'message': 'Recipient user not found.'}
+            app.logger.error("Recipient user not found.")
+            return jsonify(error_message), 404
+
+        recipient_user_id = recipient_user.user_id
+
+        # Create a new notification (enquiry) instance
+        notification = Notification(
+            sender_id=current_user_id,
+            recipient_id=recipient_user_id,
+            message=message,
+            timestamp=datetime.utcnow()
+        )
+
+        # Add the new notification to the database
+        db.session.add(notification)
+        db.session.commit()
+
+        return jsonify({'message': 'Notification sent successfully.'}), 201
+
+    except Exception as e:
+        error_message = {'message': str(e)}
+        app.logger.error(f"Error in tenant_notification: {str(e)}")
+        return jsonify(error_message), 500
+    
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
