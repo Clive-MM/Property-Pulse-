@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+
 import StarRatings from "react-star-ratings";
 
 function Review() {
-  const navigate = useNavigate();
+
 
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
