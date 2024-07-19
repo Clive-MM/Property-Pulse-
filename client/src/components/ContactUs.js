@@ -9,6 +9,7 @@ import {
 } from '@fortawesome/free-brands-svg-icons';
 
 
+
 function ContactUs(){
     return(
         <div>
@@ -16,8 +17,8 @@ function ContactUs(){
                 <h3 className="text-muted">CONTACT</h3>
             </div>
             <div>
-                <h4>Connecting You to Your Dream Home,</h4>
-                <h4>Reach Out and Let's Make It Happen!</h4>
+                <h4 >Connecting You to Your Dream Home,</h4>
+                <h4 >Reach Out and Let's Make It Happen!</h4>
             </div>
             <div>
                 <p>0723176982</p>
