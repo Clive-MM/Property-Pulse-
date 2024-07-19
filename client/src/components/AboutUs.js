@@ -1,36 +1,34 @@
 import React from "react";
+import "../styles/styles.css";
+
 
 function AboutUs() {
   return (
     <div>
-      <div id="navbar">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-          <div class="container">
-            <a class="navbar-brand" href="/">
+     <div id="navbar">
+        <nav className="navbar navbar-expand-lg navbar-custom">
+          <div className="container">
+            <a className="navbar-brand" href="/">
               <h1 style={{ marginLeft: "1em" }}>PROPERTY PULSE</h1>
               <p>
-                <em style={{ color: "blue", marginLeft: ".5em" }}>
-                  Click Your Way Home
-                </em>
+                <em style={{ color: "blue", marginLeft: ".5em" }}>Click Your Way Home</em>
               </p>
             </a>
           </div>
-          <div class="container">
-            <a class="navbar-brand" href="/">
-              HOME
-            </a>
+          <div className="container">
+            <a className="navbar-brand" href="/">HOME</a>
           </div>
 
-          <div class="container">
-            <a class="navbar-brand" href="/contactus">
-              CONTACTS
-            </a>
+          <div className="container">
+            <a className="navbar-brand" href="/aboutus">ABOUT US</a>
           </div>
 
-          <div class="container">
-            <a class="navbar-brand" href="/login">
-              LOG IN
-            </a>
+          <div className="container">
+            <a className="navbar-brand" href="/contactus">CONTACTS</a>
+          </div>
+
+          <div className="container">
+            <a className="navbar-brand" href="/login">LOG IN</a>
           </div>
         </nav>
       </div>

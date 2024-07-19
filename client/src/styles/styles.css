@@ -46,11 +46,23 @@
   #displaycard{
     line-height: 15em;
   }
-  #footer{
+  #footer {
+    background: linear-gradient(to right, hsl(147, 88%, 35%), #00b300, #66ff66);
+    color: #ffffff;
     border: 2px;
     border-radius: 4px;
     margin: 4.8px;
   }
+  
+  #footer a {
+    color: #ffffff;
+    text-decoration: none;
+  }
+  
+  #footer a:hover {
+    color: #ccffcc;
+  }
+  
   #login{
     margin: 10em;
    
@@ -103,6 +115,32 @@
   height: 100%;
   object-fit: cover;
 }
+
+
+/* Navbar styling */
+.navbar-custom {
+  background: linear-gradient(to right, hsl(147, 88%, 35%), #00b300, #66ff66);
+}
+
+.navbar-custom .navbar-brand {
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.navbar-custom .navbar-brand:hover {
+  color: #ccffcc;
+}
+
+.navbar-custom .navbar-nav .nav-link {
+  color: #ffffff;
+}
+
+.navbar-custom .navbar-nav .nav-link:hover {
+  color: #ccffcc;
+}
+
+
+
 
 
 

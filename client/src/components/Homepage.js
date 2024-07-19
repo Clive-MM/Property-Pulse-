@@ -1,8 +1,6 @@
 import React, { useEffect } from "react";
 import "../styles/styles.css";
 
-
-
 function Homepage() {
   useEffect(() => {
     const tabLinks = document.querySelectorAll(".nav-link");
@@ -37,50 +35,39 @@ function Homepage() {
   return (
     <div className="homepage">
       <div id="navbar">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-          <div class="container">
-            <a class="navbar-brand" href="/">
-              <h1 style={{marginLeft:"1em"}}>PROPERTY PULSE</h1>
+        <nav className="navbar navbar-expand-lg navbar-custom">
+          <div className="container">
+            <a className="navbar-brand" href="/">
+              <h1 style={{ marginLeft: "1em" }}>PROPERTY PULSE</h1>
               <p>
-                <em style={{color:"blue", marginLeft:".5em"}}>Click Your Way Home</em>
+                <em style={{ color: "blue", marginLeft: ".5em" }}>Click Your Way Home</em>
               </p>
             </a>
           </div>
-          <div class="container">
-            <a class="navbar-brand" href="/">
-              HOME
-            </a>
+          <div className="container">
+            <a className="navbar-brand" href="/">HOME</a>
           </div>
 
-          <div class="container">
-            <a class="navbar-brand" href="/aboutus">
-              ABOUT US
-            </a>
+          <div className="container">
+            <a className="navbar-brand" href="/aboutus">ABOUT US</a>
           </div>
 
-          <div class="container">
-            <a class="navbar-brand" href="/contactus">
-              CONTACTS
-            </a>
+          <div className="container">
+            <a className="navbar-brand" href="/contactus">CONTACTS</a>
           </div>
 
-          <div class="container">
-            <a class="navbar-brand" href="/login">
-              LOG IN
-            </a>
+          <div className="container">
+            <a className="navbar-brand" href="/login">LOG IN</a>
           </div>
         </nav>
       </div>
 
-      <div class="card bg-white text-black" id="card">
-        <div class="card-img-overlay">
-          <p class="card-text">
-            <h2>
-              <strong>Dreaming of your own slice of paradise?</strong>
-            </h2>
-            <h3>
-              <em>Property Pulse makes it a reality!</em>
-            </h3>
+      <div className="card bg-white text-black" id="card">
+        <div className="card-img-overlay">
+          <p className="card-text">
+            <strong>
+              <em>Dreaming of your own slice of paradise?.Property Pulse makes it a reality!</em>
+            </strong>
           </p>
           <p id="para1">
             <strong>
@@ -95,7 +82,7 @@ function Homepage() {
             <strong>
               <em>
                 Explore the wide range of apartments varieties tailored to your
-                prefered location effortlessly.Find your perfect match and
+                preferred location effortlessly. Find your perfect match and
                 settle into your new apartment with ease and comfort.
               </em>
             </strong>
@@ -103,12 +90,12 @@ function Homepage() {
         </div>
       </div>
 
-      <div class="row" id="aboutus">
-        <div class="col-sm-6" id="products">
-          <div class="card" id="summary">
-            <div class="card-body">
-              <h5 class="card-title">WHAT DO WE OFFER?</h5>
-              <p class="card-text">
+      <div className="row" id="aboutus">
+        <div className="col-sm-6" id="products">
+          <div className="card" id="summary">
+            <div className="card-body">
+              <h5 className="card-title">WHAT DO WE OFFER?</h5>
+              <p className="card-text">
                 <h7>
                   <em>
                     At the heart of our mission is the seamless management of
@@ -124,17 +111,16 @@ function Homepage() {
                   </em>
                 </h7>
               </p>
-              <a href="/aboutus" class="btn btn-primary">
+              <a href="/aboutus" className="btn btn-primary">
                 ABOUT US
               </a>
             </div>
           </div>
         </div>
-        <div class="col-sm-6" id="products">
-          <div class="card" id="summary">
-            <div class="card-body">
-              <h5 class="card-title">OUR PRODUCTS</h5>
-               
+        <div className="col-sm-6" id="products">
+          <div className="card" id="summary">
+            <div className="card-body">
+              <h5 className="card-title">OUR PRODUCTS</h5>
             </div>
           </div>
         </div>
@@ -153,7 +139,6 @@ function Homepage() {
                 Feedback
               </a>
             </li>
-            
           </ul>
         </div>
         <div className="card-body" id="displaycard">
@@ -161,25 +146,23 @@ function Homepage() {
             Process of renting an apartment
           </div>
           <div className="card-text" id="feedback-content">
-            <div class="mb-3">
-              <input style={{width:"20em"}}
+            <div className="mb-3">
+              <input style={{ width: "20em" }}
                 type="email"
-                class="form-control"
+                className="form-control"
                 id="exampleFormControlInput1"
                 placeholder="email"
               />
             </div>
-            <div class="mb-3">
+            <div className="mb-3">
               <textarea
-                class="form-control"
+                className="form-control"
                 id="exampleFormControlTextarea1"
                 rows="3"
                 placeholder="message"
               ></textarea>
             </div>
-           
           </div>
-         
         </div>
       </div>
 
