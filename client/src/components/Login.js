@@ -43,11 +43,11 @@ function Login() {
   };
 
   return (
-    <div id="login">
-      <div class="card text-center" style={{ width: "30em" ,marginLeft:"14em"}}>
-        <div class="card-header">Login</div>
+    <div id="login" style={styles.pageBackground}>
+      <div class="card text-center" style={styles.card}>
+        <div class="card-header" style={styles.cardHeader}>Login</div>
 
-        <div class="card-body" >
+        <div class="card-body" style={styles.cardBody}>
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -55,7 +55,7 @@ function Login() {
             }}
           >
             <div className="form-group">
-              <label>Email</label>
+              <label style={styles.label}>Email</label>
               <input
                 type="email"
                 id="email"
@@ -63,11 +63,12 @@ function Login() {
                 className="form-control form-control-sm"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                style={styles.input}
               ></input>
             </div>
 
             <div className="form-group">
-              <label>Password</label>
+              <label style={styles.label}>Password</label>
               <input
                 type="password"
                 id="password"
@@ -75,35 +76,83 @@ function Login() {
                 className="form-control form-control-sm"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                style={styles.input}
               ></input>
             </div>
 
-            <div style={{marginTop:"2em"}}>
-            <button type="submit" className="btn btn-success">
+            <div style={{ marginTop: "2em" }}>
+              <button type="submit" className="btn btn-success" style={styles.button}>
                 Login
               </button>
             </div>
 
-            <div className="form-group mt-3">
-              
-            </div>
-            
+            <div className="form-group mt-3"></div>
+
             {errorMessage && (
               <div className="alert alert-danger" role="alert">
                 {errorMessage}
               </div>
             )}
           </form>
-          
         </div>
-        <div class="card-footer text-muted">
-        <p>
-                Don't have an account? <a href="/register">Sign Up Here</a>
-              </p>
-  </div>
+        <div class="card-footer text-muted" style={styles.cardFooter}>
+          <p>
+            Don't have an account? <a href="/register" style={styles.link}>Sign Up Here</a>
+          </p>
+        </div>
       </div>
     </div>
   );
 }
+
+const styles = {
+  pageBackground: {
+    background: "linear-gradient(to right, green, lightgreen)",
+    height: "100vh",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    margin: 0,
+    padding: 0,
+    overflow: "hidden",
+  },
+  card: {
+    width: "30em",
+    color: "#000",
+    backgroundColor: "#fff",
+    borderRadius: "10px",
+    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+  },
+  cardHeader: {
+    backgroundColor: "green",
+    color: "white",
+    fontSize: "1.5em",
+    fontWeight: "bold",
+  },
+  cardBody: {
+    padding: "2em",
+  },
+  label: {
+    fontSize: "1em",
+    color: "green",
+    fontWeight: "bold",
+  },
+  input: {
+    marginBottom: "1em",
+  },
+  button: {
+    backgroundColor: "green",
+    borderColor: "green",
+    color: "white",
+  },
+  cardFooter: {
+    backgroundColor: "#f8f9fa",
+    color: "green",
+  },
+  link: {
+    color: "blue",
+    textDecoration: "underline",
+  },
+};
 
 export default Login;
