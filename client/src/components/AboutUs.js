@@ -20,16 +20,16 @@ function AboutUs() {
             </a>
           </div>
           <div className="ml-auto d-flex">
-            <a className="nav-link" href="/" >
+            <a className="nav-link" href="/">
               <i className="fas fa-home"></i>
               <span className="nav-text">HOME</span>
             </a>
 
-            <a className="nav-link" href="/contactus" >
-              <i className="fas fa-envelope"></i>
+            <a className="nav-link" href="/contactus">
+              <i className="fas fa-phone"></i>
               <span className="nav-text">CONTACTS</span>
             </a>
-            <a className="nav-link" href="/login" >
+            <a className="nav-link" href="/login">
               <i className="fas fa-sign-in-alt"></i>
               <span className="nav-text">LOGIN</span>
             </a>
@@ -126,6 +126,9 @@ function AboutUs() {
           </p>
         </div>
       </div>
+
+      {/* Contact Form Section */}
+     
     </div>
   );
 }
