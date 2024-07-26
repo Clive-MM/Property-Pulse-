@@ -3,7 +3,7 @@ import "../styles/styles.css";
 
 function Homepage() {
   useEffect(() => {
-    const tabLinks = document.querySelectorAll(".nav-link");
+    const tabLinks = document.querySelectorAll(".nav-link[data-tab]");
     const tabContents = document.querySelectorAll(".card-text");
 
     const handleTabClick = (event) => {
@@ -179,7 +179,7 @@ function Homepage() {
                 className="form-control"
                 id="exampleFormControlTextarea1"
                 rows="3"
-                placeholder="message"
+                placeholder="Message"
               ></textarea>
             </div>
           </div>
