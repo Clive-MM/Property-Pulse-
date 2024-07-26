@@ -21,7 +21,7 @@ function ContactUs(){
                 <h4 >Reach Out and Let's Make It Happen!</h4>
             </div>
             <div>
-                <p>0723176982</p>
+                <p>TELEPHONE 0723176982</p>
                 <p>propertypulse@gmail.com</p>
                 <div>
                     <div>

@@ -4,32 +4,48 @@ import "../styles/styles.css";
 function Homepage() {
   useEffect(() => {
     const tabLinks = document.querySelectorAll(".nav-link");
+    const tabContents = document.querySelectorAll(".card-text");
+
+    const handleTabClick = (event) => {
+      event.preventDefault();
+
+      const tabId = event.currentTarget.getAttribute("data-tab");
+
+      // Hide all tab contents
+      tabContents.forEach((content) => {
+        content.style.display = "none";
+      });
+
+      // Show the selected tab content
+      const selectedContent = document.getElementById(tabId + "-content");
+      if (selectedContent) {
+        selectedContent.style.display = "block";
+      }
+    };
 
     tabLinks.forEach((tab) => {
-      tab.addEventListener("click", function (event) {
-        event.preventDefault();
-
-        const tabId = this.getAttribute("data-tab");
-
-        // Hide all tab contents
-        document.querySelectorAll(".card-text").forEach((content) => {
-          content.style.display = "none";
-        });
-
-        // Show the selected tab content
-        document.getElementById(tabId + "-content").style.display = "block";
-      });
+      tab.addEventListener("click", handleTabClick);
     });
 
     // Show default tab content when component mounts
-    document.getElementById("acquisition-content").style.display = "block";
+    const defaultContent = document.getElementById("acquisition-content");
+    if (defaultContent) {
+      defaultContent.style.display = "block";
+    }
 
     // Hide other tab contents
-    document.querySelectorAll(".card-text").forEach((content) => {
+    tabContents.forEach((content) => {
       if (content.id !== "acquisition-content") {
         content.style.display = "none";
       }
     });
+
+    // Cleanup event listeners on component unmount
+    return () => {
+      tabLinks.forEach((tab) => {
+        tab.removeEventListener("click", handleTabClick);
+      });
+    };
   }, []);
 
   return (
@@ -40,24 +56,27 @@ function Homepage() {
             <a className="navbar-brand" href="/">
               <h1 style={{ marginLeft: "1em" }}>PROPERTY PULSE</h1>
               <p>
-                <em style={{ color: "blue", marginLeft: ".5em" }}>Click Your Way Home</em>
+                <em style={{ color: "blue", marginLeft: ".5em" }}>
+                  Click Your Way Home
+                </em>
               </p>
             </a>
           </div>
-          <div className="container">
-            <a className="navbar-brand" href="/">HOME</a>
-          </div>
+          <div className="ml-auto d-flex">
+            <a className="nav-link" href="/aboutus">
+              <i className="fas fa-info-circle"></i>
+              <span className="nav-text">ABOUTUS</span>
+            </a>
 
-          <div className="container">
-            <a className="navbar-brand" href="/aboutus">ABOUT US</a>
-          </div>
+            <a className="nav-link" href="/contactus" title="Contacts">
+              <i className="fas fa-phone"></i>
+              <span className="nav-text">CONTACTS</span>
+            </a>
 
-          <div className="container">
-            <a className="navbar-brand" href="/contactus">CONTACTS</a>
-          </div>
-
-          <div className="container">
-            <a className="navbar-brand" href="/login">LOG IN</a>
+            <a className="nav-link" href="/login">
+              <i className="fas fa-sign-in-alt"></i>
+              <span className="nav-text">LOGIN</span>
+            </a>
           </div>
         </nav>
       </div>
@@ -66,13 +85,16 @@ function Homepage() {
         <div className="card-img-overlay">
           <p className="card-text">
             <strong>
-              <em>Dreaming of your own slice of paradise?.Property Pulse makes it a reality!</em>
+              <em>
+                Dreaming of your own slice of paradise? Property Pulse makes it
+                a reality!
+              </em>
             </strong>
           </p>
           <p id="para1">
             <strong>
               <em>
-                Say Goodbye to the hassle of house hunting and hello to a smooth
+                Say goodbye to the hassle of house hunting and hello to a smooth
                 experience where everything is just a touch and a click away.
               </em>
             </strong>
@@ -81,7 +103,7 @@ function Homepage() {
           <p id="para2">
             <strong>
               <em>
-                Explore the wide range of apartments varieties tailored to your
+                Explore the wide range of apartment varieties tailored to your
                 preferred location effortlessly. Find your perfect match and
                 settle into your new apartment with ease and comfort.
               </em>
@@ -96,20 +118,17 @@ function Homepage() {
             <div className="card-body">
               <h5 className="card-title">WHAT DO WE OFFER?</h5>
               <p className="card-text">
-                <h7>
-                  <em>
-                    At the heart of our mission is the seamless management of
-                    the leasing cycle, ensuring both landlords and tenants
-                    experience efficiency and effectiveness. Landlords have the
-                    power to effortlessly list their apartments for potential
-                    tenants, manage periodic billings, and engage with tenants
-                    for any inquiries. Meanwhile, tenants can communicate with
-                    landlords as needed when booking or reporting any concerns,
-                    while both parties uphold integrity through the upload of
-                    verification documents and the provision of lease
-                    agreements.
-                  </em>
-                </h7>
+                <em>
+                  At the heart of our mission is the seamless management of the
+                  leasing cycle, ensuring both landlords and tenants experience
+                  efficiency and effectiveness. Landlords have the power to
+                  effortlessly list their apartments for potential tenants,
+                  manage periodic billings, and engage with tenants for any
+                  inquiries. Meanwhile, tenants can communicate with landlords
+                  as needed when booking or reporting any concerns, while both
+                  parties uphold integrity through the upload of verification
+                  documents and the provision of lease agreements.
+                </em>
               </p>
               <a href="/aboutus" className="btn btn-primary">
                 ABOUT US
@@ -147,7 +166,8 @@ function Homepage() {
           </div>
           <div className="card-text" id="feedback-content">
             <div className="mb-3">
-              <input style={{ width: "20em" }}
+              <input
+                style={{ width: "20em" }}
                 type="email"
                 className="form-control"
                 id="exampleFormControlInput1"
@@ -174,7 +194,9 @@ function Homepage() {
           <div className="row">
             <div className="col-lg-6 col-md-12 mb-4 mb-md-0">
               <h5 className="text-uppercase">PROPERTY PULSE</h5>
-              <p><em>Click your way home.</em></p>
+              <p>
+                <em>Click your way home.</em>
+              </p>
             </div>
             <div className="col-lg-3 col-md-6 mb-4 mb-md-0">
               <h5 className="text-uppercase">Links</h5>

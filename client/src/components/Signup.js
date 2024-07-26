@@ -53,27 +53,25 @@ function Signup() {
   };
 
   return (
-    <div
-      id="container"
-      className="d-flex justify-content-center align-items-center"
-    >
-      <div class="card text-center" id="register">
-        <div class="card-header">Register</div>
-        <div class="card-body">
+    <div id="signup" style={styles.pageBackground}>
+      <div className="card text-center" style={styles.card}>
+        <div className="card-header" style={styles.cardHeader}>Register</div>
+        <div className="card-body" style={styles.cardBody}>
           <form>
             <div className="form-group">
-              <label htmlFor="username">Username</label>
+              <label htmlFor="username" style={styles.label}>Username</label>
               <input
-                type="username"
+                type="text"
                 className="form-control form-control-sm"
                 id="username"
                 placeholder="username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
+                style={styles.input}
               />
             </div>
             <div className="form-group">
-              <label htmlFor="email">Email</label>
+              <label htmlFor="email" style={styles.label}>Email</label>
               <input
                 type="email"
                 className="form-control form-control-sm"
@@ -81,12 +79,13 @@ function Signup() {
                 placeholder="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                style={styles.input}
               />
             </div>
             <div className="form-group">
-              <label htmlFor="role">Role</label>
+              <label htmlFor="role" style={styles.label}>Role</label>
               <input
-                type="role"
+                type="text"
                 className="form-control form-control-sm"
                 list="rolelist"
                 id="role"
@@ -94,15 +93,15 @@ function Signup() {
                 onClick={showOptions}
                 value={role}
                 onChange={(e) => setRole(e.target.value)}
+                style={styles.input}
               />
               <datalist id="rolelist" style={{ display: "none" }}>
                 <option value="Landlord"></option>
                 <option value="Tenant"></option>
               </datalist>
             </div>
-
             <div className="form-group">
-              <label htmlFor="password">Password</label>
+              <label htmlFor="password" style={styles.label}>Password</label>
               <input
                 type="password"
                 className="form-control form-control-sm"
@@ -110,24 +109,75 @@ function Signup() {
                 placeholder="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                style={styles.input}
               />
             </div>
-            
           </form>
         </div>
-        <div class="card-footer text-muted">
-        <button
-                type="button"
-                className="btn btn-success"
-                style={{ marginTop: "1em" }}
-                onClick={handleRegister}
-              >
-                Submit
-              </button>
-  </div>
+        <div className="card-footer text-muted" style={styles.cardFooter}>
+          <button
+            type="button"
+            className="btn btn-success"
+            style={styles.button}
+            onClick={handleRegister}
+          >
+            Submit
+          </button>
+        </div>
       </div>
     </div>
   );
 }
+
+const styles = {
+  pageBackground: {
+    background: "linear-gradient(to right, green, lightgreen)",
+    height: "100vh",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    margin: 0,
+    padding: 0,
+    overflow: "hidden",
+  },
+  card: {
+    width: "30em",
+    color: "#000",
+    backgroundColor: "#fff",
+    borderRadius: "10px",
+    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+  },
+  cardHeader: {
+    backgroundColor: "green",
+    color: "white",
+    fontSize: "1.5em",
+    fontWeight: "bold",
+  },
+  cardBody: {
+    padding: "2em",
+  },
+  label: {
+    fontSize: "1em",
+    color: "green",
+    fontWeight: "bold",
+  },
+  input: {
+    marginBottom: "1em",
+  },
+  button: {
+    backgroundColor: "green",
+    borderColor: "green",
+    color: "white",
+    marginTop: "1em",
+  },
+  cardFooter: {
+    backgroundColor: "#f8f9fa",
+    color: "green",
+  },
+  link: {
+    color: "blue",
+    textDecoration: "underline",
+  },
+};
 
 export default Signup;
