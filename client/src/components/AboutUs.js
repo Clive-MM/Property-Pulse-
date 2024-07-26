@@ -33,79 +33,81 @@ function AboutUs() {
           </div>
         </nav>
       </div>
-
-      <div className="card mb-4" style={styles.card}>
-        <div className="row no-gutters">
-          <div className="col-md-4" style={styles.imageContainer}>
-            <img
-              src={rent}
-              className="card-img"
-              alt="Mission"
-              style={styles.cardImage}
-            />
-          </div>
-          <div className="col-md-8" style={styles.cardTextContainer}>
-            <div className="card-body">
-              <h5 style={styles.cardTitle}>MISSION</h5>
-              <p style={styles.cardText}>
-                <em>
-                  To simplify the process of finding and renting the perfect
-                  home by providing a user-friendly platform that connects
-                  tenants with landlords, offering a wide range of high-quality
-                  housing options.
-                </em>
-              </p>
+      
+      <div style={styles.content}>
+        <div className="card mb-4" style={styles.card}>
+          <div className="row no-gutters">
+            <div className="col-md-4" style={styles.imageContainer}>
+              <img
+                src={rent}
+                className="card-img"
+                alt="Mission"
+                style={styles.cardImage}
+              />
+            </div>
+            <div className="col-md-8" style={styles.cardTextContainer}>
+              <div className="card-body">
+                <h5 style={styles.cardTitle}>MISSION</h5>
+                <p style={styles.cardText}>
+                  <em>
+                    To simplify the process of finding and renting the perfect
+                    home by providing a user-friendly platform that connects
+                    tenants with landlords, offering a wide range of high-quality
+                    housing options.
+                  </em>
+                </p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div className="card mb-4" style={styles.card}>
-        <div className="row no-gutters">
-          <div className="col-md-8" style={styles.cardTextContainer}>
-            <div className="card-body">
-              <h5 style={styles.cardTitle}>VISION</h5>
-              <p style={styles.cardText}>
-                <em>
-                  To become the leading online destination for individuals
-                  seeking rental properties, offering a seamless and efficient
-                  experience for both tenants and landlords, while fostering a
-                  sense of community and trust within the real estate market.
-                </em>
-              </p>
+        <div className="card mb-4" style={styles.card}>
+          <div className="row no-gutters">
+            <div className="col-md-8" style={styles.cardTextContainer}>
+              <div className="card-body">
+                <h5 style={styles.cardTitle}>VISION</h5>
+                <p style={styles.cardText}>
+                  <em>
+                    To become the leading online destination for individuals
+                    seeking rental properties, offering a seamless and efficient
+                    experience for both tenants and landlords, while fostering a
+                    sense of community and trust within the real estate market.
+                  </em>
+                </p>
+              </div>
+            </div>
+            <div className="col-md-4" style={styles.imageContainer}>
+              <img
+                src={rentalhouses2}
+                className="card-img"
+                alt="Vision"
+                style={styles.cardImage}
+              />
             </div>
           </div>
-          <div className="col-md-4" style={styles.imageContainer}>
-            <img
-              src={rentalhouses2}
-              className="card-img"
-              alt="Vision"
-              style={styles.cardImage}
-            />
-          </div>
         </div>
-      </div>
 
-      <div className="card bg-dark text-white" style={styles.featuresCard}>
-        <img
-          src={rentalhouses}
-          className="card-img"
-          alt="Rental Houses"
-          style={styles.cardImage}
-        />
-        <div className="card-img-overlay" style={styles.overlay}>
-          <h5 style={styles.cardTitle}>FEATURES</h5>
-          <p style={styles.cardText}>
-            <em>
-              Discover your dream home effortlessly with Property Pulse. Our
-              platform simplifies house hunting and property management by
-              offering seamless booking, browsing, and showcasing of apartments.
-              Enjoy smooth communication between clients and landlords for quick
-              query resolution. Plus, our system manages amenity billings and
-              sends timely notifications, keeping everyone informed and
-              connected.
-            </em>
-          </p>
+        <div className="card bg-dark text-white" style={styles.featuresCard}>
+          <img
+            src={rentalhouses}
+            className="card-img"
+            alt="Rental Houses"
+            style={styles.cardImage}
+          />
+          <div className="card-img-overlay" style={styles.overlay}>
+            <h5 style={styles.cardTitle}>FEATURES</h5>
+            <p style={styles.cardText}>
+              <em>
+                Discover your dream home effortlessly with Property Pulse. Our
+                platform simplifies house hunting and property management by
+                offering seamless booking, browsing, and showcasing of apartments.
+                Enjoy smooth communication between clients and landlords for quick
+                query resolution. Plus, our system manages amenity billings and
+                sends timely notifications, keeping everyone informed and
+                connected.
+              </em>
+            </p>
+          </div>
         </div>
       </div>
     </div>
@@ -140,19 +142,19 @@ const styles = {
     maxWidth: "100%",
     height: "12em",
     marginBottom: "1em",
-    background: "transparent", 
-    border: "none", 
-    borderRadius: "0", 
+    background: "transparent",
+    border: "none",
+    borderRadius: "0",
   },
   imageContainer: {
-    padding: "0", 
-    margin: "0", 
+    padding: "0",
+    margin: "0",
   },
   cardImage: {
     objectFit: "cover",
     height: "100%",
     width: "100%",
-    border: "none", 
+    border: "none",
   },
   cardTitle: {
     fontSize: "1.5em",
@@ -167,15 +169,15 @@ const styles = {
     background:
       "linear-gradient(to right, hsl(147, 88%, 35%), #00b300, #66ff66)",
     padding: "1em",
-    borderRadius: "0", 
+    borderRadius: "0",
     boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
   },
   featuresCard: {
-    height: "12em", 
+    height: "12em",
     border: "none",
-    borderRadius: "0", 
-    position: "relative", 
-    overflow: "hidden", 
+    borderRadius: "0",
+    position: "relative",
+    overflow: "hidden",
   },
   overlay: {
     background:
@@ -183,13 +185,16 @@ const styles = {
     padding: "1em",
     borderRadius: "0",
     boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-    position: "absolute", 
-    bottom: "0", 
-    width: "100%", 
-    height: "100%", 
+    position: "absolute",
+    bottom: "0",
+    width: "100%",
+    height: "100%",
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
+  },
+  content: {
+    marginTop: "4em", // Adjust this value as needed
   },
 };
 

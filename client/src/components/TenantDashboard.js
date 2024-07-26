@@ -48,8 +48,8 @@ function TenantDashboard() {
       if (response.ok) {
         // Clear localStorage
         localStorage.clear();
-       
-        window.location.href = "/"; 
+        // Redirect to the home page
+        window.location.href = "/";
       } else {
         console.error("Failed to logout:", response.statusText);
       }
@@ -59,22 +59,21 @@ function TenantDashboard() {
   };
 
   return (
-    <div className="dashboard">
+    <div className="dashboard" style={{ cursor: "pointer" }}> {/* Apply cursor pointer to the entire page */}
       <div id="navbar">
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        <nav className="navbar navbar-expand-lg navbar-custom">
           <div className="container">
-            <a className="navbar-brand" href="/">
+            <a 
+              className="navbar-brand" 
+              href="/" 
+              style={{ cursor: "pointer" }} // Ensure cursor is a pointer
+            >
               <h1 style={{ marginLeft: "1em" }}>PROPERTY PULSE</h1>
               <p>
                 <em style={{ color: "blue", marginLeft: ".5em" }}>
                   Click Your Way Home
                 </em>
               </p>
-            </a>
-          </div>
-          <div className="container">
-            <a className="navbar-brand" href="/">
-              HOME
             </a>
           </div>
         </nav>
@@ -85,7 +84,7 @@ function TenantDashboard() {
           <div className="card" style={{ width: "12em", height: "40em", marginLeft: "3px" }}>
             <div className="card-body">
               <div>
-                <a href="/tenantDashboard">
+                <a href="/tenantDashboard" style={{ cursor: "pointer" }}>
                   <h6><strong>DASHBOARD</strong></h6>
                 </a>
               </div>
@@ -96,15 +95,12 @@ function TenantDashboard() {
               <div onClick={() => handleLinkClick(<ViewApartments />)} style={{ marginTop: "3em" }}>
                 <h6>APARTMENTS</h6>
               </div>
-             
-              
               <div onClick={() => handleLinkClick(<ViewBillings />)} style={{ marginTop: "3em" }}>
                 <h6>BILLINGS</h6>
               </div>
               <div onClick={() => handleLinkClick(<Enquiry />)} style={{ marginTop: "3em" }}>
                 <h6>ENQUIRY</h6>
               </div>
-
               <div onClick={() => handleLinkClick(<Message />)} style={{ marginTop: "3em" }}>
                 <h6>MESSAGES</h6>
               </div>
@@ -114,14 +110,13 @@ function TenantDashboard() {
               <div onClick={handleLogout} style={{ marginTop: "9em" }}>
                 <h6>LOG OUT</h6>
               </div>
-              
             </div>
           </div>
         </div>
 
         <div className="col-sm-6" id="main body">
           <div className="card" style={{ height: "40em", width: "60em", marginRight: "3em" }}>
-          <h5 className=" text-muted" >Hello {username}</h5>
+            <h5 className=" text-muted">Hello {username}</h5>
 
             <div className="card-body">
               {activeComponent}
