@@ -65,7 +65,7 @@ function ContactUs() {
             <FontAwesomeIcon icon={faGoogle} style={styles.socialIcon} />
           </a>
         </div>
-        {/* Contact Form Section */}
+       
         <div style={styles.formContainer}>
           <h4 style={styles.formHeading}>Get in Touch</h4>
           <div className="mb-3">
