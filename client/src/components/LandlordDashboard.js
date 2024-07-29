@@ -9,13 +9,12 @@ import Billing from "./Billing";
 import Review from "./Review";
 import Notification from "./Notification";
 import Message from "./Message";
-
 import Bookings from "./Bookings";
-
 
 function LandlordDashboard() {
   const [activeComponent, setActiveComponent] = useState(null);
   const [username, setUsername] = useState('');
+  const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
 
   useEffect(() => {
     const fetchUsername = async () => {
@@ -52,8 +51,8 @@ function LandlordDashboard() {
       if (response.ok) {
         // Clear localStorage
         localStorage.clear();
-       
-        window.location.href = "/"; 
+        // Redirect to the home page
+        window.location.href = "/";
       } else {
         console.error("Failed to logout:", response.statusText);
       }
@@ -62,78 +61,77 @@ function LandlordDashboard() {
     }
   };
 
+  const toggleSidebar = () => {
+    setIsSidebarExpanded(!isSidebarExpanded);
+  };
 
   return (
     <div className="dashboard">
       <div id="navbar">
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        <nav className="navbar navbar-expand-lg navbar-custom">
           <div className="container">
-            <a className="navbar-brand" href="/">
+            <a className="navbar-brand" href="/" style={{ cursor: "pointer" }}>
               <h1 style={{ marginLeft: "1em" }}>PROPERTY PULSE</h1>
               <p>
-                <em style={{ color: "blue", marginLeft: ".5em" }}>
-                  Click Your Way Home
-                </em>
+                <em style={{ color: "blue", marginLeft: ".5em" }}>Click Your Way Home</em>
               </p>
-            </a>
-          </div>
-          <div className="container">
-            <a className="navbar-brand" href="/">
-              HOME
             </a>
           </div>
         </nav>
       </div>
 
       <div className="row" id="dashboard">
-        <div className="col-sm-6" id="sidepane">
-          <div className="card" style={{  width: "12em", height: "35em", marginLeft: "3px"}}>
+        <div className={`col-sm-6 ${isSidebarExpanded ? "expanded" : "collapsed"}`} id="sidepane">
+          <div className="card" style={{ height: "35em", marginLeft: "3px" }}>
             <div className="card-body">
-              <div>
-                <a href="/landlorddashboard">
-                  <h6><strong>DASHBOARD</strong></h6>
-                </a>
+              <div className="menu-item" onClick={toggleSidebar} style={{ cursor: "pointer", display: "flex", alignItems: "center" }}>
+                <i className={`fas fa-${isSidebarExpanded ? "angle-left" : "bars"}`}></i>
+                {isSidebarExpanded && <span className="menu-text"><strong>MENU</strong></span>}
               </div>
 
-              <div onClick={() => handleLinkClick(<Profile />)} style={{ marginTop: "2em" }}>
-                <h6>PROFILE</h6>
+              <div className="menu-item" onClick={() => handleLinkClick(<Profile />)} style={{ marginTop: "1.5em" }}>
+                <i className="fas fa-user"></i>
+                {isSidebarExpanded && <span className="menu-text">PROFILE</span>}
               </div>
-              <div onClick={() => handleLinkClick(<CreateApartment />)} style={{ marginTop: "2em" }}>
-                <h6>APARTMENTS</h6>
+              <div className="menu-item" onClick={() => handleLinkClick(<CreateApartment />)} style={{ marginTop: "1.5em" }}>
+                <i className="fas fa-building"></i>
+                {isSidebarExpanded && <span className="menu-text">APARTMENTS</span>}
               </div>
-              <div onClick={() => handleLinkClick(<Category />)} style={{ marginTop: "2em" }}>
-                <h6>CATEGORY</h6>
+              <div className="menu-item" onClick={() => handleLinkClick(<Category />)} style={{ marginTop: "1.5em" }}>
+                <i className="fas fa-tags"></i>
+                {isSidebarExpanded && <span className="menu-text">CATEGORY</span>}
               </div>
-              <div onClick={() => handleLinkClick(<Bookings />)} style={{ marginTop: "2em" }}>
-                <h6>BOOKINGS</h6>
+              <div className="menu-item" onClick={() => handleLinkClick(<Bookings />)} style={{ marginTop: "1.5em" }}>
+                <i className="fas fa-calendar-check"></i>
+                {isSidebarExpanded && <span className="menu-text">BOOKINGS</span>}
               </div>
-              
-              <div onClick={() => handleLinkClick(<Billing />)} style={{ marginTop: "2em" }}>
-                <h6>BILLINGS</h6>
+              <div className="menu-item" onClick={() => handleLinkClick(<Billing />)} style={{ marginTop: "1.5em" }}>
+                <i className="fas fa-file-invoice-dollar"></i>
+                {isSidebarExpanded && <span className="menu-text">BILLINGS</span>}
               </div>
-              <div onClick={() => handleLinkClick(<Notification />)} style={{ marginTop: "2em" }}>
-                <h6>NOTIFICATION</h6>
+              <div className="menu-item" onClick={() => handleLinkClick(<Notification />)} style={{ marginTop: "1.5em" }}>
+                <i className="fas fa-bell"></i>
+                {isSidebarExpanded && <span className="menu-text">NOTIFICATIONS</span>}
               </div>
-
-              <div onClick={() => handleLinkClick(<Message />)} style={{ marginTop: "2em" }}>
-                <h6>MESSAGES</h6>
+              <div className="menu-item" onClick={() => handleLinkClick(<Message />)} style={{ marginTop: "1.5em" }}>
+                <i className="fas fa-envelope"></i>
+                {isSidebarExpanded && <span className="menu-text">MESSAGES</span>}
               </div>
-
-              <div onClick={() => handleLinkClick(<Review />)} style={{ marginTop: "2em" }}>
-                <h6>REVIEW</h6>
+              <div className="menu-item" onClick={() => handleLinkClick(<Review />)} style={{ marginTop: "1.5em" }}>
+                <i className="fas fa-star"></i>
+                {isSidebarExpanded && <span className="menu-text">REVIEW</span>}
               </div>
-
-              <div onClick={handleLogout} style={{ marginTop: "5.5em" }}>
-                <h6>LOG OUT</h6>
+              <div className="menu-item" onClick={handleLogout} style={{ marginTop: "4em" }}>
+                <i className="fas fa-sign-out-alt"></i>
+                {isSidebarExpanded && <span className="menu-text">LOG OUT</span>}
               </div>
-            
             </div>
           </div>
         </div>
 
-        <div className="col-sm-6" id="main body">
-          <div className="card" style={{ height: "35em", width: "60em", marginRight: "5em" }}>
-            <h5>Hello, {username}</h5>
+        <div className="col-sm-6" id="main-body">
+          <div className="card" style={{ height: "40em", width: "60em", marginRight: "3em" }}>
+            <h5 className="text-muted">Hello {username}</h5>
             <div className="card-body">
               {activeComponent}
             </div>
