@@ -12,6 +12,7 @@ import Message from "./Message";
 function TenantDashboard() {
   const [activeComponent, setActiveComponent] = useState(null);
   const [username, setUsername] = useState('');
+  const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
 
   useEffect(() => {
     const fetchUsername = async () => {
@@ -58,21 +59,19 @@ function TenantDashboard() {
     }
   };
 
+  const toggleSidebar = () => {
+    setIsSidebarExpanded(!isSidebarExpanded);
+  };
+
   return (
-    <div className="dashboard" style={{ cursor: "pointer" }}> {/* Apply cursor pointer to the entire page */}
+    <div className="dashboard">
       <div id="navbar">
         <nav className="navbar navbar-expand-lg navbar-custom">
           <div className="container">
-            <a 
-              className="navbar-brand" 
-              href="/" 
-              style={{ cursor: "pointer" }} // Ensure cursor is a pointer
-            >
+            <a className="navbar-brand" href="/" style={{ cursor: "pointer" }}>
               <h1 style={{ marginLeft: "1em" }}>PROPERTY PULSE</h1>
               <p>
-                <em style={{ color: "blue", marginLeft: ".5em" }}>
-                  Click Your Way Home
-                </em>
+                <em style={{ color: "blue", marginLeft: ".5em" }}>Click Your Way Home</em>
               </p>
             </a>
           </div>
@@ -80,44 +79,49 @@ function TenantDashboard() {
       </div>
 
       <div className="row" id="dashboard">
-        <div className="col-sm-6" id="sidepane">
-          <div className="card" style={{ width: "12em", height: "40em", marginLeft: "3px" }}>
+        <div className={`col-sm-6 ${isSidebarExpanded ? "expanded" : "collapsed"}`} id="sidepane">
+          <div className="card" style={{ height: "40em", marginLeft: "3px" }}>
             <div className="card-body">
-              <div>
-                <a href="/tenantDashboard" style={{ cursor: "pointer" }}>
-                  <h6><strong>DASHBOARD</strong></h6>
-                </a>
+              <div className="menu-item" onClick={toggleSidebar} style={{ cursor: "pointer", display: "flex", alignItems: "center" }}>
+                <i className={`fas fa-${isSidebarExpanded ? "angle-left" : "bars"}`}></i>
+                {isSidebarExpanded && <span className="menu-text"><strong>MENU</strong></span>}
               </div>
 
-              <div onClick={() => handleLinkClick(<Profile />)} style={{ marginTop: "3em" }}>
-                <h6>PROFILE</h6>
+              <div className="menu-item" onClick={() => handleLinkClick(<Profile />)} style={{ marginTop: "1.5em" }}>
+                <i className="fas fa-user"></i>
+                {isSidebarExpanded && <span className="menu-text">PROFILE</span>}
               </div>
-              <div onClick={() => handleLinkClick(<ViewApartments />)} style={{ marginTop: "3em" }}>
-                <h6>APARTMENTS</h6>
+              <div className="menu-item" onClick={() => handleLinkClick(<ViewApartments />)} style={{ marginTop: "1.5em" }}>
+                <i className="fas fa-building"></i>
+                {isSidebarExpanded && <span className="menu-text">APARTMENTS</span>}
               </div>
-              <div onClick={() => handleLinkClick(<ViewBillings />)} style={{ marginTop: "3em" }}>
-                <h6>BILLINGS</h6>
+              <div className="menu-item" onClick={() => handleLinkClick(<ViewBillings />)} style={{ marginTop: "1.5em" }}>
+                <i className="fas fa-file-invoice-dollar"></i>
+                {isSidebarExpanded && <span className="menu-text">BILLINGS</span>}
               </div>
-              <div onClick={() => handleLinkClick(<Enquiry />)} style={{ marginTop: "3em" }}>
-                <h6>ENQUIRY</h6>
+              <div className="menu-item" onClick={() => handleLinkClick(<Enquiry />)} style={{ marginTop: "1.5em" }}>
+                <i className="fas fa-question-circle"></i>
+                {isSidebarExpanded && <span className="menu-text">ENQUIRY</span>}
               </div>
-              <div onClick={() => handleLinkClick(<Message />)} style={{ marginTop: "3em" }}>
-                <h6>MESSAGES</h6>
+              <div className="menu-item" onClick={() => handleLinkClick(<Message />)} style={{ marginTop: "1.5em" }}>
+                <i className="fas fa-envelope"></i>
+                {isSidebarExpanded && <span className="menu-text">MESSAGES</span>}
               </div>
-              <div onClick={() => handleLinkClick(<Review />)} style={{ marginTop: "3em" }}>
-                <h6>REVIEW</h6>
+              <div className="menu-item" onClick={() => handleLinkClick(<Review />)} style={{ marginTop: "1.5em" }}>
+                <i className="fas fa-star"></i>
+                {isSidebarExpanded && <span className="menu-text">REVIEW</span>}
               </div>
-              <div onClick={handleLogout} style={{ marginTop: "9em" }}>
-                <h6>LOG OUT</h6>
+              <div className="menu-item" onClick={handleLogout} style={{ marginTop: "4em" }}>
+                <i className="fas fa-sign-out-alt"></i>
+                {isSidebarExpanded && <span className="menu-text">LOG OUT</span>}
               </div>
             </div>
           </div>
         </div>
 
-        <div className="col-sm-6" id="main body">
+        <div className="col-sm-6" id="main-body">
           <div className="card" style={{ height: "40em", width: "60em", marginRight: "3em" }}>
-            <h5 className=" text-muted">Hello {username}</h5>
-
+            <h5 className="text-muted">Hello {username}</h5>
             <div className="card-body">
               {activeComponent}
             </div>

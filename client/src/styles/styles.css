@@ -201,11 +201,104 @@
   transform: scale(1.05); /* Slightly larger on hover */
 }
 
+#sidepane.collapsed {
+  width: 4em;
+}
+
+#sidepane.expanded {
+  width: 16em;
+}
+
+#sidepane.collapsed {
+  width: 4em;
+}
+
+#sidepane.expanded {
+  width: 16em;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 0.75em 0; /* Reduce padding to fit all items */
+}
+
+.menu-item i {
+  font-size: 1.5em;
+}
+
+.menu-item .menu-text {
+  margin-left: 1em;
+  display: inline;
+}
+
+#dashboard .card {
+  transition: width 0.3s ease;
+}
+
+#sidepane .card {
+  transition: width 0.3s ease;
+}
+
+.menu-item:hover .menu-text {
+  color: #007bff;
+}
+
+.menu-item:hover i {
+  color: #007bff;
+}
 
 
+body, html {
+  background: linear-gradient(to right, hsl(147, 88%, 35%), #00b300, #66ff66); /* Same background as navbar */
+  color: #000000; /* Ensure text is visible against the background */
+}
 
+/* Main body styles */
+#main-body .card {
+  background: linear-gradient(to right, hsl(147, 88%, 35%), #00b300, #66ff66); /* Same background as navbar */
+  color: #000000;
+  border: none; /* Make border invisible */
+}
 
+#main-body .card-body {
+  color: #000000; /* Ensure text is visible */
+}
 
+/* Sidebar styles */
+#sidepane .card {
+  background: linear-gradient(to right, hsl(147, 88%, 35%), #00b300, #66ff66); /* Same background as navbar */
+  color: #000000;
+  border: none; /* Make border invisible */
+}
+
+#sidepane .menu-item {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 0.75em 0;
+  color: #000000; /* Ensure text is visible */
+}
+
+#sidepane .menu-item i {
+  font-size: 1.5em;
+  color: #000000; /* Ensure icons are visible */
+}
+
+#sidepane .menu-item .menu-text {
+  margin-left: 1em;
+  display: inline;
+  color: #000000; /* Ensure text is visible */
+}
+
+#sidepane .menu-item:hover .menu-text {
+  color: #007bff;
+}
+
+#sidepane .menu-item:hover i {
+  color: #007bff;
+}
 
 
 
