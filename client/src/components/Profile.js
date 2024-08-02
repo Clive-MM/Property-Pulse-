@@ -239,6 +239,15 @@ function Profile() {
             <div style={{ marginTop: "1em" }}>
               <input
                 type="text"
+                name="contact"
+                placeholder="contact"
+                value={contact}
+                onChange={handleChange}
+              />
+            </div>
+            <div style={{ marginTop: "1em" }}>
+              <input
+                type="text"
                 name="address"
                 placeholder="Address"
                 value={address}

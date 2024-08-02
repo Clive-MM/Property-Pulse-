@@ -110,18 +110,21 @@ function Billing() {
 
   return (
     <div className="billing">
-     <h1 className="text-muted" >Billing</h1>
+      <h1 className="text-muted">Billing</h1>
 
       <div className="card text-center" style={{ width: "18em", marginLeft: "20em", marginTop: "1em" }}>
-        
         <div className="card-body">
           <form onSubmit={handleSubmit}>
             <div style={{ marginBottom: ".5em" }}>
               <label htmlFor="apartment">Apartment</label>
-              <select id="apartment" value={selectedApartment} onChange={(e) => setSelectedApartment(e.target.value)}>
+              <select
+                id="apartment"
+                value={selectedApartment}
+                onChange={(e) => setSelectedApartment(e.target.value)}
+              >
                 <option value="">Select Apartment</option>
-                {apartments.map((apartment) => (
-                  <option key={apartment} value={apartment}>
+                {apartments.map((apartment, index) => (
+                  <option key={index} value={apartment}>
                     {apartment}
                   </option>
                 ))}
@@ -130,7 +133,11 @@ function Billing() {
 
             <div style={{ marginBottom: "1em" }}>
               <label htmlFor="resident">Resident</label>
-              <select id="resident" value={selectedTenant} onChange={(e) => setSelectedTenant(e.target.value)}>
+              <select
+                id="resident"
+                value={selectedTenant}
+                onChange={(e) => setSelectedTenant(e.target.value)}
+              >
                 <option value="">Select Tenant</option>
                 {tenants.map((tenant, index) => (
                   <option key={index} value={tenant}>
@@ -142,12 +149,22 @@ function Billing() {
 
             <div style={{ marginTop: "2em" }}>
               <label htmlFor="amenity">Amenity</label>
-              <input type="text" id="amenity" value={amenity} onChange={(e) => setAmenity(e.target.value)} />
+              <input
+                type="text"
+                id="amenity"
+                value={amenity}
+                onChange={(e) => setAmenity(e.target.value)}
+              />
             </div>
 
             <div style={{ marginTop: "2em" }}>
               <label htmlFor="amount">Amount</label>
-              <input type="number" id="amount" value={amount} onChange={(e) => setAmount(e.target.value)} />
+              <input
+                type="number"
+                id="amount"
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+              />
             </div>
 
             <button type="submit" className="btn btn-primary" style={{ marginTop: "2em" }}>

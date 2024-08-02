@@ -136,7 +136,11 @@ function Homepage() {
                   documents and the provision of lease agreements.
                 </em>
               </p>
-              <a style={{marginTop:'5em'}} href="/aboutus" className="btn btn-primary hidden-text">
+              <a
+                style={{ marginTop: "5em" }}
+                href="/aboutus"
+                className="btn btn-primary hidden-text"
+              >
                 ABOUT US
               </a>
             </div>
@@ -185,6 +189,7 @@ function Homepage() {
                 className="form-control"
                 id="exampleFormControlTextarea1"
                 rows="3"
+                style={{ width: "50%" }}
                 placeholder="Message"
               ></textarea>
             </div>
