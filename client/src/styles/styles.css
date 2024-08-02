@@ -300,6 +300,36 @@ body, html {
   color: #007bff;
 }
 
+/* Additional styles for the LandlordDashboard sidebar */
+.landlord-sidepane .menu-item {
+  padding: 0.75em 0; /* Adjust padding to ensure items fit within the sidebar */
+}
+
+.landlord-sidepane .menu-item i {
+  font-size: 1.5em; /* Ensure icons are the same size */
+}
+
+.landlord-sidepane .menu-item .menu-text {
+  margin-left: 1em; /* Ensure text margin is consistent */
+}
+
+.landlord-sidepane .card {
+  height: auto; /* Allow the card to adjust height based on content */
+  overflow-y: auto; /* Add scroll if content overflows */
+}
+
+/* Ensure consistent spacing for each menu item */
+.landlord-sidepane .menu-item {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 0.75em 1em; /* Add more padding to ensure proper spacing */
+}
+
+.landlord-sidepane .menu-item:hover .menu-text,
+.landlord-sidepane .menu-item:hover i {
+  color: #007bff; /* Hover color */
+}
 
 
 

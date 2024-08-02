@@ -82,7 +82,7 @@ function LandlordDashboard() {
 
       <div className="row" id="dashboard">
         <div className={`col-sm-6 ${isSidebarExpanded ? "expanded" : "collapsed"}`} id="sidepane">
-          <div className="card" style={{ height: "35em", marginLeft: "3px" }}>
+          <div className="card" style={{ height: "46em", marginLeft: "3px" }}>
             <div className="card-body">
               <div className="menu-item" onClick={toggleSidebar} style={{ cursor: "pointer", display: "flex", alignItems: "center" }}>
                 <i className={`fas fa-${isSidebarExpanded ? "angle-left" : "bars"}`}></i>
@@ -121,7 +121,7 @@ function LandlordDashboard() {
                 <i className="fas fa-star"></i>
                 {isSidebarExpanded && <span className="menu-text">REVIEW</span>}
               </div>
-              <div className="menu-item" onClick={handleLogout} style={{ marginTop: "4em" }}>
+              <div className="menu-item" onClick={handleLogout} style={{ marginTop: "2em" }}>
                 <i className="fas fa-sign-out-alt"></i>
                 {isSidebarExpanded && <span className="menu-text">LOG OUT</span>}
               </div>
@@ -130,7 +130,7 @@ function LandlordDashboard() {
         </div>
 
         <div className="col-sm-6" id="main-body">
-          <div className="card" style={{ height: "40em", width: "60em", marginRight: "3em" }}>
+          <div className="card" style={{ height: "46em", width: "60em", marginRight: "3em" }}>
             <h5 className="text-muted">Hello {username}</h5>
             <div className="card-body">
               {activeComponent}
