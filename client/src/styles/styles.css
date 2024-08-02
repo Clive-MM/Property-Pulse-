@@ -331,6 +331,54 @@ body, html {
   color: #007bff; /* Hover color */
 }
 
+@keyframes fadeIn {
+  from {
+      opacity: 0;
+      transform: translateY(20px);
+  }
+  to {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
+
+.hidden-text {
+  opacity: 0; /* Hidden by default */
+  transform: translateY(20px); /* Start with a slight move up */
+  transition: opacity 1s ease-out, transform 1s ease-out;
+}
+
+.show-text {
+  opacity: 1;
+  transform: translateY(0);
+  animation: fadeIn 1s ease-out;
+}
+
+body {
+  background: linear-gradient(to right, #00ff7f, #00ff00);
+  font-family: Arial, sans-serif;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  text-align: center;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+  font-size: 2.5em;
+  color: #006400;
+  margin: 0;
+}
+
+header p {
+  font-size: 1.2em;
+}
+
 
 
 

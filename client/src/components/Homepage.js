@@ -40,6 +40,12 @@ function Homepage() {
       }
     });
 
+    // Trigger fade-in animation on page load
+    const hiddenTexts = document.querySelectorAll(".hidden-text");
+    hiddenTexts.forEach((text) => {
+      text.classList.add("show-text");
+    });
+
     // Cleanup event listeners on component unmount
     return () => {
       tabLinks.forEach((tab) => {
@@ -83,7 +89,7 @@ function Homepage() {
 
       <div className="card bg-white text-black" id="card">
         <div className="card-img-overlay">
-          <p className="card-text">
+          <p className="card-text hidden-text">
             <strong>
               <em>
                 Dreaming of your own slice of paradise? Property Pulse makes it
@@ -91,7 +97,7 @@ function Homepage() {
               </em>
             </strong>
           </p>
-          <p id="para1">
+          <p id="para1" className="hidden-text">
             <strong>
               <em>
                 Say goodbye to the hassle of house hunting and hello to a smooth
@@ -100,7 +106,7 @@ function Homepage() {
             </strong>
           </p>
 
-          <p id="para2">
+          <p id="para2" className="hidden-text">
             <strong>
               <em>
                 Explore the wide range of apartment varieties tailored to your
@@ -116,8 +122,8 @@ function Homepage() {
         <div className="col-sm-6" id="products">
           <div className="card" id="summary">
             <div className="card-body">
-              <h5 className="card-title">WHAT DO WE OFFER?</h5>
-              <p className="card-text">
+              <h5 className="card-title hidden-text">WHAT DO WE OFFER?</h5>
+              <p className="card-text hidden-text">
                 <em>
                   At the heart of our mission is the seamless management of the
                   leasing cycle, ensuring both landlords and tenants experience
@@ -130,7 +136,7 @@ function Homepage() {
                   documents and the provision of lease agreements.
                 </em>
               </p>
-              <a href="/aboutus" className="btn btn-primary">
+              <a style={{marginTop:'5em'}} href="/aboutus" className="btn btn-primary hidden-text">
                 ABOUT US
               </a>
             </div>
@@ -139,7 +145,7 @@ function Homepage() {
         <div className="col-sm-6" id="products">
           <div className="card" id="summary">
             <div className="card-body">
-              <h5 className="card-title">OUR PRODUCTS</h5>
+              <h5 className="card-title hidden-text">OUR PRODUCTS</h5>
             </div>
           </div>
         </div>
@@ -185,7 +191,6 @@ function Homepage() {
           </div>
         </div>
       </div>
-
       <footer
         className="bg-primary text-white text-center text-lg-start"
         id="footer"
@@ -220,9 +225,9 @@ function Homepage() {
             </div>
             <div className="col-lg-3 col-md-6 mb-4 mb-md-0">
               <a href="/contactus">
-              <h5 className="text-uppercase mb-0">CONTACT US</h5>
+                <h5 className="text-uppercase mb-0">CONTACT US</h5>
               </a>
-              
+
               <section className="mb-4">
                 <a
                   data-mdb-ripple-init
