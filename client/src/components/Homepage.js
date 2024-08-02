@@ -219,7 +219,10 @@ function Homepage() {
               </ul>
             </div>
             <div className="col-lg-3 col-md-6 mb-4 mb-md-0">
+              <a href="/contactus">
               <h5 className="text-uppercase mb-0">CONTACT US</h5>
+              </a>
+              
               <section className="mb-4">
                 <a
                   data-mdb-ripple-init
