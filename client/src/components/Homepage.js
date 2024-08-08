@@ -61,10 +61,14 @@ function Homepage() {
         </div>
         <div className="right-half">
           <div className="text-container">
-            <h1 className="hero-title card-text hidden-text show-text">Let's make your vision come to life</h1>
+            <h1 className="hero-title card-text hidden-text show-text">
+              Let's make your vision come to life
+            </h1>
             <div className="card" id="summary">
               <div className="card-body">
-                <h5 className="card-title hidden-text show-text">WHAT DO WE OFFER?</h5>
+                <h5 className="card-title hidden-text show-text">
+                  WHAT DO WE OFFER?
+                </h5>
                 <p className="card-text hidden-text show-text">
                   <em>
                     At the heart of our mission is the seamless management of
@@ -79,7 +83,10 @@ function Homepage() {
                     agreements.
                   </em>
                 </p>
-                <a href="/aboutus" className="btn btn-primary hidden-text show-text">
+                <a
+                  href="/aboutus"
+                  className="btn btn-primary hidden-text show-text"
+                >
                   ABOUT US
                 </a>
               </div>
@@ -106,13 +113,19 @@ function Homepage() {
               <h5 className="text-uppercase">Links</h5>
               <ul className="list-unstyled mb-0">
                 <li>
-                  <a href="/" className="text-red">HOME</a>
+                  <a href="/" className="text-red">
+                    HOME
+                  </a>
                 </li>
                 <li>
-                  <a href="/aboutus" className="text-red">ABOUT US</a>
+                  <a href="/aboutus" className="text-red">
+                    ABOUT US
+                  </a>
                 </li>
                 <li>
-                  <a href="/login" className="text-red">LOG IN</a>
+                  <a href="/login" className="text-red">
+                    LOG IN
+                  </a>
                 </li>
               </ul>
             </div>
@@ -167,7 +180,10 @@ function Homepage() {
             </div>
           </div>
         </div>
-        <div className="text-center p-3" style={{ backgroundColor: "rgba(0, 0, 0, 0.2)" }}>
+        <div
+          className="text-center p-3"
+          style={{ backgroundColor: "rgba(0, 0, 0, 0.2)" }}
+        >
           © 2024
           <a className="text-white" href="/">
             <em>www.propertypulse.com</em>

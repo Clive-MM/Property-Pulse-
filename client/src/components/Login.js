@@ -44,10 +44,10 @@ function Login() {
 
   return (
     <div id="login" style={styles.pageBackground}>
-      <div class="card text-center" style={styles.card}>
-        <div class="card-header" style={styles.cardHeader}>Login</div>
+      <div className="card text-center" style={styles.card}>
+        <div className="card-header" style={styles.cardHeader}>Login</div>
 
-        <div class="card-body" style={styles.cardBody}>
+        <div className="card-body" style={styles.cardBody}>
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -64,7 +64,7 @@ function Login() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 style={styles.input}
-              ></input>
+              />
             </div>
 
             <div className="form-group">
@@ -77,7 +77,7 @@ function Login() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 style={styles.input}
-              ></input>
+              />
             </div>
 
             <div style={{ marginTop: "2em" }}>
@@ -95,7 +95,7 @@ function Login() {
             )}
           </form>
         </div>
-        <div class="card-footer text-muted" style={styles.cardFooter}>
+        <div className="card-footer text-muted" style={styles.cardFooter}>
           <p>
             Don't have an account? <a href="/register" style={styles.link}>Sign Up Here</a>
           </p>
@@ -108,13 +108,13 @@ function Login() {
 const styles = {
   pageBackground: {
     background: "linear-gradient(to right, green, lightgreen)",
-    height: "100vh",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
+    height: '100vh',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
     margin: 0,
     padding: 0,
-    overflow: "hidden",
+    overflow: 'hidden',
   },
   card: {
     width: "30em",

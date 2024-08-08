@@ -1,36 +1,17 @@
-/* Slideshow Styles */
-.left-half {
-  position: relative;
-  overflow: hidden; /* Hide overflow to maintain image dimensions */
-  width: 100%;
-  height: 500px; /* Set a default height for the slideshow */
-}
-
-.slideshow {
-  display: flex;
-  width: 100%;
-  height: 100%;
-  position: relative;
-}
-
-.slide {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* Ensure the image covers the container */
-  opacity: 0;
-  transition: opacity 1s ease-in-out; /* Smooth transition for image change */
-}
-
-.slide.active {
-  opacity: 1;
+/* Background Gradient */
+body {
+  background: linear-gradient(135deg, violet, navy, neon, pink); /* Gradient colors */
+  color: white; /* Default text color for contrast */
+  margin: 0;
+  font-family: 'Arial', sans-serif; /* Consistent font */
 }
 
 /* Navbar Styles */
 .navbar-custom {
-  background-color: rgba(0, 0, 0, 0.8);
-  padding: 0.5em; /* Reduce the padding to decrease the height */
+  background: linear-gradient(135deg, #4a90e2, #6f42c1, #e94e77); /* Gradient with blue, purple, and pink */
+  padding: 0.5em; /* Adjust padding as needed */
 }
+
 
 .navbar-brand h1,
 .navbar-brand p {
@@ -86,10 +67,38 @@
   color: #ddd; /* Change icon color on hover */
 }
 
+/* Slideshow Styles */
+.left-half {
+  position: relative;
+  overflow: hidden; /* Hide overflow to maintain image dimensions */
+  width: 100%;
+  height: 500px; /* Set a default height for the slideshow */
+}
+
+.slideshow {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.slide {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensure the image covers the container */
+  opacity: 0;
+  transition: opacity 1s ease-in-out; /* Smooth transition for image change */
+}
+
+.slide.active {
+  opacity: 1;
+}
+
 /* Footer Styles */
 .footer {
-  background-color: rgba(0, 0, 0, 0.8);
-  color: white;
+  background: linear-gradient(135deg, #4a90e2, #6f42c1, #e94e77); /* Gradient with blue, purple, and pink */
+  color: white; /* Text color for contrast */
   padding: 1em 0; /* Adjust padding for the footer */
 }
 
@@ -100,19 +109,16 @@
 }
 
 .footer a {
-  color: white;
-  text-decoration: none;
+  color: white; /* Default link color */
+  text-decoration: none; /* Remove underline from links */
   transition: transform 0.3s, color 0.3s; /* Smooth transition for scaling and color change */
 }
 
 .footer a:hover {
-  transform: scale(1.2); /* Enlarge the text */
-  color: red; /* Change text color */
+  transform: scale(1.2); /* Enlarge the text on hover */
+  color: #08eb41; /* Change text color to a light pink on hover */
 }
 
-.footer a:hover .footer-text {
-  display: block; /* Show text on hover if applicable */
-}
 
 /* Main Content Styles */
 .main-content {
@@ -171,7 +177,7 @@
 }
 
 /* Add font styling */
-.card-title,
+
 .card-text,
 .btn-primary {
   font-family: 'Arial', sans-serif; /* Example font family */
@@ -205,5 +211,18 @@
 .btn-primary:hover {
   background-color: #0056b3; /* Darker shade on hover */
 }
+/* Button Styles */
+.btn-primary {
+  background: linear-gradient(135deg, #4a90e2, #6f42c1, #e94e77); /* Gradient for button background */
+  border: none; /* Remove default border */
+  color: white; /* Text color */
+  padding: 0.5em 1em; /* Padding for the button */
+  font-size: 1em; /* Font size */
+  border-radius: 0.25em; /* Rounded corners */
+  transition: background 0.3s, transform 0.3s; /* Smooth transition for background and scale */
+}
 
-
+.btn-primary:hover {
+  background: linear-gradient(135deg, #6f42c1, #e94e77, #4a90e2); /* Change gradient on hover */
+  transform: scale(1.05); /* Slightly enlarge the button on hover */
+}
