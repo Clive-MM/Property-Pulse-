@@ -12,7 +12,6 @@ body {
   padding: 0.5em; /* Adjust padding as needed */
 }
 
-
 .navbar-brand h1,
 .navbar-brand p {
   color: white;
@@ -119,7 +118,6 @@ body {
   color: #08eb41; /* Change text color to a light pink on hover */
 }
 
-
 /* Main Content Styles */
 .main-content {
   display: flex;
@@ -132,7 +130,7 @@ body {
 .left-half,
 .right-half {
   flex: 1; /* Ensure both sections take up equal space */
-  padding: 10px; /* Adjust padding as needed */
+  padding: 3px; /* Adjust padding as needed */
 }
 
 .hero-title {
@@ -176,41 +174,20 @@ body {
   }
 }
 
-/* Add font styling */
-
-.card-text,
-.btn-primary {
-  font-family: 'Arial', sans-serif; /* Example font family */
-  font-weight: bold; /* Example font weight */
-  color: #333; /* Example color */
+/* Text Container Styles */
+.text-container {
+  background: linear-gradient(135deg, #4a90e2, #6f42c1, #e94e77); /* Gradient background */
+  padding: 2em; /* Add padding for spacing */
+  border-radius: 0.9em; /* Rounded corners for a softer look */
+  color: white; /* Text color for visibility */
 }
 
-/* Specific styling for the card-title */
-.card-title {
-  font-size: 1.2em; /* Adjust as needed */
-  color: #000; /* Example color */
+.text-container h1,
+.text-container h5,
+.text-container p {
+  color: rgb(7, 24, 180); /* Ensures text is visible against the gradient */
 }
 
-/* Specific styling for the card-text */
-.card-text {
-  font-size: 1em; /* Adjust as needed */
-  line-height: 1.5; /* Adjust line height for readability */
-}
-
-/* Styling for buttons */
-.btn-primary {
-  background-color: #007bff; /* Example background color */
-  border: none; /* Remove default border */
-  color: white; /* Text color */
-  padding: 0.5em 1em; /* Padding */
-  font-size: 1em; /* Font size */
-  border-radius: 0.25em; /* Rounded corners */
-  transition: background-color 0.3s; /* Smooth background color change */
-}
-
-.btn-primary:hover {
-  background-color: #0056b3; /* Darker shade on hover */
-}
 /* Button Styles */
 .btn-primary {
   background: linear-gradient(135deg, #4a90e2, #6f42c1, #e94e77); /* Gradient for button background */

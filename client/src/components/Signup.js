@@ -131,7 +131,7 @@ function Signup() {
 
 const styles = {
   pageBackground: {
-    background: "linear-gradient(to right, green, lightgreen)",
+    background: "linear-gradient(to right, violet, purple)",
     height: "100vh",
     display: "flex",
     justifyContent: "center",
@@ -165,10 +165,13 @@ const styles = {
     marginBottom: "1em",
   },
   button: {
-    backgroundColor: "green",
-    borderColor: "green",
-    color: "white",
-    marginTop: "1em",
+    background: "linear-gradient(to right, violet, purple)", // Gradient background
+    borderColor: "transparent",
+    color: "white", // Text color to ensure readability
+    padding: "0.5em 1em", // Adjust padding as needed
+    borderRadius: "5px", // Rounded corners for the button
+    cursor: "pointer", // Pointer cursor on hover
+    transition: "background 0.3s", // Smooth background transition
   },
   cardFooter: {
     backgroundColor: "#f8f9fa",

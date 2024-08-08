@@ -45,7 +45,9 @@ function Login() {
   return (
     <div id="login" style={styles.pageBackground}>
       <div className="card text-center" style={styles.card}>
-        <div className="card-header" style={styles.cardHeader}>Login</div>
+        <div className="card-header" style={styles.cardHeader}>
+          Login
+        </div>
 
         <div className="card-body" style={styles.cardBody}>
           <form
@@ -81,23 +83,41 @@ function Login() {
             </div>
 
             <div style={{ marginTop: "2em" }}>
-              <button type="submit" className="btn btn-success" style={styles.button}>
+              <button
+                type="submit"
+                className="btn btn-primary"
+                style={styles.button}
+              >
                 Login
               </button>
             </div>
 
-            <div className="form-group mt-3"></div>
-
             {errorMessage && (
-              <div className="alert alert-danger" role="alert">
+              <div
+                className="alert alert-danger mt-3"
+                role="alert"
+                style={styles.errorAlert}
+              >
                 {errorMessage}
               </div>
             )}
           </form>
         </div>
         <div className="card-footer text-muted" style={styles.cardFooter}>
-          <p>
-            Don't have an account? <a href="/register" style={styles.link}>Sign Up Here</a>
+          <p style={{ color: "blue" }}>
+            Don't have an account?
+            <a
+              href="/register"
+              style={styles.link}
+              onMouseOver={(e) =>
+                (e.currentTarget.style.color = styles.linkHover.color)
+              }
+              onMouseOut={(e) =>
+                (e.currentTarget.style.color = styles.link.color)
+              }
+            >
+              Sign Up Here
+            </a>
           </p>
         </div>
       </div>
@@ -107,51 +127,65 @@ function Login() {
 
 const styles = {
   pageBackground: {
-    background: "linear-gradient(to right, green, lightgreen)",
-    height: '100vh',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
+    background: "linear-gradient(to right, violet, neon)", // Match the homepage gradient
+    height: "100vh",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
     margin: 0,
     padding: 0,
-    overflow: 'hidden',
+    overflow: "hidden",
   },
   card: {
     width: "30em",
-    color: "#000",
-    backgroundColor: "#fff",
+    color: "#fff", // Ensure text is visible
+    backgroundColor: "rgba(0, 0, 0, 0.7)", // Semi-transparent background
     borderRadius: "10px",
-    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
   },
   cardHeader: {
-    backgroundColor: "green",
+    background: "linear-gradient(135deg, violet, navy, neon, pink)", // Match the homepage gradient
     color: "white",
     fontSize: "1.5em",
     fontWeight: "bold",
   },
   cardBody: {
+    backgroundColor: "#fff",
     padding: "2em",
+    
   },
   label: {
     fontSize: "1em",
-    color: "green",
+    color: "#000", // Ensure text is visible
     fontWeight: "bold",
   },
   input: {
     marginBottom: "1em",
+    backgroundColor: "#fff", // Input background color
+    color: "#000", // Input text color
   },
   button: {
-    backgroundColor: "green",
-    borderColor: "green",
+    background: "linear-gradient(135deg, violet, navy, neon, pink)", // Match the homepage gradient
+    borderColor: "transparent",
     color: "white",
   },
   cardFooter: {
-    backgroundColor: "#f8f9fa",
-    color: "green",
+    backgroundColor: "#fff", // Set background color to white
+    color: "#000", // Ensure text color is visible against the white background
   },
   link: {
-    color: "blue",
-    textDecoration: "underline",
+    color: "#00f", // Default link color
+    textDecoration: "none", // Remove underline
+    transition: "color 0.3s", // Smooth color transition
+  },
+  linkHover: {
+    color: "green", // Change link color to green on hover
+  },
+  errorAlert: {
+    color: "#fff", // Ensure error message is visible
+    backgroundColor: "#f44336", // Red background for error message
+    border: "none",
+    borderRadius: "0.25em",
   },
 };
 
