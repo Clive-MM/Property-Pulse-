@@ -1,384 +1,209 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
-
-  .form-group a {
-    color: rgb(29, 15, 235); 
-    text-decoration: none; 
-    transition: color 0.3s; 
-  }
-
- 
-  .form-group a:hover {
-    color: green;
-  }
-
-  #card{
-    
-    height: 20em;
-    margin-top: .5em;
-    margin-left: 10px;
-    margin-right: 10px;
-  }
-
-  #para1{
-    margin-top: 6em;
-  }
-
-  #aboutus{
-   
-   margin: 10px;
-    
-   
-  }
-
-  #products{
-    height: 15em;
-  }
-
-  #summary{
-    height: 17.5em;
-  }
-
-  #feedback{
-   margin-top: 3em;
-   margin-left: .5em;
-   margin-right: .5em;
-   line-height: 2em;
-  }
-  #displaycard{
-    line-height: 15em;
-  }
-  #footer {
-    background: linear-gradient(to right, hsl(147, 88%, 35%), #00b300, #66ff66);
-    color: #ffffff;
-    border: 2px;
-    border-radius: 4px;
-    margin: 4.8px;
-  }
-  
-  #footer a {
-    color: #ffffff;
-    text-decoration: none;
-  }
-  
-  #footer a:hover {
-    color: #ccffcc;
-  }
-  
-  #login{
-    margin: 10em;
-   
-  }
-
-  #register{
-    margin-top: 8em;
-    width: 28em;
-  }
-#passport{
-  margin: 3em;
-  width: 18em;
-  line-height: 10em;
-}
-#profile{
- 
-  margin: 2em;
-  width: 20em;
-}
-#category{
-  margin:  2em;
-}
-
-#apartment{
-  margin:2em;
-}
-
-
-#dashboard {
-  display: flex;
-}
-
-#sidepane {
-  flex: 0 0 15em; /* Set sidepane width */
-}
-
-#main body {
-  width: calc(100% - 15em); /* Set mainview width to fill remaining space */
-}
-
-.card-img-container {
-  height: 10em; /* Adjust as needed */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.card-img-top {
-  width: auto; /* To maintain the aspect ratio of the image */
-  height: 100%;
-  object-fit: cover;
-}
-
-
-/* Navbar styling */
-.navbar-custom {
-  background: linear-gradient(to right, hsl(147, 88%, 35%), #00b300, #66ff66);
-}
-
-.navbar-custom .navbar-brand {
-  color: #000000;
-  font-weight: bold;
-  text-decoration: none;
-}
-
-.navbar-custom .navbar-brand:hover {
-  color: #000000;
-}
-
-.navbar-custom .nav-link {
-  color: #ffffff;
-  font-size: 24px; /* Increased font size for better visibility */
-  text-decoration: none;
-  margin-left: 30px; /* Increase the left margin for better spacing */
+/* Slideshow Styles */
+.left-half {
   position: relative;
+  overflow: hidden; /* Hide overflow to maintain image dimensions */
+  width: 100%;
+  height: 500px; /* Set a default height for the slideshow */
+}
+
+.slideshow {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 60px; /* Adjust height for better spacing */
+  width: 100%;
+  height: 100%;
+  position: relative;
 }
 
-.navbar-custom .nav-link .nav-text {
-  visibility: hidden;
-  opacity: 0;
+.slide {
   position: absolute;
-  top: 50px; /* Adjusted top position to appear below the icons */
-  background-color: white;
-  color: black;
-  padding: 2px 5px;
-  border-radius: 3px;
-  transition: visibility 0.3s, opacity 0.3s;
-  font-size: 14px; /* Adjusted font size */
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensure the image covers the container */
+  opacity: 0;
+  transition: opacity 1s ease-in-out; /* Smooth transition for image change */
 }
 
-.navbar-custom .nav-link:hover .nav-text {
-  visibility: visible;
+.slide.active {
   opacity: 1;
 }
 
-.navbar-custom .nav-link:hover {
-  color: #ccffcc;
+/* Navbar Styles */
+.navbar-custom {
+  background-color: rgba(0, 0, 0, 0.8);
+  padding: 0.5em; /* Reduce the padding to decrease the height */
 }
 
-.navbar-custom .nav-link i {
-  margin-bottom: 5px;
+.navbar-brand h1,
+.navbar-brand p {
+  color: white;
+  margin: 0; /* Remove any default margin to further reduce height */
 }
 
-.navbar-custom .ml-auto {
-  margin-left: auto;
+.navbar-brand p {
+  font-size: 0.9em; /* Reduce the font size if needed */
+}
+
+.nav-link {
+  color: white;
   display: flex;
-  align-items: center;
+  flex-direction: column; /* Stack items vertically */
+  align-items: center; /* Center items horizontally */
+  font-size: 1.2em; /* Adjust icon size */
+  margin-right: 2em; /* Increase spacing between icons */
+  position: relative; /* For absolute positioning of text */
+  text-decoration: none; /* Ensure no underline */
+  transition: margin-top 0.3s; /* Smooth transition for margin change */
 }
 
-.navbar-custom .nav-link:last-child {
-  margin-right: 40px; /* Add margin-right to the last icon */
+.nav-link:hover {
+  margin-top: -0.5em; /* Move icon up on hover */
 }
 
-.sendButton {
-  display: inline-block;
-  padding: 0.5em 2em;
-  font-size: 1em;
-  font-weight: bold;
-  color: #fff;
-  background-color: #007BFF; /* Contrasting color */
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-top: 1em;
-  transition: background-color 0.3s ease, transform 0.3s ease;
+.nav-link i {
+  margin-bottom: 0.2em; /* Space between icon and text */
+  transition: color 0.3s; /* Smooth color transition for icons */
 }
 
-.sendButton:hover {
-  background-color: #0056b3; /* Darker shade on hover */
-  transform: scale(1.05); /* Slightly larger on hover */
+.nav-link .nav-text {
+  display: none; /* Hide text by default */
+  margin-top: 0.5em; /* Space between icon and text */
+  font-size: 0.9em; /* Adjust text size if needed */
+  text-align: center; /* Center text below icon */
+  white-space: nowrap; /* Prevent text from wrapping */
+  position: absolute; /* Position below the icon */
+  bottom: -1.5em; /* Adjust positioning as needed */
+  left: 50%; /* Center text horizontally */
+  transform: translateX(-50%); /* Center text horizontally */
+  background: transparent; /* Remove background color */
+  padding: 0; /* Remove padding */
+  border: none; /* Remove border */
 }
 
-#sidepane.collapsed {
-  width: 4em;
+.nav-link:hover .nav-text {
+  display: block; /* Show text on hover */
 }
 
-#sidepane.expanded {
-  width: 16em;
+.nav-link:hover i {
+  color: #ddd; /* Change icon color on hover */
 }
 
-#sidepane.collapsed {
-  width: 4em;
+/* Footer Styles */
+.footer {
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 1em 0; /* Adjust padding for the footer */
 }
 
-#sidepane.expanded {
-  width: 16em;
+.footer h5,
+.footer p {
+  font-size: 0.9em; /* Adjust font size if needed */
+  margin: 0; /* Remove default margin to reduce space */
 }
 
-.menu-item {
+.footer a {
+  color: white;
+  text-decoration: none;
+  transition: transform 0.3s, color 0.3s; /* Smooth transition for scaling and color change */
+}
+
+.footer a:hover {
+  transform: scale(1.2); /* Enlarge the text */
+  color: red; /* Change text color */
+}
+
+.footer a:hover .footer-text {
+  display: block; /* Show text on hover if applicable */
+}
+
+/* Main Content Styles */
+.main-content {
   display: flex;
-  align-items: center;
-  cursor: pointer;
-  padding: 0.75em 0; /* Reduce padding to fit all items */
+  justify-content: space-between; /* Distribute space between items */
+  align-items: center; /* Center items vertically */
+  padding: 20px; /* Adjust padding as needed */
 }
 
-.menu-item i {
-  font-size: 1.5em;
+/* Style for left-half and right-half sections */
+.left-half,
+.right-half {
+  flex: 1; /* Ensure both sections take up equal space */
+  padding: 10px; /* Adjust padding as needed */
 }
 
-.menu-item .menu-text {
-  margin-left: 1em;
-  display: inline;
+.hero-title {
+  font-size: 1.5em; /* Adjust the title size if needed */
+  margin-bottom: 1em; /* Add margin below the title */
 }
 
-#dashboard .card {
-  transition: width 0.3s ease;
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+  .main-content {
+    flex-direction: column; /* Stack items vertically on small screens */
+  }
+
+  .left-half,
+  .right-half {
+    width: 100%; /* Full width on smaller screens */
+  }
 }
 
-#sidepane .card {
-  transition: width 0.3s ease;
+/* Text Fade-In Effect */
+.hidden-text {
+  opacity: 0; /* Hidden by default */
+  transform: translateY(20px); /* Start with a slight move up */
+  transition: opacity 1s ease-out, transform 1s ease-out; /* Smooth transitions */
 }
 
-.menu-item:hover .menu-text {
-  color: #007bff;
-}
-
-.menu-item:hover i {
-  color: #007bff;
-}
-
-
-body, html {
-  background: linear-gradient(to right, hsl(147, 88%, 35%), #00b300, #66ff66); /* Same background as navbar */
-  color: #000000; /* Ensure text is visible against the background */
-}
-
-/* Main body styles */
-#main-body .card {
-  background: linear-gradient(to right, hsl(147, 88%, 35%), #00b300, #66ff66); /* Same background as navbar */
-  color: #000000;
-  border: none; /* Make border invisible */
-}
-
-#main-body .card-body {
-  color: #000000; /* Ensure text is visible */
-}
-
-/* Sidebar styles */
-#sidepane .card {
-  background: linear-gradient(to right, hsl(147, 88%, 35%), #00b300, #66ff66); /* Same background as navbar */
-  color: #000000;
-  border: none; /* Make border invisible */
-}
-
-#sidepane .menu-item {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  padding: 0.75em 0;
-  color: #000000; /* Ensure text is visible */
-}
-
-#sidepane .menu-item i {
-  font-size: 1.5em;
-  color: #000000; /* Ensure icons are visible */
-}
-
-#sidepane .menu-item .menu-text {
-  margin-left: 1em;
-  display: inline;
-  color: #000000; /* Ensure text is visible */
-}
-
-#sidepane .menu-item:hover .menu-text {
-  color: #007bff;
-}
-
-#sidepane .menu-item:hover i {
-  color: #007bff;
-}
-
-/* Additional styles for the LandlordDashboard sidebar */
-.landlord-sidepane .menu-item {
-  padding: 0.75em 0; /* Adjust padding to ensure items fit within the sidebar */
-}
-
-.landlord-sidepane .menu-item i {
-  font-size: 1.5em; /* Ensure icons are the same size */
-}
-
-.landlord-sidepane .menu-item .menu-text {
-  margin-left: 1em; /* Ensure text margin is consistent */
-}
-
-.landlord-sidepane .card {
-  height: auto; /* Allow the card to adjust height based on content */
-  overflow-y: auto; /* Add scroll if content overflows */
-}
-
-/* Ensure consistent spacing for each menu item */
-.landlord-sidepane .menu-item {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  padding: 0.75em 1em; /* Add more padding to ensure proper spacing */
-}
-
-.landlord-sidepane .menu-item:hover .menu-text,
-.landlord-sidepane .menu-item:hover i {
-  color: #007bff; /* Hover color */
+.show-text {
+  opacity: 1; /* Fully visible */
+  transform: translateY(0); /* Move to its original position */
+  animation: fadeIn 1s ease-out; /* Apply the fade-in animation */
 }
 
 @keyframes fadeIn {
   from {
-      opacity: 0;
-      transform: translateY(20px);
+    opacity: 0;
+    transform: translateY(20px);
   }
   to {
-      opacity: 1;
-      transform: translateY(0);
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-.hidden-text {
-  opacity: 0; /* Hidden by default */
-  transform: translateY(20px); /* Start with a slight move up */
-  transition: opacity 1s ease-out, transform 1s ease-out;
+/* Add font styling */
+.card-title,
+.card-text,
+.btn-primary {
+  font-family: 'Arial', sans-serif; /* Example font family */
+  font-weight: bold; /* Example font weight */
+  color: #333; /* Example color */
 }
 
-.show-text {
-  opacity: 1;
-  transform: translateY(0);
-  animation: fadeIn 1s ease-out;
+/* Specific styling for the card-title */
+.card-title {
+  font-size: 1.2em; /* Adjust as needed */
+  color: #000; /* Example color */
 }
 
-body {
-  background: linear-gradient(to right, #00ff7f, #00ff00);
-  font-family: Arial, sans-serif;
-  color: #333;
-  margin: 0;
-  padding: 0;
+/* Specific styling for the card-text */
+.card-text {
+  font-size: 1em; /* Adjust as needed */
+  line-height: 1.5; /* Adjust line height for readability */
 }
 
-header {
-  text-align: center;
-  padding: 20px;
-  background: rgba(255, 255, 255, 0.8);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+/* Styling for buttons */
+.btn-primary {
+  background-color: #007bff; /* Example background color */
+  border: none; /* Remove default border */
+  color: white; /* Text color */
+  padding: 0.5em 1em; /* Padding */
+  font-size: 1em; /* Font size */
+  border-radius: 0.25em; /* Rounded corners */
+  transition: background-color 0.3s; /* Smooth background color change */
 }
 
-header h1 {
-  font-size: 2.5em;
-  color: #006400;
-  margin: 0;
+.btn-primary:hover {
+  background-color: #0056b3; /* Darker shade on hover */
 }
-
-header p {
-  font-size: 1.2em;
-}
-
-
 
 
