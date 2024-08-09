@@ -166,7 +166,7 @@ function Profile() {
             >
               <div
                 className="card"
-                style={{ width: "50%", height: "15em", overflow: "hidden" }}
+                style={{ width: "50%", height: "20em", overflow: "hidden" }}
               >
                 <div className="card-body">
                   <h5 className="card-title">Passport</h5>
@@ -177,7 +177,7 @@ function Profile() {
                     style={{
                       width: "100%",
                       height: "100%",
-                      objectFit: "cover",
+                      objectFit: "fit",
                     }}
                   />
                 </div>
@@ -185,7 +185,7 @@ function Profile() {
               <div style={{ width: "1em" }}></div>
               <div
                 className="card"
-                style={{ width: "50%", height: "15em", overflow: "hidden" }}
+                style={{ width: "50%", height: "20em", overflow: "hidden" }}
               >
                 <div className="card-body">
                   <h5 className="card-title">Identification Card</h5>
@@ -196,7 +196,7 @@ function Profile() {
                     style={{
                       width: "100%",
                       height: "100%",
-                      objectFit: "cover",
+                      objectFit: "fit",
                     }}
                   />
                 </div>
@@ -260,7 +260,7 @@ function Profile() {
               <input
                 type="file"
                 onChange={(e) => setPassportFile(e.target.files[0])}
-                style={{ margin: ".4em" }}
+                style={{ margin: ".9em" }}
               />
             </div>
             <div style={{ marginTop: "1em", marginLeft: "11em" }}>

@@ -152,7 +152,7 @@ const styles = {
     color: "#fff",
   },
   brandSubtitle: {
-    color: "blue",
+    color: "#fff",
     marginLeft: ".5em",
     fontFamily: "'Roboto', sans-serif",
   },
@@ -189,10 +189,10 @@ const styles = {
     fontFamily: "'Roboto', sans-serif",
   },
   expanded: {
-    width: "250px", // Width when expanded
+    width: "250px", 
   },
   collapsed: {
-    width: "135px", // Width when collapsed
+    width: "135px", 
   },
   mainBody: {
     background: "rgba(255, 255, 255, 0.2)", 
@@ -200,8 +200,8 @@ const styles = {
     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
     backdropFilter: "blur(10px)", 
     padding: "2em",
-    flexGrow: 1, // Ensure it fills the remaining space
-    transition: "flex-grow 0.3s ease", // Smooth transition
+    flexGrow: 1, 
+    transition: "flex-grow 0.3s ease", 
   },
   textMuted: {
     color: "#ddd",

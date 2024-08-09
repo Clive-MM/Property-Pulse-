@@ -97,13 +97,13 @@ function ContactUs() {
 
 const styles = {
   container: {
-    background: "linear-gradient(135deg, #4a90e2, #6f42c1, #e94e77)", // Updated gradient
+    background: "linear-gradient(135deg, #4a90e2, #6f42c1, #e94e77)", 
     color: "#fff",
     minHeight: "100vh",
     padding: "2em",
   },
   navbar: {
-    background: "linear-gradient(135deg, #4a90e2, #6f42c1, #e94e77)", // Updated gradient
+    background: "linear-gradient(135deg, #4a90e2, #6f42c1, #e94e77)", 
   },
   brand: {
     color: "#fff",
@@ -115,7 +115,7 @@ const styles = {
     fontFamily: "'Roboto', sans-serif",
   },
   brandSubtitle: {
-    color: "blue",
+    color: "white",
     marginLeft: ".5em",
     fontFamily: "'Roboto', sans-serif",
   },
@@ -144,16 +144,16 @@ const styles = {
     gap: "1em",
   },
   socialLink: {
-    color: "#ccc", // Grey color to indicate inactive state
+    color: "#ccc", 
     fontSize: "2em",
-    pointerEvents: "none", // Disable click events
+    pointerEvents: "none", 
     transition: "color 0.3s ease",
   },
   socialIcon: {
     margin: "0 0.5em",
   },
   socialLinkHover: {
-    color: "red", // Red color on hover
+    color: "red", 
   },
   formContainer: {
     marginTop: "2em",
