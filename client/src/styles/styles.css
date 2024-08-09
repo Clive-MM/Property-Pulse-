@@ -1,9 +1,9 @@
 /* Background Gradient */
 body {
-  background: linear-gradient(135deg, violet, navy, neon, pink); /* Gradient colors */
-  color: white; /* Default text color for contrast */
+  background: linear-gradient(135deg, violet, navy, neon, pink); 
+  color: white; 
   margin: 0;
-  font-family: 'Arial', sans-serif; /* Consistent font */
+  font-family: 'Arial', sans-serif; 
 }
 
 /* Navbar Styles */
@@ -203,3 +203,4 @@ body {
   background: linear-gradient(135deg, #6f42c1, #e94e77, #4a90e2); /* Change gradient on hover */
   transform: scale(1.05); /* Slightly enlarge the button on hover */
 }
+

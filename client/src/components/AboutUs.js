@@ -33,7 +33,7 @@ function AboutUs() {
           </div>
         </nav>
       </div>
-      
+
       <div style={styles.content}>
         <div className="card mb-4" style={styles.card}>
           <div className="row no-gutters">
@@ -117,7 +117,7 @@ function AboutUs() {
 const styles = {
   container: {
     background:
-      "linear-gradient(to right, hsl(147, 88%, 35%), #00b300, #66ff66)",
+      "linear-gradient(135deg, #4a90e2, #6f42c1, #e94e77)", // Updated gradient
     color: "#fff",
     minHeight: "100vh",
     padding: "2em",
@@ -167,7 +167,7 @@ const styles = {
   },
   cardTextContainer: {
     background:
-      "linear-gradient(to right, hsl(147, 88%, 35%), #00b300, #66ff66)",
+      "linear-gradient(135deg, #4a90e2, #6f42c1, #e94e77)", // Updated gradient
     padding: "1em",
     borderRadius: "0",
     boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
@@ -181,7 +181,7 @@ const styles = {
   },
   overlay: {
     background:
-      "linear-gradient(to right, hsl(147, 88%, 35%), #00b300, #66ff66)",
+      "linear-gradient(135deg, #4a90e2, #6f42c1, #e94e77)", // Updated gradient
     padding: "1em",
     borderRadius: "0",
     boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
@@ -194,7 +194,7 @@ const styles = {
     justifyContent: "center",
   },
   content: {
-    marginTop: "4em", // Adjust this value as needed
+    marginTop: "4em", 
   },
 };
 

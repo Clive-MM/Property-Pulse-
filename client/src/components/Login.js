@@ -127,7 +127,7 @@ function Login() {
 
 const styles = {
   pageBackground: {
-    background: "linear-gradient(to right, violet, neon)", // Match the homepage gradient
+    background: "linear-gradient(135deg, #4a90e2, #6f42c1, #e94e77)", 
     height: "100vh",
     display: "flex",
     justifyContent: "center",
@@ -138,13 +138,13 @@ const styles = {
   },
   card: {
     width: "30em",
-    color: "#fff", // Ensure text is visible
-    backgroundColor: "rgba(0, 0, 0, 0.7)", // Semi-transparent background
+    color: "#fff", 
+    backgroundColor: "rgba(0, 0, 0, 0.7)", 
     borderRadius: "10px",
     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
   },
   cardHeader: {
-    background: "linear-gradient(135deg, violet, navy, neon, pink)", // Match the homepage gradient
+    background: "linear-gradient(135deg, #4a90e2, #6f42c1, #e94e77)", 
     color: "white",
     fontSize: "1.5em",
     fontWeight: "bold",
@@ -156,34 +156,34 @@ const styles = {
   },
   label: {
     fontSize: "1em",
-    color: "#000", // Ensure text is visible
+    color: "#000", 
     fontWeight: "bold",
   },
   input: {
     marginBottom: "1em",
-    backgroundColor: "#fff", // Input background color
-    color: "#000", // Input text color
+    backgroundColor: "#fff", 
+    color: "#000", 
   },
   button: {
-    background: "linear-gradient(135deg, violet, navy, neon, pink)", // Match the homepage gradient
+    background: "linear-gradient(135deg, violet, navy, neon, pink)", 
     borderColor: "transparent",
     color: "white",
   },
   cardFooter: {
-    backgroundColor: "#fff", // Set background color to white
-    color: "#000", // Ensure text color is visible against the white background
+    backgroundColor: "#fff", 
+    color: "#000", 
   },
   link: {
-    color: "#00f", // Default link color
-    textDecoration: "none", // Remove underline
-    transition: "color 0.3s", // Smooth color transition
+    color: "#00f", 
+    textDecoration: "none", 
+    transition: "color 0.3s", 
   },
   linkHover: {
-    color: "green", // Change link color to green on hover
+    color: "green", 
   },
   errorAlert: {
-    color: "#fff", // Ensure error message is visible
-    backgroundColor: "#f44336", // Red background for error message
+    color: "#fff", 
+    backgroundColor: "#f44336", 
     border: "none",
     borderRadius: "0.25em",
   },

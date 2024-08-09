@@ -12,7 +12,7 @@ import Message from "./Message";
 function TenantDashboard() {
   const [activeComponent, setActiveComponent] = useState(null);
   const [username, setUsername] = useState('');
-  const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
+  const [isSidebarExpanded, setIsSidebarExpanded] = useState(true); // Set to true for default expanded state
 
   useEffect(() => {
     const fetchUsername = async () => {
@@ -47,9 +47,7 @@ function TenantDashboard() {
         method: "POST",
       });
       if (response.ok) {
-        // Clear localStorage
         localStorage.clear();
-        // Redirect to the home page
         window.location.href = "/";
       } else {
         console.error("Failed to logout:", response.statusText);
@@ -64,65 +62,69 @@ function TenantDashboard() {
   };
 
   return (
-    <div className="dashboard">
+    <div className="dashboard" style={styles.dashboard}>
       <div id="navbar">
-        <nav className="navbar navbar-expand-lg navbar-custom">
+        <nav className="navbar navbar-expand-lg navbar-custom" style={styles.navbar}>
           <div className="container">
             <a className="navbar-brand" href="/" style={{ cursor: "pointer" }}>
-              <h1 style={{ marginLeft: "1em" }}>PROPERTY PULSE</h1>
-              <p>
-                <em style={{ color: "blue", marginLeft: ".5em" }}>Click Your Way Home</em>
+              <h1 style={styles.brandTitle}>PROPERTY PULSE</h1>
+              <p style={styles.brandSubtitle}>
+                <em>Click Your Way Home</em>
               </p>
             </a>
           </div>
         </nav>
       </div>
 
-      <div className="row" id="dashboard">
-        <div className={`col-sm-6 ${isSidebarExpanded ? "expanded" : "collapsed"}`} id="sidepane">
-          <div className="card" style={{ height: "40em", marginLeft: "3px" }}>
-            <div className="card-body">
-              <div className="menu-item" onClick={toggleSidebar} style={{ cursor: "pointer", display: "flex", alignItems: "center" }}>
-                <i className={`fas fa-${isSidebarExpanded ? "angle-left" : "bars"}`}></i>
-                {isSidebarExpanded && <span className="menu-text"><strong>MENU</strong></span>}
+      <div className="row" id="dashboard" style={{ height: "100%" }}>
+        <div
+          className={`col-sm-3 sidepane ${isSidebarExpanded ? "expanded" : "collapsed"}`}
+          id="sidepane"
+          style={isSidebarExpanded ? styles.expanded : styles.collapsed}
+        >
+          <div className="card" style={{ ...styles.card }}>
+            <div className="card-body" style={styles.cardBody}>
+              <div className="menu-item" onClick={toggleSidebar} style={styles.menuItem}>
+                <i className={`fas fa-${isSidebarExpanded ? "angle-left" : "bars"}`} style={styles.icon}></i>
+                {isSidebarExpanded && <span className="menu-text" style={styles.menuText}><strong>MENU</strong></span>}
               </div>
 
-              <div className="menu-item" onClick={() => handleLinkClick(<Profile />)} style={{ marginTop: "1.5em" }}>
-                <i className="fas fa-user"></i>
-                {isSidebarExpanded && <span className="menu-text">PROFILE</span>}
+              <div className="menu-item" onClick={() => handleLinkClick(<Profile />)} style={styles.menuItem}>
+                <i className="fas fa-user" style={styles.icon}></i>
+                {isSidebarExpanded && <span className="menu-text" style={styles.menuText}>PROFILE</span>}
               </div>
-              <div className="menu-item" onClick={() => handleLinkClick(<ViewApartments />)} style={{ marginTop: "1.5em" }}>
-                <i className="fas fa-building"></i>
-                {isSidebarExpanded && <span className="menu-text">APARTMENTS</span>}
+              <div className="menu-item" onClick={() => handleLinkClick(<ViewApartments />)} style={styles.menuItem}>
+                <i className="fas fa-building" style={styles.icon}></i>
+                {isSidebarExpanded && <span className="menu-text" style={styles.menuText}>APARTMENTS</span>}
               </div>
-              <div className="menu-item" onClick={() => handleLinkClick(<ViewBillings />)} style={{ marginTop: "1.5em" }}>
-                <i className="fas fa-file-invoice-dollar"></i>
-                {isSidebarExpanded && <span className="menu-text">BILLINGS</span>}
+              <div className="menu-item" onClick={() => handleLinkClick(<ViewBillings />)} style={styles.menuItem}>
+                <i className="fas fa-file-invoice-dollar" style={styles.icon}></i>
+                {isSidebarExpanded && <span className="menu-text" style={styles.menuText}>BILLINGS</span>}
               </div>
-              <div className="menu-item" onClick={() => handleLinkClick(<Enquiry />)} style={{ marginTop: "1.5em" }}>
-                <i className="fas fa-question-circle"></i>
-                {isSidebarExpanded && <span className="menu-text">ENQUIRY</span>}
+              <div className="menu-item" onClick={() => handleLinkClick(<Enquiry />)} style={styles.menuItem}>
+                <i className="fas fa-question-circle" style={styles.icon}></i>
+                {isSidebarExpanded && <span className="menu-text" style={styles.menuText}>ENQUIRY</span>}
               </div>
-              <div className="menu-item" onClick={() => handleLinkClick(<Message />)} style={{ marginTop: "1.5em" }}>
-                <i className="fas fa-envelope"></i>
-                {isSidebarExpanded && <span className="menu-text">MESSAGES</span>}
+              <div className="menu-item" onClick={() => handleLinkClick(<Message />)} style={styles.menuItem}>
+                <i className="fas fa-envelope" style={styles.icon}></i>
+                {isSidebarExpanded && <span className="menu-text" style={styles.menuText}>MESSAGES</span>}
               </div>
-              <div className="menu-item" onClick={() => handleLinkClick(<Review />)} style={{ marginTop: "1.5em" }}>
-                <i className="fas fa-star"></i>
-                {isSidebarExpanded && <span className="menu-text">REVIEW</span>}
+              <div className="menu-item" onClick={() => handleLinkClick(<Review />)} style={styles.menuItem}>
+                <i className="fas fa-star" style={styles.icon}></i>
+                {isSidebarExpanded && <span className="menu-text" style={styles.menuText}>REVIEW</span>}
               </div>
-              <div className="menu-item" onClick={handleLogout} style={{ marginTop: "4em" }}>
-                <i className="fas fa-sign-out-alt"></i>
-                {isSidebarExpanded && <span className="menu-text">LOG OUT</span>}
+              <div className="menu-item" onClick={handleLogout} style={{ ...styles.menuItem, marginTop: "4em" }}>
+                <i className="fas fa-sign-out-alt" style={styles.icon}></i>
+                {isSidebarExpanded && <span className="menu-text" style={styles.menuText}>LOG OUT</span>}
               </div>
             </div>
           </div>
         </div>
 
-        <div className="col-sm-6" id="main-body">
-          <div className="card" style={{ height: "40em", width: "60em", marginRight: "3em" }}>
-            <h5 className="text-muted">Hello {username}</h5>
-            <div className="card-body">
+        <div className="col-sm-9 main-content" style={styles.mainBody}>
+          <div className="card" style={styles.card}>
+            <h5 className="text-muted" style={styles.textMuted}>Hello {username}</h5>
+            <div className="card-body" style={styles.cardBody}>
               {activeComponent}
             </div>
           </div>
@@ -131,5 +133,79 @@ function TenantDashboard() {
     </div>
   );
 }
+
+const styles = {
+  dashboard: {
+    background: "linear-gradient(135deg, #4a90e2, #6f42c1, #e94e77)", 
+    color: "#fff",
+    minHeight: "100vh",
+    padding: "2em",
+  },
+  navbar: {
+    background: "linear-gradient(135deg, #4a90e2, #6f42c1, #e94e77)", 
+  },
+  brandTitle: {
+    marginLeft: "1em",
+    fontSize: "2em",
+    fontWeight: "bold",
+    fontFamily: "'Roboto', sans-serif",
+    color: "#fff",
+  },
+  brandSubtitle: {
+    color: "blue",
+    marginLeft: ".5em",
+    fontFamily: "'Roboto', sans-serif",
+  },
+  card: {
+    height: "100%",
+    width: "100%",
+    background: "rgba(255, 255, 255, 0.2)", 
+    borderRadius: "10px",
+    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+    backdropFilter: "blur(10px)",
+    transition: "width 0.3s ease", // Smooth transition for width change
+  },
+  cardBody: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+    padding: "2em",
+  },
+  menuItem: {
+    display: "flex",
+    alignItems: "center",
+    padding: "10px 15px",
+    cursor: "pointer",
+    transition: "padding 0.3s ease",
+    color: "#fff",
+    marginTop: "1.5em",
+  },
+  icon: {
+    fontSize: "1.5em",
+    marginRight: "0.5em",
+  },
+  menuText: {
+    fontSize: "1.2em",
+    fontFamily: "'Roboto', sans-serif",
+  },
+  expanded: {
+    width: "250px", // Width when expanded
+  },
+  collapsed: {
+    width: "60px", // Width when collapsed
+  },
+  mainBody: {
+    background: "rgba(255, 255, 255, 0.2)", 
+    borderRadius: "10px",
+    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+    backdropFilter: "blur(10px)", 
+    padding: "2em",
+    flexGrow: 1, // Ensure it fills the remaining space
+    transition: "flex-grow 0.3s ease", // Smooth transition
+  },
+  textMuted: {
+    color: "#ddd",
+  },
+};
 
 export default TenantDashboard;

@@ -49,23 +49,23 @@ function ContactUs() {
           <p>Email: propertypulse@gmail.com</p>
         </div>
         <div style={styles.socialMedia}>
-          <a href="#" className="socialLink" aria-disabled="true">
+          <a href="#" className="socialLink" aria-disabled="true" style={styles.socialLink}>
             <FontAwesomeIcon icon={faFacebook} style={styles.socialIcon} />
           </a>
-          <a href="#" className="socialLink" aria-disabled="true">
+          <a href="#" className="socialLink" aria-disabled="true" style={styles.socialLink}>
             <FontAwesomeIcon icon={faInstagram} style={styles.socialIcon} />
           </a>
-          <a href="#" className="socialLink" aria-disabled="true">
+          <a href="#" className="socialLink" aria-disabled="true" style={styles.socialLink}>
             <FontAwesomeIcon icon={faLinkedin} style={styles.socialIcon} />
           </a>
-          <a href="#" className="socialLink" aria-disabled="true">
+          <a href="#" className="socialLink" aria-disabled="true" style={styles.socialLink}>
             <FontAwesomeIcon icon={faGithub} style={styles.socialIcon} />
           </a>
-          <a href="#" className="socialLink" aria-disabled="true">
+          <a href="#" className="socialLink" aria-disabled="true" style={styles.socialLink}>
             <FontAwesomeIcon icon={faGoogle} style={styles.socialIcon} />
           </a>
         </div>
-       
+
         <div style={styles.formContainer}>
           <h4 style={styles.formHeading}>Get in Touch</h4>
           <div className="mb-3">
@@ -86,7 +86,9 @@ function ContactUs() {
               style={styles.textarea}
             ></textarea>
           </div>
-          <button className="sendButton">Send</button>
+          <button className="sendButton" style={styles.sendButton}>
+            Send
+          </button>
         </div>
       </div>
     </div>
@@ -95,13 +97,13 @@ function ContactUs() {
 
 const styles = {
   container: {
-    background: "linear-gradient(to right, hsl(147, 88%, 35%), #00b300, #66ff66)",
+    background: "linear-gradient(135deg, #4a90e2, #6f42c1, #e94e77)", // Updated gradient
     color: "#fff",
     minHeight: "100vh",
     padding: "2em",
   },
   navbar: {
-    background: "linear-gradient(to right, hsl(147, 88%, 35%), #00b300, #66ff66)",
+    background: "linear-gradient(135deg, #4a90e2, #6f42c1, #e94e77)", // Updated gradient
   },
   brand: {
     color: "#fff",
@@ -110,14 +112,17 @@ const styles = {
     marginLeft: "1em",
     fontSize: "2em",
     fontWeight: "bold",
+    fontFamily: "'Roboto', sans-serif",
   },
   brandSubtitle: {
     color: "blue",
     marginLeft: ".5em",
+    fontFamily: "'Roboto', sans-serif",
   },
   navLink: {
     color: "#fff",
     margin: "0 1em",
+    fontFamily: "'Roboto', sans-serif",
   },
   content: {
     textAlign: "center",
@@ -142,9 +147,13 @@ const styles = {
     color: "#ccc", // Grey color to indicate inactive state
     fontSize: "2em",
     pointerEvents: "none", // Disable click events
+    transition: "color 0.3s ease",
   },
   socialIcon: {
     margin: "0 0.5em",
+  },
+  socialLinkHover: {
+    color: "red", // Red color on hover
   },
   formContainer: {
     marginTop: "2em",
@@ -157,11 +166,26 @@ const styles = {
   input: {
     width: "20em",
     margin: "0 auto",
+    fontFamily: "'Roboto', sans-serif",
   },
   textarea: {
     width: "20em",
     margin: "0 auto",
     resize: "none",
+    fontFamily: "'Roboto', sans-serif",
+  },
+  sendButton: {
+    backgroundColor: "#4a90e2",
+    color: "#fff",
+    padding: "0.5em 2em",
+    border: "none",
+    borderRadius: "5px",
+    cursor: "pointer",
+    fontFamily: "'Roboto', sans-serif",
+    transition: "background-color 0.3s ease",
+  },
+  sendButtonHover: {
+    backgroundColor: "green", 
   },
 };
 
