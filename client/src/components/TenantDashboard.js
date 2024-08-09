@@ -192,7 +192,7 @@ const styles = {
     width: "250px", // Width when expanded
   },
   collapsed: {
-    width: "60px", // Width when collapsed
+    width: "135px", // Width when collapsed
   },
   mainBody: {
     background: "rgba(255, 255, 255, 0.2)", 
